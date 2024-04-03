@@ -1,9 +1,10 @@
 // ignore_for_file: constant_identifier_names
 
-import 'dart:math';
 import 'dart:typed_data';
 
+import 'package:ttk_payment_terminal/src/data/logger/logger.dart';
 import 'package:ttk_payment_terminal/src/data/models/enums/tags/ttk_service_tags/ttk_service_tags_enum.dart';
+import 'package:ttk_payment_terminal/src/data/models/models/base_models/ttk_service_tag_model.dart';
 import 'package:ttk_payment_terminal/src/data/service/hex_converter.dart';
 
 class BerTlvEncoderDecoder {
@@ -15,34 +16,51 @@ class BerTlvEncoderDecoder {
 
   static int clearBit(int byte, int bitIndex) {
     // Создаем маску для обнуления нужного бита
-    int mask = ~(1 << bitIndex);
+    final int mask = ~(1 << bitIndex);
     // Применяем маску к байту, чтобы обнулить нужный бит
-    int result = byte & mask;
+    final int result = byte & mask;
     return result;
   }
 
-  static dynamic decoder(Uint8List dataList) {
-    final iterator = dataList.iterator;
+  static List<TTKServiceTagModel>? decoderService(Uint8List dataList) {
+    try {
+      final iterator = dataList.iterator;
 
-    if (dataList.isEmpty) {
-      return null;
-    } else if (dataList.length > 2) {
-      iterator.moveNext();
-      var length = getLengthOfFile(iterator);
-      //final tmpIrerator = iterator;
-      final TTKType type = getTypeFromServerTTKType(iterator);
-      if (type == TTKType.TTK1) {
-        //TODO: handle this case with remove to prev mean
-      } else {
-        length -= 2;
+      if (dataList.isEmpty) {
+        return null;
+      } else if (dataList.length > 2) {
+        iterator.moveNext();
+        var length = getLengthOfFile(iterator);
+        //final tmpIrerator = iterator;
+        final TTKType type = getTypeFromServerTTKType(iterator);
+        if (type == TTKType.TTK1) {
+          //TODO: handle this case with remove to prev mean
+        } else {
+           length -= 2;
+        }
+        final List<TTKServiceTagModel> messageTags = [];
+
+        while (length > 0) {
+          final (TTKServiceTagsEnum tagType, int tmpTagSize) =
+              getServiceTag(iterator);
+          final (int tagSize, int tmpSizeSize) = getLengthOfTagData(iterator);
+          final Uint8List tagData = getDataWithSize(iterator, tagSize);
+          messageTags.add(TTKServiceTagModel.fromBin(
+              tagName: tagType, binaryMessage: tagData));
+          length -= tmpSizeSize + tmpTagSize + tagSize;
+        }
+        return messageTags;
       }
-      for (int i = 0; i < length; i++) {}
+    } catch (e) {
+      logger.i(e.toString());
+      return null;
     }
   }
 
-  static TTKServiceTagsEnum getServiceTag(Iterator<int> iterator) {
+  static (TTKServiceTagsEnum, int) getServiceTag(Iterator<int> iterator) {
     bool hasNextTag = false;
     final tagStringBuffer = StringBuffer('T');
+    int tagSize = 0;
     do {
       final tmpTag = iterator.current;
       hasNextTag = isBitSet(tmpTag, 0) &&
@@ -51,17 +69,23 @@ class BerTlvEncoderDecoder {
           isBitSet(tmpTag, 3) &&
           isBitSet(tmpTag, 4);
       tagStringBuffer.write(HexConverter.decimalToHex(tmpTag));
+      tagSize++;
       iterator.moveNext();
     } while (hasNextTag);
     final str = tagStringBuffer.toString();
-    return TTKServiceTagsEnum.values
-        .firstWhere((element) => element.name == str);
+    return (
+      TTKServiceTagsEnum.values.firstWhere((element) => element.name == str),
+      tagSize
+    );
   }
 
-  static int getLengthOfTagData(Iterator<int> iterator) {
+  static (int, int) getLengthOfTagData(Iterator<int> iterator) {
     final int sizeTag1 = iterator.current;
+    int lengthSize = 1;
     if (!isBitSet(sizeTag1, 8)) {
-      return sizeTag1;
+      iterator.moveNext();
+
+      return (sizeTag1, lengthSize);
     } else {
       int multiPartDataSize = 0;
       int i = clearBit(sizeTag1, 8);
@@ -70,18 +94,21 @@ class BerTlvEncoderDecoder {
         i--;
         multiPartDataSize += tmpSize;
         iterator.moveNext();
+        lengthSize++;
       } while (i != 0);
-      return multiPartDataSize;
+      iterator.moveNext();
+      return (multiPartDataSize, lengthSize);
     }
   }
 
   static Uint8List getDataWithSize(Iterator<int> iterator, int size) {
-    Uint8List list =Uint8List(size);
+    final List<int> list = [];
     for (int i = 0; i < size; i++) {
       list.add(iterator.current);
       iterator.moveNext();
     }
-    return list;
+
+    return Uint8List.fromList(list);
   }
 
   static int getLengthOfFile(Iterator<int> iterator) {

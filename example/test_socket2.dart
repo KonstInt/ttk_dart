@@ -14,7 +14,6 @@ void main() {
 }
 
 class POSClient {
-
   POSClient(this._host, this._port);
   final String _host;
   final int _port;
@@ -30,7 +29,7 @@ class POSClient {
       socket.listen(
         (data) {
           final response = jsonDecode(utf8.decode(data));
-         logger.i('Response from terminal: $response');
+          logger.i('Response from terminal: $response');
           // Обработка ответа...
           socket.destroy();
         },

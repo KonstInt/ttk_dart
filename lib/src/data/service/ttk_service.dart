@@ -12,7 +12,8 @@ class TTKService {
   Future<bool> ttkSocketConnect() async {
     try {
       //Connect to the ttkTerminal with protocol timeout - 15 seconds
-      ttkSocket = await Socket.connect(ip, port).timeout(const Duration(seconds: 15));
+      ttkSocket =
+          await Socket.connect(ip, port).timeout(const Duration(seconds: 15));
       //Start listening messages from the ttkTerminal
       ttkSocket.listen(_dataHandler,
           onError: _errorHandler, onDone: _doneHandler, cancelOnError: false);

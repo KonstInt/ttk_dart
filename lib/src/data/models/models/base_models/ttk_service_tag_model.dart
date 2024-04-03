@@ -4,55 +4,89 @@ import 'package:ttk_payment_terminal/src/data/models/enums/tags/ttk_service_tags
 import 'package:ttk_payment_terminal/src/data/models/enums/ttk_message_types/ttk_message_types.dart';
 import 'package:ttk_payment_terminal/src/data/service/ascii_converter.dart';
 import 'package:ttk_payment_terminal/src/data/service/bcd_converter.dart';
+import 'package:ttk_payment_terminal/src/data/service/tag_additional_information_getter.dart';
 
 class TTKServiceTagModel {
-  TTKServiceTagModel(
-      {required this.messageType,
-      required this.message,
-      required this.maxLength,
-      required this.tagName}) {
+  TTKServiceTagModel({required this.message, required this.tagName}) {
+    final (tmpMaxLength, tmpMessageType) =
+        TagAdditionalInformationGetter.getAdditionalInfoOfServiceTags(tagName);
+    maxLength = tmpMaxLength;
+    messageType = tmpMessageType;
+    if(maxLength !=null){
     switch (messageType) {
       case TTKMessageType.ASCII:
+        if (message is! String) throw Exception('Have to be String!');
         final tmp = AsciiConverter.stringToAsciiArray(message as String);
-        if (tmp.length > (maxLength ?? double.minPositive.toInt())) {
+        if (tmp.length > maxLength!) {
           throw Exception('Too many characters');
         }
         break;
       case TTKMessageType.ASCII_BCD:
+        if (message is! String) throw Exception('Have to be String!');
         final tmp = AsciiConverter.stringToAsciiArray(message as String);
-        if (tmp.length > (maxLength ?? double.minPositive.toInt())) {
+        if (tmp.length > maxLength!) {
           throw Exception('Too many characters');
         }
         break;
       case TTKMessageType.ASCII_HEX:
+        if (message is! String) throw Exception('Have to be String!');
         final tmp = AsciiConverter.stringToAsciiArray(message as String);
-        if (tmp.length > (maxLength ?? double.minPositive.toInt())) {
+        if (tmp.length > maxLength!) {
           throw Exception('Too many characters');
         }
         break;
       case TTKMessageType.BIN:
+        if (message is! Uint8List) throw Exception('Have to be Uint8List!');
         if ((message as Uint8List).length >
-            (maxLength ?? double.minPositive.toInt())) {
+           maxLength!) {
           throw Exception('Too many characters');
         }
         break;
       case TTKMessageType.BCD:
+        if (message is! int) throw Exception('Have to Integer');
         final tmp = BCDConverter.bcdToUint8List(message as int);
-        if (tmp.length > (maxLength ?? double.minPositive.toInt())) {
+        if (tmp.length > maxLength!) {
           throw Exception('Too many characters');
         }
         break;
     }
+    }
   }
 
-  // factory TTKServiceTagModel.fromBin({required Uint8List binaryMessage}){
-  //   //Uint8List.read
-  //   //return TTKServiceTagModel(messageType: messageType, message: message, maxLength: maxLength, tagName: tagName)
-  // }
-  final TTKServiceTagsEnum tagName;
-  final int? maxLength;
+  factory TTKServiceTagModel.fromBin({
+    required TTKServiceTagsEnum tagName,
+    required Uint8List binaryMessage,
+  }) {
+    final dynamic message;
+    final (_, tmpMessageType) =
+        TagAdditionalInformationGetter.getAdditionalInfoOfServiceTags(tagName);
+    switch (tmpMessageType) {
+      case TTKMessageType.ASCII:
+        message = AsciiConverter.asciiArrayToString(binaryMessage);
+        break;
+      case TTKMessageType.ASCII_BCD:
+        message = AsciiConverter.asciiArrayToString(binaryMessage);
+        break;
+      case TTKMessageType.ASCII_HEX:
+        message = AsciiConverter.asciiArrayToString(binaryMessage);
+        break;
+      case TTKMessageType.BIN:
+        message = binaryMessage;
+        break;
+      case TTKMessageType.BCD:
+        message = BCDConverter.uint8ListToBCD(binaryMessage);
+        break;
+    }
+    return TTKServiceTagModel(
+      message: message,
+      tagName: tagName,
+    );
+  }
 
-  final TTKMessageType messageType;
+  final TTKServiceTagsEnum tagName;
+  late final int? maxLength;
+
+  late final TTKMessageType messageType;
   final dynamic message;
   late final int tagSize;
 

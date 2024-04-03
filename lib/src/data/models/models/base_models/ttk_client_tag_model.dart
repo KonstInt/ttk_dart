@@ -6,7 +6,6 @@ import 'package:ttk_payment_terminal/src/data/service/ascii_converter.dart';
 import 'package:ttk_payment_terminal/src/data/service/bcd_converter.dart';
 
 class TTKClientTagModel {
-
   TTKClientTagModel(
       {required this.messageType,
       required this.message,

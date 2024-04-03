@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:ttk_payment_terminal/src/data/logger/logger.dart';
+import 'package:ttk_payment_terminal/src/data/models/models/base_models/tlv_decoder.dart';
 
 late Socket socket;
 
@@ -11,9 +12,9 @@ Future<Uint8List> readFileByte(String filePath) async {
   late Uint8List bytes;
   await audioFile.readAsBytes().then((value) {
     bytes = Uint8List.fromList(value);
-   logger.i('reading of bytes is completed');
+    logger.i('reading of bytes is completed');
   }).catchError((onError) {
-   logger.e('Exception Error while reading from path:$onError');
+    logger.e('Exception Error while reading from path:$onError');
   });
   return bytes;
 }
@@ -90,11 +91,13 @@ Future<void> test() async {
 void dataHandler(Uint8List data) {
   final ddd = data;
   //final s = data.toString();
+    logger.i(data);
+  final tmp = BerTlvEncoderDecoder.decoderService(data);
   logger.i(data);
 }
 
 void errorHandler(error, StackTrace trace) {
- logger.e(error);
+  logger.e(error);
 }
 
 void doneHandler() {
