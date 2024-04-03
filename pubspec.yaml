@@ -8,7 +8,8 @@ environment:
 
 # Add regular dependencies here.
 dependencies:
-  pedantic: ^1.11.1
+  logger: ^2.2.0
+  surf_lint_rules: ^1.0.0
   # path: ^1.8.0
 
 dev_dependencies:

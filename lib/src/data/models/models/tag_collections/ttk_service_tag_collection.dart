@@ -1,9 +1,9 @@
+import 'package:ttk_payment_terminal/src/data/models/enums/tags/ttk_service_tags/ttk_service_tags_enum.dart';
 import 'package:ttk_payment_terminal/src/data/models/enums/ttk_message_types/ttk_message_types.dart';
-import 'package:ttk_payment_terminal/src/data/models/enums/ttk_service_tags/ttk_service_tags_enum.dart';
-import 'package:ttk_payment_terminal/src/data/models/models/ttk_service_tag_model.dart';
+import 'package:ttk_payment_terminal/src/data/models/models/base_models/ttk_service_tag_model.dart';
 
 class T81Tag extends TTKServiceTagModel {
-  T81Tag({required dynamic message})
+  T81Tag({required message})
       : super(
           messageType: TTKMessageType.ASCII,
           message: message,
@@ -13,7 +13,7 @@ class T81Tag extends TTKServiceTagModel {
 }
 
 class T82Tag extends TTKServiceTagModel {
-  T82Tag({required dynamic message})
+  T82Tag({required message})
       : super(
           messageType: TTKMessageType.ASCII,
           message: message,
@@ -23,7 +23,7 @@ class T82Tag extends TTKServiceTagModel {
 }
 
 class T83Tag extends TTKServiceTagModel {
-  T83Tag({required dynamic message})
+  T83Tag({required message})
       : super(
           messageType: TTKMessageType.ASCII_BCD,
           message: message,
@@ -33,7 +33,7 @@ class T83Tag extends TTKServiceTagModel {
 }
 
 class T9BTag extends TTKServiceTagModel {
-  T9BTag({required dynamic message})
+  T9BTag({required message})
       : super(
           messageType: TTKMessageType.ASCII,
           message: message,
@@ -43,7 +43,7 @@ class T9BTag extends TTKServiceTagModel {
 }
 
 class T84Tag extends TTKServiceTagModel {
-  T84Tag({required dynamic message})
+  T84Tag({required message})
       : super(
           messageType: TTKMessageType.ASCII_BCD,
           message: message,
@@ -53,7 +53,7 @@ class T84Tag extends TTKServiceTagModel {
 }
 
 class T89Tag extends TTKServiceTagModel {
-  T89Tag({required dynamic message})
+  T89Tag({required message})
       : super(
           messageType: TTKMessageType.ASCII,
           message: message,
@@ -63,7 +63,7 @@ class T89Tag extends TTKServiceTagModel {
 }
 
 class T8BTag extends TTKServiceTagModel {
-  T8BTag({required dynamic message})
+  T8BTag({required message})
       : super(
           messageType: TTKMessageType.ASCII_BCD,
           message: message,
@@ -73,7 +73,7 @@ class T8BTag extends TTKServiceTagModel {
 }
 
 class T8CTag extends TTKServiceTagModel {
-  T8CTag({required dynamic message})
+  T8CTag({required message})
       : super(
           messageType: TTKMessageType.ASCII,
           message: message,
@@ -83,7 +83,7 @@ class T8CTag extends TTKServiceTagModel {
 }
 
 class T8DTag extends TTKServiceTagModel {
-  T8DTag({required dynamic message})
+  T8DTag({required message})
       : super(
           messageType: TTKMessageType.ASCII_BCD,
           message: message,
@@ -93,7 +93,7 @@ class T8DTag extends TTKServiceTagModel {
 }
 
 class T8ETag extends TTKServiceTagModel {
-  T8ETag({required dynamic message})
+  T8ETag({required message})
       : super(
           messageType: TTKMessageType.ASCII_BCD,
           message: message,
@@ -103,7 +103,7 @@ class T8ETag extends TTKServiceTagModel {
 }
 
 class T8FTag extends TTKServiceTagModel {
-  T8FTag({required dynamic message})
+  T8FTag({required message})
       : super(
           messageType: TTKMessageType.ASCII,
           message: message,
@@ -113,7 +113,7 @@ class T8FTag extends TTKServiceTagModel {
 }
 
 class T90Tag extends TTKServiceTagModel {
-  T90Tag({required dynamic message})
+  T90Tag({required message})
       : super(
           messageType: TTKMessageType.ASCII,
           message: message,
@@ -123,7 +123,7 @@ class T90Tag extends TTKServiceTagModel {
 }
 
 class T92Tag extends TTKServiceTagModel {
-  T92Tag({required dynamic message})
+  T92Tag({required message})
       : super(
           messageType: TTKMessageType.ASCII_HEX,
           message: message,
@@ -133,7 +133,7 @@ class T92Tag extends TTKServiceTagModel {
 }
 
 class T93Tag extends TTKServiceTagModel {
-  T93Tag({required dynamic message})
+  T93Tag({required message})
       : super(
           messageType: TTKMessageType.ASCII_HEX,
           message: message,
@@ -143,7 +143,7 @@ class T93Tag extends TTKServiceTagModel {
 }
 
 class T94Tag extends TTKServiceTagModel {
-  T94Tag({required dynamic message})
+  T94Tag({required message})
       : super(
           messageType: TTKMessageType.ASCII,
           message: message,
@@ -153,7 +153,7 @@ class T94Tag extends TTKServiceTagModel {
 }
 
 class T95Tag extends TTKServiceTagModel {
-  T95Tag({required dynamic message})
+  T95Tag({required message})
       : super(
           messageType: TTKMessageType.BIN,
           message: message,
@@ -163,7 +163,7 @@ class T95Tag extends TTKServiceTagModel {
 }
 
 class T98Tag extends TTKServiceTagModel {
-  T98Tag({required dynamic message})
+  T98Tag({required message})
       : super(
           messageType: TTKMessageType.ASCII_BCD,
           message: message,
@@ -173,7 +173,7 @@ class T98Tag extends TTKServiceTagModel {
 }
 
 class T99Tag extends TTKServiceTagModel {
-  T99Tag({required dynamic message})
+  T99Tag({required message})
       : super(
           messageType: TTKMessageType.ASCII_BCD,
           message: message,
@@ -183,7 +183,7 @@ class T99Tag extends TTKServiceTagModel {
 }
 
 class T9DTag extends TTKServiceTagModel {
-  T9DTag({required dynamic message})
+  T9DTag({required message})
       : super(
           messageType: TTKMessageType.ASCII,
           message: message,
@@ -191,8 +191,9 @@ class T9DTag extends TTKServiceTagModel {
           tagName: TTKServiceTagsEnum.T9D,
         );
 }
+
 class T9ETag extends TTKServiceTagModel {
-  T9ETag({required dynamic message})
+  T9ETag({required message})
       : super(
           messageType: TTKMessageType.BIN,
           message: message,
@@ -202,7 +203,7 @@ class T9ETag extends TTKServiceTagModel {
 }
 
 class T9F0ETag extends TTKServiceTagModel {
-  T9F0ETag({required dynamic message})
+  T9F0ETag({required message})
       : super(
           messageType: TTKMessageType.BIN,
           message: message,
@@ -212,7 +213,7 @@ class T9F0ETag extends TTKServiceTagModel {
 }
 
 class T9F06Tag extends TTKServiceTagModel {
-  T9F06Tag({required dynamic message})
+  T9F06Tag({required message})
       : super(
           messageType: TTKMessageType.BIN,
           message: message,
@@ -222,7 +223,7 @@ class T9F06Tag extends TTKServiceTagModel {
 }
 
 class T9F26Tag extends TTKServiceTagModel {
-  T9F26Tag({required dynamic message})
+  T9F26Tag({required message})
       : super(
           messageType: TTKMessageType.BIN,
           message: message,
@@ -232,7 +233,7 @@ class T9F26Tag extends TTKServiceTagModel {
 }
 
 class TAOtag extends TTKServiceTagModel {
-  TAOtag({required dynamic message})
+  TAOtag({required message})
       : super(
           messageType: TTKMessageType.ASCII,
           message: message,
@@ -242,7 +243,7 @@ class TAOtag extends TTKServiceTagModel {
 }
 
 class TA1Tag extends TTKServiceTagModel {
-  TA1Tag({required dynamic message})
+  TA1Tag({required message})
       : super(
           messageType: TTKMessageType.ASCII,
           message: message,
@@ -252,7 +253,7 @@ class TA1Tag extends TTKServiceTagModel {
 }
 
 class TA2Tag extends TTKServiceTagModel {
-  TA2Tag({required dynamic message})
+  TA2Tag({required message})
       : super(
           messageType: TTKMessageType.ASCII_BCD,
           message: message,
@@ -262,7 +263,7 @@ class TA2Tag extends TTKServiceTagModel {
 }
 
 class T50Tag extends TTKServiceTagModel {
-  T50Tag({required dynamic message})
+  T50Tag({required message})
       : super(
           messageType: TTKMessageType.ASCII,
           message: message,
@@ -272,7 +273,7 @@ class T50Tag extends TTKServiceTagModel {
 }
 
 class TC1Tag extends TTKServiceTagModel {
-  TC1Tag({required dynamic message})
+  TC1Tag({required message})
       : super(
           messageType: TTKMessageType.ASCII,
           message: message,
@@ -282,7 +283,7 @@ class TC1Tag extends TTKServiceTagModel {
 }
 
 class TC2Tag extends TTKServiceTagModel {
-  TC2Tag({required dynamic message})
+  TC2Tag({required message})
       : super(
           messageType: TTKMessageType.ASCII_BCD,
           message: message,
@@ -292,7 +293,7 @@ class TC2Tag extends TTKServiceTagModel {
 }
 
 class TCDTag extends TTKServiceTagModel {
-  TCDTag({required dynamic message})
+  TCDTag({required message})
       : super(
           messageType: TTKMessageType.BIN,
           message: message,
@@ -302,7 +303,7 @@ class TCDTag extends TTKServiceTagModel {
 }
 
 class TCETag extends TTKServiceTagModel {
-  TCETag({required dynamic message})
+  TCETag({required message})
       : super(
           messageType: TTKMessageType.BCD,
           message: message,
@@ -312,7 +313,7 @@ class TCETag extends TTKServiceTagModel {
 }
 
 class T1F70Tag extends TTKServiceTagModel {
-  T1F70Tag({required dynamic message})
+  T1F70Tag({required message})
       : super(
           messageType: TTKMessageType.ASCII_BCD,
           message: message,
@@ -322,7 +323,7 @@ class T1F70Tag extends TTKServiceTagModel {
 }
 
 class T1F71Tag extends TTKServiceTagModel {
-  T1F71Tag({required dynamic message})
+  T1F71Tag({required message})
       : super(
           messageType: TTKMessageType.ASCII,
           message: message,
@@ -332,7 +333,7 @@ class T1F71Tag extends TTKServiceTagModel {
 }
 
 class T1F72Tag extends TTKServiceTagModel {
-  T1F72Tag({required dynamic message})
+  T1F72Tag({required message})
       : super(
           messageType: TTKMessageType.ASCII_BCD,
           message: message,
@@ -342,7 +343,7 @@ class T1F72Tag extends TTKServiceTagModel {
 }
 
 class T1F73Tag extends TTKServiceTagModel {
-  T1F73Tag({required dynamic message})
+  T1F73Tag({required message})
       : super(
           messageType: TTKMessageType.ASCII_BCD,
           message: message,
@@ -352,7 +353,7 @@ class T1F73Tag extends TTKServiceTagModel {
 }
 
 class T1F74Tag extends TTKServiceTagModel {
-  T1F74Tag({required dynamic message})
+  T1F74Tag({required message})
       : super(
           messageType: TTKMessageType.ASCII_BCD,
           message: message,
@@ -362,7 +363,7 @@ class T1F74Tag extends TTKServiceTagModel {
 }
 
 class T1F75Tag extends TTKServiceTagModel {
-  T1F75Tag({required dynamic message})
+  T1F75Tag({required message})
       : super(
           messageType: TTKMessageType.ASCII_BCD,
           message: message,
@@ -372,7 +373,7 @@ class T1F75Tag extends TTKServiceTagModel {
 }
 
 class T1F76Tag extends TTKServiceTagModel {
-  T1F76Tag({required dynamic message})
+  T1F76Tag({required message})
       : super(
           messageType: TTKMessageType.ASCII,
           message: message,
@@ -382,7 +383,7 @@ class T1F76Tag extends TTKServiceTagModel {
 }
 
 class T1F77Tag extends TTKServiceTagModel {
-  T1F77Tag({required dynamic message})
+  T1F77Tag({required message})
       : super(
           messageType: TTKMessageType.ASCII,
           message: message,
@@ -391,7 +392,8 @@ class T1F77Tag extends TTKServiceTagModel {
         );
 }
 
-class T1F78Tag extends TTKServiceTagModel {T1F78Tag({required dynamic message})
+class T1F78Tag extends TTKServiceTagModel {
+  T1F78Tag({required message})
       : super(
           messageType: TTKMessageType.ASCII,
           message: message,
@@ -401,7 +403,7 @@ class T1F78Tag extends TTKServiceTagModel {T1F78Tag({required dynamic message})
 }
 
 class T1F79Tag extends TTKServiceTagModel {
-  T1F79Tag({required dynamic message})
+  T1F79Tag({required message})
       : super(
           messageType: TTKMessageType.ASCII,
           message: message,
@@ -411,7 +413,7 @@ class T1F79Tag extends TTKServiceTagModel {
 }
 
 class T1F7ATag extends TTKServiceTagModel {
-  T1F7ATag({required dynamic message})
+  T1F7ATag({required message})
       : super(
           messageType: TTKMessageType.ASCII_BCD,
           message: message,
@@ -421,7 +423,7 @@ class T1F7ATag extends TTKServiceTagModel {
 }
 
 class T1F7BTag extends TTKServiceTagModel {
-  T1F7BTag({required dynamic message})
+  T1F7BTag({required message})
       : super(
           messageType: TTKMessageType.ASCII,
           message: message,
@@ -431,7 +433,7 @@ class T1F7BTag extends TTKServiceTagModel {
 }
 
 class T1F7CTag extends TTKServiceTagModel {
-  T1F7CTag({required dynamic message})
+  T1F7CTag({required message})
       : super(
           messageType: TTKMessageType.ASCII_BCD,
           message: message,

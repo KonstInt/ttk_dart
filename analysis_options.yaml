@@ -12,24 +12,4 @@
 # The core lints are also what is used by pub.dev for scoring packages.
 
 # include: package:lints/recommended.yaml
-include: package:pedantic/analysis_options.yaml
-analyzer:  
-  strong-mode:  
-    implicit-dynamic: false  
-    implicit-casts: false  
-  errors:  
-    todo: ignore  
-    mixin_inherits_from_not_object: ignore  
-    sdk_version_async_exported_from_core: ignore  
-    missing_required_param: error  
-    division_optimization: error  
-    must_call_super: error  
-    always_put_required_named_parameters_first: error  
-    avoid_positional_boolean_parameters: error  
-    unnecessary_await_in_return: error  
-    invalid_use_of_protected_member: error  
-    # ...
-  
-linter:  
-  rules:
-    # ...
+include: package:surf_lint_rules/analysis_options.yaml

@@ -1,32 +1,32 @@
-import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
-import 'package:convert/convert.dart';
+
+import 'package:ttk_payment_terminal/src/data/logger/logger.dart';
 
 late Socket socket;
 
 Future<Uint8List> readFileByte(String filePath) async {
-  Uri myUri = Uri.parse(filePath);
-  File audioFile = new File.fromUri(myUri);
+  final Uri myUri = Uri.parse(filePath);
+  final File audioFile = File.fromUri(myUri);
   late Uint8List bytes;
   await audioFile.readAsBytes().then((value) {
     bytes = Uint8List.fromList(value);
-    print('reading of bytes is completed');
+   logger.i('reading of bytes is completed');
   }).catchError((onError) {
-    print('Exception Error while reading from path:' + onError.toString());
+   logger.e('Exception Error while reading from path:$onError');
   });
   return bytes;
 }
 
-void test() async {
+Future<void> test() async {
   try {
-    socket = await Socket.connect("10.0.0.104", 8888).catchError((e) {
-      int i = 0;
+    socket = await Socket.connect('10.0.0.104', 8888).catchError((e) {
+      const int i = 0;
     });
     socket.listen(dataHandler,
         onError: errorHandler, onDone: doneHandler, cancelOnError: false);
 
-    var bytes = Uint8List.fromList([
+    final bytes = Uint8List.fromList([
       0,
       43,
       150,
@@ -52,7 +52,6 @@ void test() async {
       4,
       4,
       49,
-      
       48,
       48,
       50,
@@ -75,13 +74,13 @@ void test() async {
       17,
       13
     ]);
-    var sendModue = String.fromCharCodes(bytes);
+    final sendModue = String.fromCharCodes(bytes);
 
     //socket.write(sendModue);
     socket.add(bytes);
-    print('success');
+    logger.i('success');
   } catch (e) {
-    int i = 0;
+    const int i = 0;
   }
   //Connect standard in to the socket
   //stdin.listen((data) => socket.write(new String.fromCharCodes(data).trim() + '\n'));
@@ -89,13 +88,13 @@ void test() async {
 }
 
 void dataHandler(Uint8List data) {
-  var ddd = data;
-  var s = data.toString();
-  print(s);
+  final ddd = data;
+  //final s = data.toString();
+  logger.i(data);
 }
 
 void errorHandler(error, StackTrace trace) {
-  print(error);
+ logger.e(error);
 }
 
 void doneHandler() {
@@ -181,7 +180,7 @@ class TLVParser {
       var length = 0;
       for (var i = 1; i < n + 1; ++i) {
         length <<= 8;
-        length |= (data[i] & 0xFF);
+        length |= data[i] & 0xFF;
       }
       return length;
     } else {

@@ -1,19 +1,21 @@
+import 'dart:typed_data';
+
 class AsciiConverter {
-  ///ASCII to string conversion
-  static String asciiArrayToString(List<int> asciiArray) {
+  ///ASCII <Unit8List> to string conversion
+  static String asciiArrayToString(Uint8List asciiArray) {
     var str = '';
-    for (var asciiCode in asciiArray) {
+    for (final asciiCode in asciiArray) {
       str += String.fromCharCode(asciiCode);
     }
     return str;
   }
 
-  ///String to ASCII conversion
-  static List<int> stringToAsciiArray(String str) {
-    var asciiArray = <int>[];
+  ///String to Unit8List <ASCII> conversion
+  static Uint8List stringToAsciiArray(String str) {
+    final asciiArray = <int>[];
     for (var i = 0; i < str.length; i++) {
       asciiArray.add(str.codeUnitAt(i));
     }
-    return asciiArray;
+    return Uint8List.fromList(asciiArray);
   }
 }
