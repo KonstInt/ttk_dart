@@ -1,6 +1,6 @@
 import 'package:ttk_payment_terminal/src/data/models/enums/tags/ttk_client_tags/ttk_client_tags_enum.dart';
 import 'package:ttk_payment_terminal/src/data/models/enums/tags/ttk_service_tags/ttk_service_tags_enum.dart';
-import 'package:ttk_payment_terminal/src/data/models/enums/ttk_message_types/ttk_message_types.dart';
+import 'package:ttk_payment_terminal/src/domain/ttk_message_types/ttk_message_types.dart';
 
 class TagAdditionalInformationGetter {
   static (int?, TTKMessageType) getAdditionalInfoOfServiceTags(
@@ -100,7 +100,7 @@ class TagAdditionalInformationGetter {
         _messageType = TTKMessageType.BIN;
         _maxLength = 8;
         break;
-      case TTKServiceTagsEnum.TAO:
+      case TTKServiceTagsEnum.TA0:
         _messageType = TTKMessageType.ASCII;
         _maxLength = 41;
         break;
@@ -183,6 +183,10 @@ class TagAdditionalInformationGetter {
       case TTKServiceTagsEnum.T1F7C:
         _messageType = TTKMessageType.ASCII_BCD;
         _maxLength = 6;
+        break;
+      case TTKServiceTagsEnum.TUnknown:
+        _messageType = TTKMessageType.ASCII;
+        _maxLength = null;
         break;
     }
 

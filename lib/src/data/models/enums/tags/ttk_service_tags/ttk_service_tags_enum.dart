@@ -71,7 +71,7 @@ enum TTKServiceTagsEnum {
   T9F26,
 
   /// Visual Host Response | ASCII | 41
-  TAO,
+  TA0,
 
   /// Approve | ASCII | 1
   TA1,
@@ -132,4 +132,6 @@ enum TTKServiceTagsEnum {
 
   /// Timeout | ASCII-BCD | 6
   T1F7C,
+
+  TUnknown,
 }

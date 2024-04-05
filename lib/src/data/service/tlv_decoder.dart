@@ -23,6 +23,7 @@ class BerTlvEncoderDecoder {
   }
 
   static List<TTKServiceTagModel>? decoderService(Uint8List dataList) {
+    final List<TTKServiceTagModel> messageTags = [];
     try {
       final iterator = dataList.iterator;
 
@@ -36,9 +37,8 @@ class BerTlvEncoderDecoder {
         if (type == TTKType.TTK1) {
           //TODO: handle this case with remove to prev mean
         } else {
-           length -= 2;
+          length -= 2;
         }
-        final List<TTKServiceTagModel> messageTags = [];
 
         while (length > 0) {
           final (TTKServiceTagsEnum tagType, int tmpTagSize) =
@@ -55,6 +55,7 @@ class BerTlvEncoderDecoder {
       logger.i(e.toString());
       return null;
     }
+    return null;
   }
 
   static (TTKServiceTagsEnum, int) getServiceTag(Iterator<int> iterator) {
@@ -74,7 +75,10 @@ class BerTlvEncoderDecoder {
     } while (hasNextTag);
     final str = tagStringBuffer.toString();
     return (
-      TTKServiceTagsEnum.values.firstWhere((element) => element.name == str),
+      TTKServiceTagsEnum.values.firstWhere(
+        (element) => element.name == str,
+        orElse: () => TTKServiceTagsEnum.TUnknown,
+      ),
       tagSize
     );
   }

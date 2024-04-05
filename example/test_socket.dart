@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:ttk_payment_terminal/src/data/logger/logger.dart';
-import 'package:ttk_payment_terminal/src/data/models/models/base_models/tlv_decoder.dart';
+import 'package:ttk_payment_terminal/src/data/service/tlv_decoder.dart';
 
 late Socket socket;
 
@@ -89,9 +89,9 @@ Future<void> test() async {
 }
 
 void dataHandler(Uint8List data) {
-  final ddd = data;
+  final ddd = data.toList();
   //final s = data.toString();
-    logger.i(data);
+  logger.i(data);
   final tmp = BerTlvEncoderDecoder.decoderService(data);
   logger.i(data);
 }
