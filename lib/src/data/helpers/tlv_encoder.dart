@@ -5,10 +5,10 @@ import 'dart:typed_data';
 import 'package:ttk_payment_terminal/src/data/logger/logger.dart';
 import 'package:ttk_payment_terminal/src/data/models/enums/tags/ttk_client_tags/ttk_client_tags_enum.dart';
 import 'package:ttk_payment_terminal/src/data/models/models/base_models/ttk_client_tag_model.dart';
-import 'package:ttk_payment_terminal/src/data/service/ascii_converter.dart';
-import 'package:ttk_payment_terminal/src/data/service/bcd_converter.dart';
-import 'package:ttk_payment_terminal/src/data/service/hex_converter.dart';
-import 'package:ttk_payment_terminal/src/domain/ttk_message_types/ttk_message_types.dart';
+import 'package:ttk_payment_terminal/src/data/helpers/ascii_converter.dart';
+import 'package:ttk_payment_terminal/src/data/helpers/bcd_converter.dart';
+import 'package:ttk_payment_terminal/src/data/helpers/hex_converter.dart';
+import 'package:ttk_payment_terminal/src/data/ttk_message_types/ttk_message_types.dart';
 
 class BerTlvEncoderEncoder {
 ////Проверка бита

@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:ttk_payment_terminal/src/data/logger/logger.dart';
-import 'package:ttk_payment_terminal/src/data/service/tlv_decoder.dart';
+import 'package:ttk_payment_terminal/src/data/helpers/tlv_decoder.dart';
 
 late Socket socket;
 

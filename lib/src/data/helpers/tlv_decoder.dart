@@ -5,7 +5,7 @@ import 'dart:typed_data';
 import 'package:ttk_payment_terminal/src/data/logger/logger.dart';
 import 'package:ttk_payment_terminal/src/data/models/enums/tags/ttk_service_tags/ttk_service_tags_enum.dart';
 import 'package:ttk_payment_terminal/src/data/models/models/base_models/ttk_service_tag_model.dart';
-import 'package:ttk_payment_terminal/src/data/service/hex_converter.dart';
+import 'package:ttk_payment_terminal/src/data/helpers/hex_converter.dart';
 
 class BerTlvEncoderDecoder {
 ////Проверка бита

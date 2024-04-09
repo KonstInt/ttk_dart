@@ -4,8 +4,8 @@ import 'dart:typed_data';
 import 'package:ttk_payment_terminal/src/data/logger/logger.dart';
 import 'package:ttk_payment_terminal/src/data/models/enums/tags/ttk_client_tags/ttk_client_tags_enum.dart';
 import 'package:ttk_payment_terminal/src/data/models/models/base_models/ttk_client_tag_model.dart';
-import 'package:ttk_payment_terminal/src/data/service/tlv_decoder.dart';
-import 'package:ttk_payment_terminal/src/data/service/tlv_encoder.dart';
+import 'package:ttk_payment_terminal/src/data/helpers/tlv_decoder.dart';
+import 'package:ttk_payment_terminal/src/data/helpers/tlv_encoder.dart';
 
 late Socket socket;
 
@@ -32,11 +32,22 @@ Future<void> test() async {
 
     final List<TTKClientTagModel> client = [
       TTKClientTagModel(message: 'PUR', tagName: TTKClientTagsEnum.T01),
-      TTKClientTagModel(message: '1', tagName: TTKClientTagsEnum.T02),
-      TTKClientTagModel(message: '66558899', tagName: TTKClientTagsEnum.T03),
-      TTKClientTagModel(message: '10000000', tagName: TTKClientTagsEnum.T04),
+      TTKClientTagModel(message: '3', tagName: TTKClientTagsEnum.T02),
+      TTKClientTagModel(message: '66558903', tagName: TTKClientTagsEnum.T03),
+      TTKClientTagModel(message: '150', tagName: TTKClientTagsEnum.T04),
+     // TTKClientTagModel(message: '10000000', tagName: TTKClientTagsEnum.T01),
       TTKClientTagModel(
           message: Uint8List.fromList([128]), tagName: TTKClientTagsEnum.T08)
+
+
+      // Сверка итогов
+      // TTKClientTagModel(message: 'SRV', tagName: TTKClientTagsEnum.T01),
+      // TTKClientTagModel(message: '2', tagName: TTKClientTagsEnum.T02),
+      // TTKClientTagModel(message: '66558900', tagName: TTKClientTagsEnum.T03),
+      // // TTKClientTagModel(message: '10000000', tagName: TTKClientTagsEnum.T04),
+      // TTKClientTagModel(message: '2', tagName: TTKClientTagsEnum.T1A),
+      // TTKClientTagModel(
+      //     message: Uint8List.fromList([128]), tagName: TTKClientTagsEnum.T08)
     ];
     final bytes = BerTlvEncoderEncoder.encoderClient(client);
     logger.t(bytes);

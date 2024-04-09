@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:ttk_payment_terminal/src/data/models/models/base_models/ttk_client_tag_model.dart';
+
 class TTKService {
   TTKService({required this.ip, required this.port});
   late final Socket ttkSocket;
@@ -23,6 +25,11 @@ class TTKService {
       //If have error return false
       return false;
     }
+  }
+
+  Future<bool> createPayment(List<TTKClientTagModel> tagList){
+    //TODO: handle when success or not
+    throw UnimplementedError();
   }
 
   void _dataHandler(Uint8List data) {
