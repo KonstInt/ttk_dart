@@ -48,6 +48,7 @@ class BerTlvEncoderEncoder {
       return null;
     }
   }
+  
 
   static (List<int>, int) getServiceTag(TTKClientTagsEnum clientTagEnum) {
     final clientTag = clientTagEnum.name.substring(1);

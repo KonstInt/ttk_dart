@@ -20,6 +20,7 @@ class TTKServiceTagModel {
           if (tmp.length > maxLength!) {
             throw Exception('Too many characters tag $tagName\n maxSize: $maxLength\n currentLength: ${tmp.length}');
           }
+          //31 element failed!
           break;
         case TTKMessageType.ASCII_BCD:
           if (message is! String) throw Exception('Have to be String!');

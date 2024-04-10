@@ -32,22 +32,22 @@ Future<void> test() async {
 
     final List<TTKClientTagModel> client = [
       TTKClientTagModel(message: 'PUR', tagName: TTKClientTagsEnum.T01),
-      TTKClientTagModel(message: '3', tagName: TTKClientTagsEnum.T02),
-      TTKClientTagModel(message: '66558903', tagName: TTKClientTagsEnum.T03),
+      TTKClientTagModel(message: '5', tagName: TTKClientTagsEnum.T02),
+      TTKClientTagModel(message: '66558906', tagName: TTKClientTagsEnum.T03),
       TTKClientTagModel(message: '150', tagName: TTKClientTagsEnum.T04),
-     // TTKClientTagModel(message: '10000000', tagName: TTKClientTagsEnum.T01),
+      // TTKClientTagModel(message: '10000000', tagName: TTKClientTagsEnum.T01),
       TTKClientTagModel(
           message: Uint8List.fromList([128]), tagName: TTKClientTagsEnum.T08)
 
-
       // Сверка итогов
       // TTKClientTagModel(message: 'SRV', tagName: TTKClientTagsEnum.T01),
-      // TTKClientTagModel(message: '2', tagName: TTKClientTagsEnum.T02),
-      // TTKClientTagModel(message: '66558900', tagName: TTKClientTagsEnum.T03),
+      // TTKClientTagModel(message: '9', tagName: TTKClientTagsEnum.T02),
+      // TTKClientTagModel(message: '66558909', tagName: TTKClientTagsEnum.T03),
       // // TTKClientTagModel(message: '10000000', tagName: TTKClientTagsEnum.T04),
       // TTKClientTagModel(message: '2', tagName: TTKClientTagsEnum.T1A),
-      // TTKClientTagModel(
-      //     message: Uint8List.fromList([128]), tagName: TTKClientTagsEnum.T08)
+      // //  TTKClientTagModel(message: '2С01000101 ', tagName: TTKClientTagsEnum.T1D),
+      // // TTKClientTagModel(
+      // //     message: Uint8List.fromList([128]), tagName: TTKClientTagsEnum.T08)
     ];
     final bytes = BerTlvEncoderEncoder.encoderClient(client);
     logger.t(bytes);
@@ -66,9 +66,15 @@ Future<void> test() async {
 void dataHandler(Uint8List data) {
   final ddd = data.toList();
   //final s = data.toString();
-  logger.i(data);
+  writeToFile(data);
   final tmp = BerTlvEncoderDecoder.decoderService(data);
-  logger.i(data);
+  //logger.i(data);
+}
+
+void writeToFile(Uint8List data) async {
+  File file = File('test.txt');
+  // write to file
+  file.writeAsStringSync(data.toList().toString());
 }
 
 void errorHandler(error, StackTrace trace) {

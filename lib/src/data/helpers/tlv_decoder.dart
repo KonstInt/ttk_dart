@@ -31,9 +31,9 @@ class BerTlvEncoderDecoder {
         return null;
       } else if (dataList.length > 2) {
         iterator.moveNext();
-        var length = getLengthOfFile(iterator);
+        var length = _getLengthOfFile(iterator);
         //final tmpIrerator = iterator;
-        final TTKType type = getTypeFromServerTTKType(iterator);
+        final TTKType type = _getTypeFromServerTTKType(iterator);
         if (type == TTKType.TTK1) {
           //TODO: handle this case with remove to prev mean
         } else {
@@ -42,9 +42,9 @@ class BerTlvEncoderDecoder {
 
         while (length > 0) {
           final (TTKServiceTagsEnum tagType, int tmpTagSize) =
-              getServiceTag(iterator);
-          final (int tagSize, int tmpSizeSize) = getLengthOfTagData(iterator);
-          final Uint8List tagData = getDataWithSize(iterator, tagSize);
+              _getServiceTag(iterator);
+          final (int tagSize, int tmpSizeSize) = _getLengthOfTagData(iterator);
+          final Uint8List tagData = _getDataWithSize(iterator, tagSize);
           messageTags.add(TTKServiceTagModel.fromBin(
               tagName: tagType, binaryMessage: tagData));
           length -= tmpSizeSize + tmpTagSize + tagSize;
@@ -58,7 +58,7 @@ class BerTlvEncoderDecoder {
     return null;
   }
 
-  static (TTKServiceTagsEnum, int) getServiceTag(Iterator<int> iterator) {
+  static (TTKServiceTagsEnum, int) _getServiceTag(Iterator<int> iterator) {
     bool hasNextTag = false;
     final tagStringBuffer = StringBuffer('T');
     int tagSize = 0;
@@ -77,13 +77,16 @@ class BerTlvEncoderDecoder {
     return (
       TTKServiceTagsEnum.values.firstWhere(
         (element) => element.name == str,
-        orElse: () => TTKServiceTagsEnum.TUnknown,
+        orElse: () {
+          logger.e(str);
+          return TTKServiceTagsEnum.TUnknown;
+          },
       ),
       tagSize
     );
   }
 
-  static (int, int) getLengthOfTagData(Iterator<int> iterator) {
+  static (int, int) _getLengthOfTagData(Iterator<int> iterator) {
     final int sizeTag1 = iterator.current;
     int lengthSize = 1;
     if (!isBitSet(sizeTag1, 8)) {
@@ -105,7 +108,7 @@ class BerTlvEncoderDecoder {
     }
   }
 
-  static Uint8List getDataWithSize(Iterator<int> iterator, int size) {
+  static Uint8List _getDataWithSize(Iterator<int> iterator, int size) {
     final List<int> list = [];
     for (int i = 0; i < size; i++) {
       list.add(iterator.current);
@@ -115,7 +118,7 @@ class BerTlvEncoderDecoder {
     return Uint8List.fromList(list);
   }
 
-  static int getLengthOfFile(Iterator<int> iterator) {
+  static int _getLengthOfFile(Iterator<int> iterator) {
     final firstLengthBit = iterator.current * 256;
     iterator.moveNext();
     final secondLengthBit = iterator.current;
@@ -123,7 +126,7 @@ class BerTlvEncoderDecoder {
     return firstLengthBit + secondLengthBit;
   }
 
-  static TTKType getTypeFromServerTTKType(Iterator<int> iterator) {
+  static TTKType _getTypeFromServerTTKType(Iterator<int> iterator) {
     final firstTypeBit = HexConverter.decimalToHex(iterator.current);
     iterator.moveNext();
     final secondTypeBit = HexConverter.decimalToHex(iterator.current);
@@ -139,62 +142,3 @@ class BerTlvEncoderDecoder {
 }
 
 enum TTKType { TTK1, TTK2, TTK3 }
-/*  static List<int> encode(int tag, List<int> data) {
-    List<int> encoded = [];
-    // Encode tag
-    if (tag < 0x1F) {
-      encoded.add(tag);
-    } else {
-      List<int> tagBytes = [];
-      while (tag > 0) {
-        tagBytes.add(tag & 0x7F);
-        tag >>= 7;
-      }
-      tagBytes[tagBytes.length - 1] |= 0x80; // Set MSB of last byte
-      encoded.addAll(tagBytes.reversed);
-    }
-    // Encode length
-    if (data.length < 0x80) {
-      encoded.add(data.length);
-    } else if (data.length < 0x100) {
-      encoded.addAll([0x81, data.length]);
-    } else {
-      encoded.addAll([0x82, (data.length >> 8) & 0xFF, data.length & 0xFF]);
-    }
-    // Encode data
-    encoded.addAll(data);
-    return encoded;
-  }
-
-  static Map<String, dynamic> decode(List<int> encoded) {
-    int tag = 0;
-    int length = 0;
-    int dataStartIndex = 0;
-
-    // Decode tag
-    int index = 0;
-    while ((encoded[index] & 0x80) != 0) {
-      tag = (tag << 7) | (encoded[index] & 0x7F);
-      index++;
-    }
-    tag = (tag << 7) | encoded[index];
-    index++;
-
-    // Decode length
-    if ((encoded[index] & 0x80) == 0) {
-      length = encoded[index];
-      index++;
-    } else {
-      int lengthBytes = encoded[index] & 0x7F;
-      for (int i = 0; i < lengthBytes; i++) {
-        length = (length << 8) | encoded[index + 1 + i];
-      }
-      index += lengthBytes + 1;
-    }
-    dataStartIndex = index;
-
-    // Extract data
-    List<int> data = encoded.sublist(dataStartIndex, dataStartIndex + length);
-
-    return {'tag': tag, 'length': length, 'data': data};
-  }*/

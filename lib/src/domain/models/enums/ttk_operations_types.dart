@@ -1,55 +1,54 @@
 // ignore_for_file: constant_identifier_names
 
 enum TTKOperationType {
+  /// Sale of goods or services (financial transaction)
   PUR,
 
-  /// Sale of goods or services (financial transaction)
+  /// Refund to a bank card (financial transaction)
   REF,
 
-  /// Refund to a bank card (financial transaction)
+  /// Cancel operation by ERN number (financial transaction)
   VOI,
 
-  /// Cancel operation by ERN number (financial transaction)
+  /// Operation result request by ERN number (financial transaction)
   JRN,
 
-  /// Operation result request by ERN number (financial transaction)
+  /// Sale in Preauthorization form (financial transaction)
   AUH,
 
-  /// Sale in Preauthorization form (financial transaction)
+  /// Preauthorization (financial transaction)
   AUT,
 
-  /// Preauthorization (financial transaction)
+  /// Settlement after preauthorization (financial transaction)
   CMP,
 
-  /// Settlement after preauthorization (financial transaction)
+  /// Cash withdrawal (financial transaction)
   CSH,
 
-  /// Cash withdrawal (financial transaction)
+  /// Cash deposit (financial transaction)
   CRE,
 
-  /// Cash deposit (financial transaction)
-  PAY,
-
   /// Payment by requisites (financial transaction)
+  PAY,
+  
+  /// Inquiry of client's card account balance
   BAL,
 
-  /// Inquiry of client's card account balance
+  /// Service operation
   SRV,
 
-  /// Service operation
+  /// Status message
   INF,
 
-  /// Status message
+  /// Client screen dialogue request
   DLG,
 
-  /// Client screen dialogue request
+  /// Interruption of ongoing operation
   ABR,
 
-  /// Interruption of ongoing operation
+  /// Card movement
   MOV,
 
-  /// Card movement
-  KCH,
-
   /// Key change by host request
+  KCH,
 }

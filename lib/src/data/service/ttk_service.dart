@@ -1,7 +1,10 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:ttk_payment_terminal/src/data/helpers/tlv_decoder.dart';
 import 'package:ttk_payment_terminal/src/data/models/models/base_models/ttk_client_tag_model.dart';
+import 'package:ttk_payment_terminal/src/data/models/models/base_models/ttk_service_tag_model.dart';
 
 class TTKService {
   TTKService({required this.ip, required this.port});
@@ -27,9 +30,18 @@ class TTKService {
     }
   }
 
-  Future<bool> createPayment(List<TTKClientTagModel> tagList){
-    //TODO: handle when success or not
-    throw UnimplementedError();
+  Future<List<TTKServiceTagModel>> createPayment(
+      List<TTKClientTagModel> tagList) {
+    final Completer<List<TTKServiceTagModel>> c =
+        Completer<List<TTKServiceTagModel>>();
+    ttkSocket.listen((Uint8List data) {
+      final resList = BerTlvEncoderDecoder.decoderService(data);
+      
+    },
+    onError: _errorHandler, 
+    onDone: _doneHandler, cancelOnError: false);
+
+    return c.future;
   }
 
   void _dataHandler(Uint8List data) {
