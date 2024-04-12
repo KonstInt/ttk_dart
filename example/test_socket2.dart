@@ -1,11 +1,11 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:ttk_payment_terminal/src/data/helpers/tlv_decoder.dart';
+import 'package:ttk_payment_terminal/src/data/helpers/tlv_encoder.dart';
 import 'package:ttk_payment_terminal/src/data/logger/logger.dart';
 import 'package:ttk_payment_terminal/src/data/models/enums/tags/ttk_client_tags/ttk_client_tags_enum.dart';
 import 'package:ttk_payment_terminal/src/data/models/models/base_models/ttk_client_tag_model.dart';
-import 'package:ttk_payment_terminal/src/data/helpers/tlv_decoder.dart';
-import 'package:ttk_payment_terminal/src/data/helpers/tlv_encoder.dart';
 
 late Socket socket;
 
@@ -67,12 +67,15 @@ void dataHandler(Uint8List data) {
   final ddd = data.toList();
   //final s = data.toString();
   writeToFile(data);
-  final tmp = BerTlvEncoderDecoder.decoderService(data);
-  //logger.i(data);
+  while (ddd.isNotEmpty) {
+    final (tmp, length) = BerTlvEncoderDecoder.decoderService(data);
+    ddd.sublist(length);
+  }
+  logger.i(data);
 }
 
-void writeToFile(Uint8List data) async {
-  File file = File('test.txt');
+Future<void> writeToFile(Uint8List data) async {
+  final File file = File('test.txt');
   // write to file
   file.writeAsStringSync(data.toList().toString());
 }

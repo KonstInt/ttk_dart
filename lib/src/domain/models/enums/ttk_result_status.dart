@@ -1,5 +1,5 @@
-enum TTKResultStatus{
+enum TTKResultStatus {
   success,
-  message, 
+  message,
   error,
 }

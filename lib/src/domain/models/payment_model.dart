@@ -11,7 +11,6 @@ Local Time 0x20151231235945 Местное время
 */
 import 'package:ttk_payment_terminal/src/domain/models/enums/ttk_operations_types.dart';
 
-
 class PaymentModel {
   final String clientId;
   final String idempotenceKeyERN;
@@ -52,13 +51,15 @@ class PaymentModel {
       clientId: map['clientId'] as String,
       idempotenceKeyERN: map['idempotenceKeyERN'] as String,
       amount: map['amount'] as double,
-      operationType: TTKOperationType.values.firstWhere((element) => element.name == map['operationType'] as String),
+      operationType: TTKOperationType.values.firstWhere(
+          (element) => element.name == map['operationType'] as String),
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory PaymentModel.fromJson(String source) => PaymentModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory PaymentModel.fromJson(String source) =>
+      PaymentModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
@@ -68,19 +69,18 @@ class PaymentModel {
   @override
   bool operator ==(covariant PaymentModel other) {
     if (identical(this, other)) return true;
-  
-    return 
-      other.clientId == clientId &&
-      other.idempotenceKeyERN == idempotenceKeyERN &&
-      other.amount == amount &&
-      other.operationType == operationType;
+
+    return other.clientId == clientId &&
+        other.idempotenceKeyERN == idempotenceKeyERN &&
+        other.amount == amount &&
+        other.operationType == operationType;
   }
 
   @override
   int get hashCode {
     return clientId.hashCode ^
-      idempotenceKeyERN.hashCode ^
-      amount.hashCode ^
-      operationType.hashCode;
+        idempotenceKeyERN.hashCode ^
+        amount.hashCode ^
+        operationType.hashCode;
   }
 }

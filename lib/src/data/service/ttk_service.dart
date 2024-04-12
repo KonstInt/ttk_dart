@@ -9,6 +9,7 @@ import 'package:ttk_payment_terminal/src/data/models/models/base_models/ttk_serv
 class TTKService {
   TTKService({required this.ip, required this.port});
   late final Socket ttkSocket;
+  late final  Stream<List<TTKServiceTagModel>> ttkStream;
   final String ip;
   final int port;
 
@@ -30,18 +31,16 @@ class TTKService {
     }
   }
 
-  Future<List<TTKServiceTagModel>> createPayment(
+  Stream<List<TTKServiceTagModel>> createPayment(
       List<TTKClientTagModel> tagList) {
+        ttkSocket.asBroadcastStream().listen((event) { });
     final Completer<List<TTKServiceTagModel>> c =
         Completer<List<TTKServiceTagModel>>();
-    ttkSocket.listen((Uint8List data) {
+    ttkSocket.listen((data) {
       final resList = BerTlvEncoderDecoder.decoderService(data);
-      
-    },
-    onError: _errorHandler, 
-    onDone: _doneHandler, cancelOnError: false);
+    }, onError: _errorHandler, onDone: _doneHandler, cancelOnError: false);
 
-    return c.future;
+    return е;
   }
 
   void _dataHandler(Uint8List data) {

@@ -2,23 +2,23 @@
 
 import 'dart:typed_data';
 
-import 'package:ttk_payment_terminal/src/data/logger/logger.dart';
-import 'package:ttk_payment_terminal/src/data/models/enums/tags/ttk_client_tags/ttk_client_tags_enum.dart';
-import 'package:ttk_payment_terminal/src/data/models/models/base_models/ttk_client_tag_model.dart';
 import 'package:ttk_payment_terminal/src/data/helpers/ascii_converter.dart';
 import 'package:ttk_payment_terminal/src/data/helpers/bcd_converter.dart';
 import 'package:ttk_payment_terminal/src/data/helpers/hex_converter.dart';
+import 'package:ttk_payment_terminal/src/data/logger/logger.dart';
+import 'package:ttk_payment_terminal/src/data/models/enums/tags/ttk_client_tags/ttk_client_tags_enum.dart';
+import 'package:ttk_payment_terminal/src/data/models/models/base_models/ttk_client_tag_model.dart';
 import 'package:ttk_payment_terminal/src/data/ttk_message_types/ttk_message_types.dart';
 
 class BerTlvEncoderEncoder {
 ////Проверка бита
   static bool isBitSet(int i, int j) {
     // Проверяем, установлен ли бит в позиции j в числе i
-    return ((i >> j) & 1) == 1;
+    return ((i >> j - 1) & 1) == 1;
   }
 
   static int setBit(int byte, int bitIndex) {
-    final int mask = 1 << bitIndex;
+    final int mask = 1 << bitIndex - 1;
     final int result = byte | mask;
     return result;
   }
@@ -48,7 +48,6 @@ class BerTlvEncoderEncoder {
       return null;
     }
   }
-  
 
   static (List<int>, int) getServiceTag(TTKClientTagsEnum clientTagEnum) {
     final clientTag = clientTagEnum.name.substring(1);

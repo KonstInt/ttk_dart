@@ -30,7 +30,7 @@ enum TTKOperationType {
 
   /// Payment by requisites (financial transaction)
   PAY,
-  
+
   /// Inquiry of client's card account balance
   BAL,
 

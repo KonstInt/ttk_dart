@@ -1,11 +1,12 @@
 // ignore_for_file: constant_identifier_names
 
+import 'dart:math';
 import 'dart:typed_data';
 
+import 'package:ttk_payment_terminal/src/data/helpers/hex_converter.dart';
 import 'package:ttk_payment_terminal/src/data/logger/logger.dart';
 import 'package:ttk_payment_terminal/src/data/models/enums/tags/ttk_service_tags/ttk_service_tags_enum.dart';
 import 'package:ttk_payment_terminal/src/data/models/models/base_models/ttk_service_tag_model.dart';
-import 'package:ttk_payment_terminal/src/data/helpers/hex_converter.dart';
 
 class BerTlvEncoderDecoder {
 ////Проверка бита
@@ -22,16 +23,18 @@ class BerTlvEncoderDecoder {
     return result;
   }
 
-  static List<TTKServiceTagModel>? decoderService(Uint8List dataList) {
+  static (List<TTKServiceTagModel>?, int) decoderService(Uint8List dataList) {
     final List<TTKServiceTagModel> messageTags = [];
+    int returnLength = 0;
     try {
       final iterator = dataList.iterator;
 
       if (dataList.isEmpty) {
-        return null;
+        return (null, 0);
       } else if (dataList.length > 2) {
         iterator.moveNext();
         var length = _getLengthOfFile(iterator);
+        returnLength = length;
         //final tmpIrerator = iterator;
         final TTKType type = _getTypeFromServerTTKType(iterator);
         if (type == TTKType.TTK1) {
@@ -49,13 +52,13 @@ class BerTlvEncoderDecoder {
               tagName: tagType, binaryMessage: tagData));
           length -= tmpSizeSize + tmpTagSize + tagSize;
         }
-        return messageTags;
+        return (messageTags, returnLength);
       }
     } catch (e) {
       logger.i(e.toString());
-      return null;
+      return (messageTags, returnLength);
     }
-    return null;
+    return (messageTags, returnLength);
   }
 
   static (TTKServiceTagsEnum, int) _getServiceTag(Iterator<int> iterator) {
@@ -80,7 +83,7 @@ class BerTlvEncoderDecoder {
         orElse: () {
           logger.e(str);
           return TTKServiceTagsEnum.TUnknown;
-          },
+        },
       ),
       tagSize
     );
@@ -89,20 +92,22 @@ class BerTlvEncoderDecoder {
   static (int, int) _getLengthOfTagData(Iterator<int> iterator) {
     final int sizeTag1 = iterator.current;
     int lengthSize = 1;
-    if (!isBitSet(sizeTag1, 8)) {
+    if (!isBitSet(sizeTag1, 7)) {
       iterator.moveNext();
 
       return (sizeTag1, lengthSize);
     } else {
       int multiPartDataSize = 0;
-      int i = clearBit(sizeTag1, 8);
-      do {
-        final tmpSize = iterator.current.modPow(256, i - 1);
+      int i = clearBit(sizeTag1, 7);
+      iterator.moveNext();
+      while (i != 0) {
+        final tmpSize = (iterator.current * pow(256, i - 1)).toInt();
         i--;
         multiPartDataSize += tmpSize;
         iterator.moveNext();
         lengthSize++;
-      } while (i != 0);
+      }
+      lengthSize--;
       iterator.moveNext();
       return (multiPartDataSize, lengthSize);
     }
