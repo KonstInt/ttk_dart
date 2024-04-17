@@ -1,6 +1,9 @@
 // ignore_for_file: constant_identifier_names
 
 enum TTKServiceTagsEnum {
+  /// Response error message | ASCII | 8
+  T5F05,
+
   /// Message ID | ASCII | 3
   T81,
 
@@ -54,6 +57,9 @@ enum TTKServiceTagsEnum {
 
   /// Batch No | ASCII-BCD | 6
   T99,
+
+  /// Operation Receipt | ASCII |
+  T9C,
 
   /// Terminal ID | ASCII | 8
   T9D,

@@ -1,11 +1,14 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:logger/logger.dart';
 import 'package:ttk_payment_terminal/src/data/helpers/tlv_decoder.dart';
 import 'package:ttk_payment_terminal/src/data/helpers/tlv_encoder.dart';
 import 'package:ttk_payment_terminal/src/data/logger/logger.dart';
 import 'package:ttk_payment_terminal/src/data/models/enums/tags/ttk_client_tags/ttk_client_tags_enum.dart';
+import 'package:ttk_payment_terminal/src/data/models/enums/tags/ttk_service_tags/ttk_service_tags_enum.dart';
 import 'package:ttk_payment_terminal/src/data/models/models/base_models/ttk_client_tag_model.dart';
+import 'package:ttk_payment_terminal/src/data/models/models/base_models/ttk_service_tag_model.dart';
 
 late Socket socket;
 
@@ -64,14 +67,31 @@ Future<void> test() async {
 }
 
 void dataHandler(Uint8List data) {
-  final ddd = data.toList();
+  var ddd = data;
   //final s = data.toString();
   writeToFile(data);
-  while (ddd.isNotEmpty) {
-    final (tmp, length) = BerTlvEncoderDecoder.decoderService(data);
-    ddd.sublist(length);
+  var d_length = data.length;
+  List<List<TTKServiceTagModel>>? tags = [];
+  while (d_length != 0) {
+    final (tmp, length) = BerTlvEncoderDecoder.decoderService(ddd);
+    tmp ?? tags.add(tmp!);
+    d_length -= length+2;
+    if(d_length >= 0) {
+      ddd =  ddd.sublist(length+2);
+    }
+
+    logger.log(Level.debug, tmp);
+    
   }
-  logger.i(data);
+  // final File file = File('test_sverka_itogov.txt');
+  // // write to file
+  // file.writeAsStringSync(tmp!.last.message.toString());
+  //logger.i(data);\
+
+
+  tags.indexWhere((element) => element.tagName == TTKServiceTagsEnum.TA1);
+  
+  logger.i(tags);
 }
 
 Future<void> writeToFile(Uint8List data) async {

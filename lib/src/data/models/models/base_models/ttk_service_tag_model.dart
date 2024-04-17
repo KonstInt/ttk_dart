@@ -7,7 +7,7 @@ import 'package:ttk_payment_terminal/src/data/models/enums/tags/ttk_service_tags
 import 'package:ttk_payment_terminal/src/data/ttk_message_types/ttk_message_types.dart';
 
 class TTKServiceTagModel {
-  TTKServiceTagModel({required this.message, required this.tagName}) {
+  TTKServiceTagModel({required this.message, required this.tagName, required this.tagStrName}) {
     final (tmpMaxLength, tmpMessageType) =
         TagAdditionalInformationGetter.getAdditionalInfoOfServiceTags(tagName);
     maxLength = tmpMaxLength;
@@ -21,7 +21,7 @@ class TTKServiceTagModel {
             throw Exception(
                 'Too many characters tag $tagName\n maxSize: $maxLength\n currentLength: ${tmp.length}');
           }
-          //31 element failed!
+          tagSize = tmp.length;
           break;
         case TTKMessageType.ASCII_BCD:
           if (message is! String) throw Exception('Have to be String!');
@@ -30,6 +30,7 @@ class TTKServiceTagModel {
             throw Exception(
                 'Too many characters tag $tagName\n maxSize: $maxLength\n currentLength: ${tmp.length}');
           }
+          tagSize = tmp.length;
           break;
         case TTKMessageType.ASCII_HEX:
           if (message is! String) throw Exception('Have to be String!');
@@ -38,6 +39,7 @@ class TTKServiceTagModel {
             throw Exception(
                 'Too many characters tag $tagName\n maxSize: $maxLength\n currentLength: ${tmp.length}');
           }
+          tagSize = tmp.length;
           break;
         case TTKMessageType.BIN:
           if (message is! Uint8List) throw Exception('Have to be Uint8List!');
@@ -45,6 +47,8 @@ class TTKServiceTagModel {
             throw Exception(
                 'Too many characters tag $tagName\n maxSize: $maxLength\n currentLength: ${(message as Uint8List).length}');
           }
+
+          tagSize = (message as Uint8List).length;
           break;
         case TTKMessageType.BCD:
           if (message is! int) throw Exception('Have to Integer');
@@ -53,6 +57,7 @@ class TTKServiceTagModel {
             throw Exception(
                 'Too many characters tag $tagName\n maxSize: $maxLength\n currentLength: ${tmp.length}');
           }
+          tagSize = tmp.length;
           break;
       }
     }
@@ -61,6 +66,7 @@ class TTKServiceTagModel {
   factory TTKServiceTagModel.fromBin({
     required TTKServiceTagsEnum tagName,
     required Uint8List binaryMessage,
+    required String tagStrName,
   }) {
     final dynamic message;
     final (_, tmpMessageType) =
@@ -85,11 +91,16 @@ class TTKServiceTagModel {
     return TTKServiceTagModel(
       message: message,
       tagName: tagName,
+      tagStrName: tagStrName,
+
     );
   }
 
   final TTKServiceTagsEnum tagName;
   late final int? maxLength;
+
+  //TODO: remove from reliase
+  final String tagStrName;
 
   late final TTKMessageType messageType;
   final dynamic message;

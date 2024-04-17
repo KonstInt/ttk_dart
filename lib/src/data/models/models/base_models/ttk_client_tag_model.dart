@@ -7,7 +7,10 @@ import 'package:ttk_payment_terminal/src/data/models/enums/tags/ttk_client_tags/
 import 'package:ttk_payment_terminal/src/data/ttk_message_types/ttk_message_types.dart';
 
 class TTKClientTagModel {
-  TTKClientTagModel({required this.message, required this.tagName}) {
+  TTKClientTagModel(
+      {required this.message,
+      required this.tagName,
+      }) {
     final (tmpMaxLength, tmpMessageType) =
         TagAdditionalInformationGetter.getAdditionalInfoOfClientTags(tagName);
     maxLength = tmpMaxLength;
@@ -20,6 +23,7 @@ class TTKClientTagModel {
           if (tmp.length > maxLength!) {
             throw Exception('Too many characters');
           }
+          tagSize = tmp.length;
           break;
         case TTKMessageType.ASCII_BCD:
           if (message is! String) throw Exception('Have to be String!');
@@ -27,6 +31,7 @@ class TTKClientTagModel {
           if (tmp.length > maxLength!) {
             throw Exception('Too many characters');
           }
+          tagSize = tmp.length;
           break;
         case TTKMessageType.ASCII_HEX:
           if (message is! String) throw Exception('Have to be String!');
@@ -34,12 +39,14 @@ class TTKClientTagModel {
           if (tmp.length > maxLength!) {
             throw Exception('Too many characters');
           }
+          tagSize = tmp.length;
           break;
         case TTKMessageType.BIN:
           if (message is! Uint8List) throw Exception('Have to be Uint8List!');
           if ((message as Uint8List).length > maxLength!) {
             throw Exception('Too many characters');
           }
+          tagSize = (message as Uint8List).length;
           break;
         case TTKMessageType.BCD:
           if (message is! int) throw Exception('Have to Integer');
@@ -47,12 +54,14 @@ class TTKClientTagModel {
           if (tmp.length > maxLength!) {
             throw Exception('Too many characters');
           }
+          tagSize = tmp.length;
           break;
       }
     }
   }
 
   final TTKClientTagsEnum tagName;
+
   late final int? maxLength;
 
   late final TTKMessageType messageType;

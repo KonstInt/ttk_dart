@@ -188,6 +188,12 @@ class TagAdditionalInformationGetter {
         _messageType = TTKMessageType.ASCII;
         _maxLength = null;
         break;
+      case TTKServiceTagsEnum.T5F05:
+        _messageType = TTKMessageType.ASCII;
+        _maxLength = 8;
+      case TTKServiceTagsEnum.T9C:
+        _messageType = TTKMessageType.ASCII;
+        _maxLength = null;
     }
 
     return (_maxLength, _messageType);

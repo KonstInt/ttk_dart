@@ -44,12 +44,12 @@ class BerTlvEncoderDecoder {
         }
 
         while (length > 0) {
-          final (TTKServiceTagsEnum tagType, int tmpTagSize) =
+          final (TTKServiceTagsEnum tagType, String tagStrName, int tmpTagSize) =
               _getServiceTag(iterator);
           final (int tagSize, int tmpSizeSize) = _getLengthOfTagData(iterator);
           final Uint8List tagData = _getDataWithSize(iterator, tagSize);
           messageTags.add(TTKServiceTagModel.fromBin(
-              tagName: tagType, binaryMessage: tagData));
+              tagName: tagType, tagStrName: tagStrName, binaryMessage: tagData));
           length -= tmpSizeSize + tmpTagSize + tagSize;
         }
         return (messageTags, returnLength);
@@ -61,7 +61,7 @@ class BerTlvEncoderDecoder {
     return (messageTags, returnLength);
   }
 
-  static (TTKServiceTagsEnum, int) _getServiceTag(Iterator<int> iterator) {
+  static (TTKServiceTagsEnum, String, int) _getServiceTag(Iterator<int> iterator) {
     bool hasNextTag = false;
     final tagStringBuffer = StringBuffer('T');
     int tagSize = 0;
@@ -72,7 +72,8 @@ class BerTlvEncoderDecoder {
           isBitSet(tmpTag, 2) &&
           isBitSet(tmpTag, 3) &&
           isBitSet(tmpTag, 4);
-      tagStringBuffer.write(HexConverter.decimalToHex(tmpTag));
+      final hexStrTag = HexConverter.decimalToHex(tmpTag);
+      tagStringBuffer.write(hexStrTag.length > 1 ? hexStrTag : '0$hexStrTag');
       tagSize++;
       iterator.moveNext();
     } while (hasNextTag);
@@ -85,6 +86,7 @@ class BerTlvEncoderDecoder {
           return TTKServiceTagsEnum.TUnknown;
         },
       ),
+      str,
       tagSize
     );
   }
