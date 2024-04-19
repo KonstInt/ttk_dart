@@ -6,8 +6,8 @@ import 'package:ttk_payment_terminal/src/data/helpers/ascii_converter.dart';
 import 'package:ttk_payment_terminal/src/data/helpers/bcd_converter.dart';
 import 'package:ttk_payment_terminal/src/data/helpers/hex_converter.dart';
 import 'package:ttk_payment_terminal/src/data/logger/logger.dart';
-import 'package:ttk_payment_terminal/src/data/models/enums/tags/ttk_client_tags/ttk_client_tags_enum.dart';
-import 'package:ttk_payment_terminal/src/data/models/models/base_models/ttk_client_tag_model.dart';
+import 'package:ttk_payment_terminal/src/data/models/ttk/base_models/api_ttk_client_tag_model.dart';
+import 'package:ttk_payment_terminal/src/data/models/ttk/tags/ttk_client_tags/ttk_client_tags_enum.dart';
 import 'package:ttk_payment_terminal/src/data/ttk_message_types/ttk_message_types.dart';
 
 class BerTlvEncoderEncoder {
@@ -23,7 +23,7 @@ class BerTlvEncoderEncoder {
     return result;
   }
 
-  static Uint8List? encoderClient(List<TTKClientTagModel> clientList) {
+  static Uint8List? encoderClient(List<ApiTTKClientTagModel> clientList) {
     try {
       final List<int> result = [0, 0, 0, 0];
       int length = 4;

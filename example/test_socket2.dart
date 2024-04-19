@@ -5,10 +5,10 @@ import 'package:logger/logger.dart';
 import 'package:ttk_payment_terminal/src/data/helpers/tlv_decoder.dart';
 import 'package:ttk_payment_terminal/src/data/helpers/tlv_encoder.dart';
 import 'package:ttk_payment_terminal/src/data/logger/logger.dart';
-import 'package:ttk_payment_terminal/src/data/models/enums/tags/ttk_client_tags/ttk_client_tags_enum.dart';
-import 'package:ttk_payment_terminal/src/data/models/enums/tags/ttk_service_tags/ttk_service_tags_enum.dart';
-import 'package:ttk_payment_terminal/src/data/models/models/base_models/ttk_client_tag_model.dart';
-import 'package:ttk_payment_terminal/src/data/models/models/base_models/ttk_service_tag_model.dart';
+import 'package:ttk_payment_terminal/src/data/models/ttk/base_models/api_ttk_client_tag_model.dart';
+import 'package:ttk_payment_terminal/src/data/models/ttk/base_models/api_ttk_service_tag_model.dart';
+import 'package:ttk_payment_terminal/src/data/models/ttk/tags/ttk_client_tags/ttk_client_tags_enum.dart';
+import 'package:ttk_payment_terminal/src/data/models/ttk/tags/ttk_service_tags/ttk_service_tags_enum.dart';
 
 late Socket socket;
 
@@ -33,14 +33,13 @@ Future<void> test() async {
     socket.listen(dataHandler,
         onError: errorHandler, onDone: doneHandler, cancelOnError: false);
 
-    final List<TTKClientTagModel> client = [
-      TTKClientTagModel(message: 'PUR', tagName: TTKClientTagsEnum.T01),
-      TTKClientTagModel(message: '5', tagName: TTKClientTagsEnum.T02),
-      TTKClientTagModel(message: '66558906', tagName: TTKClientTagsEnum.T03),
-      TTKClientTagModel(message: '150', tagName: TTKClientTagsEnum.T04),
-      // TTKClientTagModel(message: '10000000', tagName: TTKClientTagsEnum.T01),
-      TTKClientTagModel(
-          message: Uint8List.fromList([128]), tagName: TTKClientTagsEnum.T08)
+    final List<ApiTTKClientTagModel> client = [
+      ApiTTKClientTagModel(message: 'REF', tagName: TTKClientTagsEnum.T01),
+      ApiTTKClientTagModel(message: '5', tagName: TTKClientTagsEnum.T02),
+      ApiTTKClientTagModel(message: '66558906', tagName: TTKClientTagsEnum.T03),
+      ApiTTKClientTagModel(message: '150', tagName: TTKClientTagsEnum.T04),
+      // TTKClientTagModel(
+      //     message: Uint8List.fromList([128]), tagName: TTKClientTagsEnum.T08)
 
       // Сверка итогов
       // TTKClientTagModel(message: 'SRV', tagName: TTKClientTagsEnum.T01),
@@ -54,6 +53,7 @@ Future<void> test() async {
     ];
     final bytes = BerTlvEncoderEncoder.encoderClient(client);
     logger.t(bytes);
+
     //socket.write(sendModue);
     socket.add(bytes ?? []);
 
@@ -70,27 +70,33 @@ void dataHandler(Uint8List data) {
   var ddd = data;
   //final s = data.toString();
   writeToFile(data);
-  var d_length = data.length;
-  List<List<TTKServiceTagModel>>? tags = [];
-  while (d_length != 0) {
+  var dLength = data.length;
+  final List<List<ApiTTKServiceTagModel>> tags = [];
+  while (dLength != 0) {
     final (tmp, length) = BerTlvEncoderDecoder.decoderService(ddd);
-    tmp ?? tags.add(tmp!);
-    d_length -= length+2;
-    if(d_length >= 0) {
-      ddd =  ddd.sublist(length+2);
+    if (tmp != null) tags.add(tmp);
+    dLength -= length + 2;
+    if (dLength >= 0) {
+      ddd = ddd.sublist(length + 2);
     }
 
     logger.log(Level.debug, tmp);
-    
   }
   // final File file = File('test_sverka_itogov.txt');
   // // write to file
   // file.writeAsStringSync(tmp!.last.message.toString());
   //logger.i(data);\
 
+  //tags.indexWhere((element) => element.tagName == TTKServiceTagsEnum.TA1);
+  bool hasAFlag = false;
+  for (final tmp in tags) {
+    if (tmp.indexWhere(
+            (element) => element.tagName == TTKServiceTagsEnum.TA1) !=
+        -1) {
+      hasAFlag = true;
+    }
+  }
 
-  tags.indexWhere((element) => element.tagName == TTKServiceTagsEnum.TA1);
-  
   logger.i(tags);
 }
 

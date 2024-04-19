@@ -1,5 +1,5 @@
-import 'package:ttk_payment_terminal/src/data/models/enums/tags/ttk_client_tags/ttk_client_tags_enum.dart';
-import 'package:ttk_payment_terminal/src/data/models/enums/tags/ttk_service_tags/ttk_service_tags_enum.dart';
+import 'package:ttk_payment_terminal/src/data/models/ttk/tags/ttk_client_tags/ttk_client_tags_enum.dart';
+import 'package:ttk_payment_terminal/src/data/models/ttk/tags/ttk_service_tags/ttk_service_tags_enum.dart';
 import 'package:ttk_payment_terminal/src/data/ttk_message_types/ttk_message_types.dart';
 
 class TagAdditionalInformationGetter {

@@ -1,0 +1,3 @@
+class ApiTTKResultModel {
+  var result;
+}

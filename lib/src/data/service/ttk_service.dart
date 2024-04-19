@@ -4,8 +4,8 @@ import 'dart:typed_data';
 
 import 'package:ttk_payment_terminal/src/data/helpers/tlv_decoder.dart';
 import 'package:ttk_payment_terminal/src/data/helpers/tlv_encoder.dart';
-import 'package:ttk_payment_terminal/src/data/models/models/base_models/ttk_client_tag_model.dart';
-import 'package:ttk_payment_terminal/src/data/models/models/base_models/ttk_service_tag_model.dart';
+import 'package:ttk_payment_terminal/src/data/models/ttk/base_models/api_ttk_client_tag_model.dart';
+import 'package:ttk_payment_terminal/src/data/models/ttk/base_models/api_ttk_service_tag_model.dart';
 
 class TTKService {
   TTKService({required this.ip, required this.port});
@@ -52,10 +52,10 @@ class TTKService {
     }
   }
 
-  Future<List<TTKServiceTagModel>> createPayment(
-      List<TTKClientTagModel> tagList) async {
-    final Completer<List<TTKServiceTagModel>> c =
-        Completer<List<TTKServiceTagModel>>();
+  Future<List<ApiTTKServiceTagModel>> createPayment(
+      List<ApiTTKClientTagModel> tagList) async {
+    final Completer<List<ApiTTKServiceTagModel>> c =
+        Completer<List<ApiTTKServiceTagModel>>();
     ttkSocket.add(BerTlvEncoderEncoder.encoderClient(tagList) ?? []);
     _ttkApiStreamSubscription.onData((data) {
       final (decodedData, _) = BerTlvEncoderDecoder.decoderService(data);

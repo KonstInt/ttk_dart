@@ -5,8 +5,8 @@ import 'dart:typed_data';
 
 import 'package:ttk_payment_terminal/src/data/helpers/hex_converter.dart';
 import 'package:ttk_payment_terminal/src/data/logger/logger.dart';
-import 'package:ttk_payment_terminal/src/data/models/enums/tags/ttk_service_tags/ttk_service_tags_enum.dart';
-import 'package:ttk_payment_terminal/src/data/models/models/base_models/ttk_service_tag_model.dart';
+import 'package:ttk_payment_terminal/src/data/models/ttk/base_models/api_ttk_service_tag_model.dart';
+import 'package:ttk_payment_terminal/src/data/models/ttk/tags/ttk_service_tags/ttk_service_tags_enum.dart';
 
 class BerTlvEncoderDecoder {
 ////Проверка бита
@@ -23,8 +23,9 @@ class BerTlvEncoderDecoder {
     return result;
   }
 
-  static (List<TTKServiceTagModel>?, int) decoderService(Uint8List dataList) {
-    final List<TTKServiceTagModel> messageTags = [];
+  static (List<ApiTTKServiceTagModel>?, int) decoderService(
+      Uint8List dataList) {
+    final List<ApiTTKServiceTagModel> messageTags = [];
     int returnLength = 0;
     try {
       final iterator = dataList.iterator;
@@ -44,12 +45,17 @@ class BerTlvEncoderDecoder {
         }
 
         while (length > 0) {
-          final (TTKServiceTagsEnum tagType, String tagStrName, int tmpTagSize) =
-              _getServiceTag(iterator);
+          final (
+            TTKServiceTagsEnum tagType,
+            String tagStrName,
+            int tmpTagSize
+          ) = _getServiceTag(iterator);
           final (int tagSize, int tmpSizeSize) = _getLengthOfTagData(iterator);
           final Uint8List tagData = _getDataWithSize(iterator, tagSize);
-          messageTags.add(TTKServiceTagModel.fromBin(
-              tagName: tagType, tagStrName: tagStrName, binaryMessage: tagData));
+          messageTags.add(ApiTTKServiceTagModel.fromBin(
+              tagName: tagType,
+              tagStrName: tagStrName,
+              binaryMessage: tagData));
           length -= tmpSizeSize + tmpTagSize + tagSize;
         }
         return (messageTags, returnLength);
@@ -61,7 +67,8 @@ class BerTlvEncoderDecoder {
     return (messageTags, returnLength);
   }
 
-  static (TTKServiceTagsEnum, String, int) _getServiceTag(Iterator<int> iterator) {
+  static (TTKServiceTagsEnum, String, int) _getServiceTag(
+      Iterator<int> iterator) {
     bool hasNextTag = false;
     final tagStringBuffer = StringBuffer('T');
     int tagSize = 0;
@@ -109,8 +116,6 @@ class BerTlvEncoderDecoder {
         iterator.moveNext();
         lengthSize++;
       }
-      lengthSize--;
-      iterator.moveNext();
       return (multiPartDataSize, lengthSize);
     }
   }

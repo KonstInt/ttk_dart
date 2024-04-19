@@ -1,6 +1,5 @@
-import 'package:ttk_payment_terminal/src/domain/models/payment_model.dart';
+import 'package:ttk_payment_terminal/src/data/models/operations/api_payment_model.dart';
 
 abstract class TTKPaymentRepository {
-  Stream<PaymentModel> sendPaymentRequestToToTerminal(PaymentModel sendModel);
-  //Stream<
+  Stream<ApiPaymentModel> sendPaymentRequestToToTerminal(ApiPaymentModel sendModel);
 }
