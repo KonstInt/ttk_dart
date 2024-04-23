@@ -17,16 +17,6 @@ class TagListAnalyzer {
     return false;
   }
 
-  int? operationResultCode(List<ApiTTKServiceTagModel> tags) {
-    final index =
-        tags.indexWhere((element) => element.tagName == TTKServiceTagsEnum.T9B);
-    if (index > 0) {
-      return tags[index].message as int;
-    }
-
-    return null;
-  }
-
   bool hasOperationResultCode(List<ApiTTKServiceTagModel> tags) {
     final index =
         tags.indexWhere((element) => element.tagName == TTKServiceTagsEnum.T9B);
@@ -51,9 +41,11 @@ class TagListAnalyzer {
       {required List<ApiTTKServiceTagModel> tags,
       required String ern,
       required ApiTTKOperationType type,
+      required String clientID,
       required String terminalID}) {
     bool ernFlag = false;
     bool typeFlag = false;
+    bool clientNumberFlag = false;
     bool terminalIdFlag = false;
     for (final tag in tags) {
       if (tag.tagName == TTKServiceTagsEnum.T83) {
@@ -62,10 +54,13 @@ class TagListAnalyzer {
       if (tag.tagName == TTKServiceTagsEnum.T81) {
         typeFlag = (type == tag.message as ApiTTKOperationType);
       }
+      if (tag.tagName == TTKServiceTagsEnum.T82) {
+        clientNumberFlag = (clientID == tag.message as String);
+      }
       if (tag.tagName == TTKServiceTagsEnum.T9D) {
         terminalIdFlag = (terminalID == tag.message as String);
       }
     }
-    return ernFlag && typeFlag && terminalIdFlag;
+    return ernFlag && typeFlag && terminalIdFlag && clientNumberFlag;
   }
 }

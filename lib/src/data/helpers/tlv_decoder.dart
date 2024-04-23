@@ -36,7 +36,6 @@ class BerTlvEncoderDecoder {
         iterator.moveNext();
         var length = _getLengthOfFile(iterator);
         returnLength = length;
-        //final tmpIrerator = iterator;
         final TTKType type = _getTypeFromServerTTKType(iterator);
         if (type == TTKType.TTK1) {
           //TODO: handle this case with remove to prev mean

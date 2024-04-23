@@ -4,9 +4,9 @@ import 'dart:convert';
 import 'package:ttk_payment_terminal/src/data/models/operations/api_request_model.dart';
 import 'package:ttk_payment_terminal/src/data/models/operations/enums/api_ttk_operations_types.dart';
 
-class ApiPaymentModel extends ApiRequestModel {
+class ApiRefundModel extends ApiRequestModel {
   final double amount;
-  ApiPaymentModel(
+  ApiRefundModel(
       {required this.amount,
       required String clientId,
       required String idempotenceKeyERN,
@@ -14,15 +14,15 @@ class ApiPaymentModel extends ApiRequestModel {
       : super(
             clientId: clientId,
             idempotenceKeyERN: idempotenceKeyERN,
-            operationType: ApiTTKOperationType.PUR);
+            operationType: ApiTTKOperationType.REF);
 
   @override
-  ApiPaymentModel copyWith(
+  ApiRefundModel copyWith(
       {double? amount,
       String? clientId,
       String? idempotenceKeyERN,
       ApiTTKOperationType? operationType}) {
-    return ApiPaymentModel(
+    return ApiRefundModel(
         amount: amount ?? this.amount,
         clientId: clientId ?? this.clientId,
         idempotenceKeyERN: idempotenceKeyERN ?? this.idempotenceKeyERN,
@@ -36,8 +36,8 @@ class ApiPaymentModel extends ApiRequestModel {
       });
   }
 
-  factory ApiPaymentModel.fromMap(Map<String, dynamic> map) {
-    return ApiPaymentModel(
+  factory ApiRefundModel.fromMap(Map<String, dynamic> map) {
+    return ApiRefundModel(
       amount: map['amount'] as double,
       clientId: map['clientId'] as String,
       idempotenceKeyERN: map['idempotenceKeyERN'] as String,
@@ -47,14 +47,14 @@ class ApiPaymentModel extends ApiRequestModel {
 
   String toJson() => json.encode(toMap());
 
-  factory ApiPaymentModel.fromJson(String source) =>
-      ApiPaymentModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory ApiRefundModel.fromJson(String source) =>
+      ApiRefundModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() => 'ApiPaymentModel(amount: $amount)';
 
   @override
-  bool operator ==(covariant ApiPaymentModel other) {
+  bool operator ==(covariant ApiRefundModel other) {
     if (identical(this, other)) return true;
 
     return other.clientId == clientId &&
