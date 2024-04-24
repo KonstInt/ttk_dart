@@ -2,13 +2,13 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:logger/logger.dart';
-import 'package:ttk_payment_terminal/src/data/helpers/tlv_decoder.dart';
-import 'package:ttk_payment_terminal/src/data/helpers/tlv_encoder.dart';
-import 'package:ttk_payment_terminal/src/data/logger/logger.dart';
+import 'package:ttk_payment_terminal/logger/logger.dart';
+import 'package:ttk_payment_terminal/src/data/helpers/encoders_decoders/tlv_decoder.dart';
+import 'package:ttk_payment_terminal/src/data/helpers/encoders_decoders/tlv_encoder.dart';
 import 'package:ttk_payment_terminal/src/data/models/ttk/base_models/api_ttk_client_tag_model.dart';
 import 'package:ttk_payment_terminal/src/data/models/ttk/base_models/api_ttk_service_tag_model.dart';
-import 'package:ttk_payment_terminal/src/data/models/ttk/tags/ttk_client_tags/ttk_client_tags_enum.dart';
-import 'package:ttk_payment_terminal/src/data/models/ttk/tags/ttk_service_tags/ttk_service_tags_enum.dart';
+import 'package:ttk_payment_terminal/src/data/models/ttk/enums/tags/ttk_client_tags/ttk_client_tags_enum.dart';
+import 'package:ttk_payment_terminal/src/data/models/ttk/enums/tags/ttk_service_tags/ttk_service_tags_enum.dart';
 
 late Socket socket;
 
@@ -71,7 +71,7 @@ void dataHandler(Uint8List data) {
   //final s = data.toString();
   writeToFile(data);
   var dLength = data.length;
-  final List<List<ApiTTKServiceTagModel>> tags = [];
+  final List<Map<TTKServiceTagsEnum, ApiTTKServiceTagModel>> tags = [];
   while (dLength != 0) {
     final (tmp, length) = BerTlvEncoderDecoder.decoderService(ddd);
     if (tmp != null) tags.add(tmp);
@@ -82,18 +82,13 @@ void dataHandler(Uint8List data) {
 
     logger.log(Level.debug, tmp);
   }
-  // final File file = File('test_sverka_itogov.txt');
-  // // write to file
-  // file.writeAsStringSync(tmp!.last.message.toString());
-  //logger.i(data);\
-
-  //tags.indexWhere((element) => element.tagName == TTKServiceTagsEnum.TA1);
   bool hasAFlag = false;
   for (final tmp in tags) {
-    if (tmp.indexWhere(
-            (element) => element.tagName == TTKServiceTagsEnum.TA1) !=
-        -1) {
-      hasAFlag = true;
+    if (tmp.containsKey(TTKServiceTagsEnum.TA1)) {
+      if (tmp[TTKServiceTagsEnum.TA1]!.message as String == 'Y') {
+        hasAFlag = true;
+      }
+      hasAFlag = false;
     }
   }
 
@@ -102,7 +97,6 @@ void dataHandler(Uint8List data) {
 
 Future<void> writeToFile(Uint8List data) async {
   final File file = File('test.txt');
-  // write to file
   file.writeAsStringSync(data.toList().toString());
 }
 

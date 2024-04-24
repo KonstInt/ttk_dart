@@ -1,17 +1,16 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-import 'package:ttk_payment_terminal/src/data/models/operations/api_request_model.dart';
-import 'package:ttk_payment_terminal/src/data/models/operations/enums/api_ttk_operations_types.dart';
+import 'package:ttk_payment_terminal/src/data/models/operations/enums/to_ttk/api_ttk_operations_types.dart';
+import 'package:ttk_payment_terminal/src/data/models/operations/to_ttk/api_request_model.dart';
 
 class ApiPaymentModel extends ApiRequestModel {
   final double amount;
-  ApiPaymentModel(
-      {required this.amount,
-      required String clientId,
-      required String idempotenceKeyERN,
-      })
-      : super(
+  ApiPaymentModel({
+    required this.amount,
+    required String clientId,
+    required String idempotenceKeyERN,
+  }) : super(
             clientId: clientId,
             idempotenceKeyERN: idempotenceKeyERN,
             operationType: ApiTTKOperationType.PUR);
@@ -23,12 +22,13 @@ class ApiPaymentModel extends ApiRequestModel {
       String? idempotenceKeyERN,
       ApiTTKOperationType? operationType}) {
     return ApiPaymentModel(
-        amount: amount ?? this.amount,
-        clientId: clientId ?? this.clientId,
-        idempotenceKeyERN: idempotenceKeyERN ?? this.idempotenceKeyERN,
-        );
+      amount: amount ?? this.amount,
+      clientId: clientId ?? this.clientId,
+      idempotenceKeyERN: idempotenceKeyERN ?? this.idempotenceKeyERN,
+    );
   }
 
+  @override
   Map<String, dynamic> toMap() {
     return super.toMap()
       ..addAll(<String, dynamic>{
@@ -41,17 +41,17 @@ class ApiPaymentModel extends ApiRequestModel {
       amount: map['amount'] as double,
       clientId: map['clientId'] as String,
       idempotenceKeyERN: map['idempotenceKeyERN'] as String,
-    
     );
   }
 
+  @override
   String toJson() => json.encode(toMap());
 
   factory ApiPaymentModel.fromJson(String source) =>
       ApiPaymentModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
-  String toString() => 'ApiPaymentModel(amount: $amount)';
+  String toString() => 'ApiPaymentModel(amount: $amount)${super}';
 
   @override
   bool operator ==(covariant ApiPaymentModel other) {
@@ -64,5 +64,5 @@ class ApiPaymentModel extends ApiRequestModel {
   }
 
   @override
-  int get hashCode => amount.hashCode^super.hashCode;
+  int get hashCode => amount.hashCode ^ super.hashCode;
 }

@@ -1,13 +1,13 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, avoid_equals_and_hash_code_on_mutable_classes
 import 'dart:convert';
 
-import 'package:ttk_payment_terminal/src/data/models/operations/enums/api_ttk_operations_types.dart';
+import 'package:ttk_payment_terminal/src/data/models/operations/enums/to_ttk/api_ttk_operations_types.dart';
 
 class ApiRequestModel {
   final String clientId;
   final String idempotenceKeyERN;
   final ApiTTKOperationType operationType;
-  
+
   ApiRequestModel({
     required this.clientId,
     required this.idempotenceKeyERN,
@@ -45,7 +45,8 @@ class ApiRequestModel {
 
   String toJson() => json.encode(toMap());
 
-  factory ApiRequestModel.fromJson(String source) => ApiRequestModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory ApiRequestModel.fromJson(String source) =>
+      ApiRequestModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
@@ -55,17 +56,16 @@ class ApiRequestModel {
   @override
   bool operator ==(covariant ApiRequestModel other) {
     if (identical(this, other)) return true;
-  
-    return 
-      other.clientId == clientId &&
-      other.idempotenceKeyERN == idempotenceKeyERN &&
-      other.operationType == operationType;
+
+    return other.clientId == clientId &&
+        other.idempotenceKeyERN == idempotenceKeyERN &&
+        other.operationType == operationType;
   }
 
   @override
   int get hashCode {
     return clientId.hashCode ^
-      idempotenceKeyERN.hashCode ^
-      operationType.hashCode;
+        idempotenceKeyERN.hashCode ^
+        operationType.hashCode;
   }
 }

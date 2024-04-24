@@ -2,13 +2,13 @@
 
 import 'dart:typed_data';
 
-import 'package:ttk_payment_terminal/src/data/helpers/ascii_converter.dart';
-import 'package:ttk_payment_terminal/src/data/helpers/bcd_converter.dart';
-import 'package:ttk_payment_terminal/src/data/helpers/hex_converter.dart';
-import 'package:ttk_payment_terminal/src/data/logger/logger.dart';
+import 'package:ttk_payment_terminal/logger/logger.dart';
+import 'package:ttk_payment_terminal/src/data/helpers/converters/ascii_converter.dart';
+import 'package:ttk_payment_terminal/src/data/helpers/converters/bcd_converter.dart';
+import 'package:ttk_payment_terminal/src/data/helpers/converters/hex_converter.dart';
 import 'package:ttk_payment_terminal/src/data/models/ttk/base_models/api_ttk_client_tag_model.dart';
-import 'package:ttk_payment_terminal/src/data/models/ttk/tags/ttk_client_tags/ttk_client_tags_enum.dart';
-import 'package:ttk_payment_terminal/src/data/ttk_message_types/ttk_message_types.dart';
+import 'package:ttk_payment_terminal/src/data/models/ttk/enums/tags/ttk_client_tags/ttk_client_tags_enum.dart';
+import 'package:ttk_payment_terminal/src/data/models/ttk/enums/ttk_message_types.dart';
 
 class BerTlvEncoderEncoder {
 ////Проверка бита

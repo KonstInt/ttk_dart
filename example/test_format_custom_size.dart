@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:ttk_payment_terminal/src/data/logger/logger.dart';
+import 'package:ttk_payment_terminal/logger/logger.dart';
 
 void main() {
   final List<int> fsa = [130, 4, 48];

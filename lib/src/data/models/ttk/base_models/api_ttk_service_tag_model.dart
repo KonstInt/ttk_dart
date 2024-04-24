@@ -1,20 +1,19 @@
 import 'dart:typed_data';
 
-import 'package:ttk_payment_terminal/src/data/helpers/ascii_converter.dart';
-import 'package:ttk_payment_terminal/src/data/helpers/bcd_converter.dart';
-import 'package:ttk_payment_terminal/src/data/helpers/tag_additional_information_getter.dart';
-import 'package:ttk_payment_terminal/src/data/models/ttk/tags/ttk_service_tags/ttk_service_tags_enum.dart';
-import 'package:ttk_payment_terminal/src/data/ttk_message_types/ttk_message_types.dart';
+import 'package:ttk_payment_terminal/src/data/helpers/converters/ascii_converter.dart';
+import 'package:ttk_payment_terminal/src/data/helpers/converters/bcd_converter.dart';
+import 'package:ttk_payment_terminal/src/data/models/ttk/enums/tags/ttk_service_tags/ttk_service_tags_enum.dart';
+import 'package:ttk_payment_terminal/src/data/models/ttk/enums/ttk_message_types.dart';
 
 class ApiTTKServiceTagModel {
   ApiTTKServiceTagModel(
       {required this.message,
       required this.tagName,
       required this.tagStrName}) {
-    final (tmpMaxLength, tmpMessageType) =
-        TagAdditionalInformationGetter.getAdditionalInfoOfServiceTags(tagName);
-    maxLength = tmpMaxLength;
-    messageType = tmpMessageType;
+    // final (tmpMaxLength, tmpMessageType) =
+    //     TagAdditionalInformationGetter.getAdditionalInfoOfServiceTags(tagName);
+    maxLength = tagName.maxLength;
+    messageType = tagName.messageType;
     if (maxLength != null) {
       switch (messageType) {
         case TTKMessageType.ASCII:
@@ -75,9 +74,9 @@ class ApiTTKServiceTagModel {
     required String tagStrName,
   }) {
     final dynamic message;
-    final (_, tmpMessageType) =
-        TagAdditionalInformationGetter.getAdditionalInfoOfServiceTags(tagName);
-    switch (tmpMessageType) {
+    // final (_, tmpMessageType) =
+    //     TagAdditionalInformationGetter.getAdditionalInfoOfServiceTags(tagName);
+    switch (tagName.messageType) {
       case TTKMessageType.ASCII:
         message = AsciiConverter.asciiArrayToString(binaryMessage);
         break;

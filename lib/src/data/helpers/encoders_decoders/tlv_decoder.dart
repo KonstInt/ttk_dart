@@ -3,10 +3,10 @@
 import 'dart:math';
 import 'dart:typed_data';
 
-import 'package:ttk_payment_terminal/src/data/helpers/hex_converter.dart';
-import 'package:ttk_payment_terminal/src/data/logger/logger.dart';
+import 'package:ttk_payment_terminal/logger/logger.dart';
+import 'package:ttk_payment_terminal/src/data/helpers/converters/hex_converter.dart';
 import 'package:ttk_payment_terminal/src/data/models/ttk/base_models/api_ttk_service_tag_model.dart';
-import 'package:ttk_payment_terminal/src/data/models/ttk/tags/ttk_service_tags/ttk_service_tags_enum.dart';
+import 'package:ttk_payment_terminal/src/data/models/ttk/enums/tags/ttk_service_tags/ttk_service_tags_enum.dart';
 
 class BerTlvEncoderDecoder {
 ////Проверка бита
@@ -23,9 +23,9 @@ class BerTlvEncoderDecoder {
     return result;
   }
 
-  static (List<ApiTTKServiceTagModel>?, int) decoderService(
+  static (Map<TTKServiceTagsEnum, ApiTTKServiceTagModel>?, int) decoderService(
       Uint8List dataList) {
-    final List<ApiTTKServiceTagModel> messageTags = [];
+    final Map<TTKServiceTagsEnum, ApiTTKServiceTagModel> messageTags = {};
     int returnLength = 0;
     try {
       final iterator = dataList.iterator;
@@ -51,10 +51,8 @@ class BerTlvEncoderDecoder {
           ) = _getServiceTag(iterator);
           final (int tagSize, int tmpSizeSize) = _getLengthOfTagData(iterator);
           final Uint8List tagData = _getDataWithSize(iterator, tagSize);
-          messageTags.add(ApiTTKServiceTagModel.fromBin(
-              tagName: tagType,
-              tagStrName: tagStrName,
-              binaryMessage: tagData));
+          messageTags[tagType] = ApiTTKServiceTagModel.fromBin(
+              tagName: tagType, tagStrName: tagStrName, binaryMessage: tagData);
           length -= tmpSizeSize + tmpTagSize + tagSize;
         }
         return (messageTags, returnLength);

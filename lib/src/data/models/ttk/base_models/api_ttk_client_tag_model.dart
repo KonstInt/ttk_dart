@@ -1,20 +1,19 @@
 import 'dart:typed_data';
 
-import 'package:ttk_payment_terminal/src/data/helpers/ascii_converter.dart';
-import 'package:ttk_payment_terminal/src/data/helpers/bcd_converter.dart';
-import 'package:ttk_payment_terminal/src/data/helpers/tag_additional_information_getter.dart';
-import 'package:ttk_payment_terminal/src/data/models/ttk/tags/ttk_client_tags/ttk_client_tags_enum.dart';
-import 'package:ttk_payment_terminal/src/data/ttk_message_types/ttk_message_types.dart';
+import 'package:ttk_payment_terminal/src/data/helpers/converters/ascii_converter.dart';
+import 'package:ttk_payment_terminal/src/data/helpers/converters/bcd_converter.dart';
+import 'package:ttk_payment_terminal/src/data/models/ttk/enums/tags/ttk_client_tags/ttk_client_tags_enum.dart';
+import 'package:ttk_payment_terminal/src/data/models/ttk/enums/ttk_message_types.dart';
 
 class ApiTTKClientTagModel {
   ApiTTKClientTagModel({
     required this.message,
     required this.tagName,
   }) {
-    final (tmpMaxLength, tmpMessageType) =
-        TagAdditionalInformationGetter.getAdditionalInfoOfClientTags(tagName);
-    maxLength = tmpMaxLength;
-    messageType = tmpMessageType;
+    // final (tmpMaxLength, tmpMessageType) =
+    //     TagAdditionalInformationGetter.getAdditionalInfoOfClientTags(tagName);
+    maxLength = tagName.maxLength;
+    messageType = tagName.messageType;
     if (maxLength != null) {
       switch (messageType) {
         case TTKMessageType.ASCII:
