@@ -9,7 +9,10 @@ class ApiResultPaymentModel extends ApiResultModel {
     required super.idempotenceKeyERN,
     required super.operationType,
     required super.success,
+    required super.date,
+    required super.time,
     required this.amount,
+    required this.retrievalReferenceNumber,
     super.receipt,
   });
 
@@ -21,7 +24,10 @@ class ApiResultPaymentModel extends ApiResultModel {
       operationType: ApiTTKOperationType.values.firstWhere(
           (element) => element.name == map['operationType'] as String),
       success: map['success'] as bool,
+      retrievalReferenceNumber: map['rrn'] as String,
       receipt: map['receipt'] != null ? map['receipt'] as String : null,
+      date: map['date'] as String,
+      time: map['time'] as String,
     );
   }
 
@@ -30,6 +36,7 @@ class ApiResultPaymentModel extends ApiResultModel {
           json.decode(source) as Map<String, dynamic>);
 
   final double amount;
+  final String retrievalReferenceNumber;
 
   @override
   ApiResultPaymentModel copyWith({
@@ -39,6 +46,9 @@ class ApiResultPaymentModel extends ApiResultModel {
     ApiTTKOperationType? operationType,
     bool? success,
     String? receipt,
+    String? retrievalReferenceNumber,
+    String? date,
+    String? time,
   }) {
     return ApiResultPaymentModel(
       amount: amount ?? this.amount,
@@ -47,18 +57,18 @@ class ApiResultPaymentModel extends ApiResultModel {
       operationType: operationType ?? this.operationType,
       success: success ?? this.success,
       receipt: receipt ?? this.receipt,
+      retrievalReferenceNumber:
+          retrievalReferenceNumber ?? this.retrievalReferenceNumber,
+      date: date ?? this.date,
+      time: time ?? this.time,
     );
   }
 
   @override
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'clientId': clientId,
-      'idempotenceKeyERN': idempotenceKeyERN,
-      'operationType': operationType.name,
-      'success': success,
-      'receipt': receipt,
-    };
+    return super.toMap()
+      ..addAll(
+          <String, dynamic>{'rrn': retrievalReferenceNumber, 'amount': amount});
   }
 
   @override
@@ -66,28 +76,20 @@ class ApiResultPaymentModel extends ApiResultModel {
 
   @override
   String toString() {
-    return 'ApiResultPaymentModel(amount: $amount, clientId: $clientId, idempotenceKeyERN: $idempotenceKeyERN, operationType: $operationType, success: $success, receipt: $receipt)';
+    return 'ApiResultPaymentModel(rrn: $retrievalReferenceNumber, amount: $amount)${super}';
   }
 
   @override
   bool operator ==(covariant ApiResultPaymentModel other) {
     if (identical(this, other)) return true;
 
-    return other.clientId == clientId &&
-        other.idempotenceKeyERN == idempotenceKeyERN &&
-        other.operationType == operationType &&
-        other.success == success &&
-        other.receipt == receipt &&
-        other.amount == amount;
+    return other.amount == amount &&
+        other.retrievalReferenceNumber == retrievalReferenceNumber &&
+        super == other;
   }
 
   @override
   int get hashCode {
-    return clientId.hashCode ^
-        idempotenceKeyERN.hashCode ^
-        operationType.hashCode ^
-        success.hashCode ^
-        receipt.hashCode ^
-        amount.hashCode;
+    return super.hashCode ^ amount.hashCode ^ retrievalReferenceNumber.hashCode;
   }
 }

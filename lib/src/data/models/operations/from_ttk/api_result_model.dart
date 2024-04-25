@@ -9,27 +9,34 @@ class ApiResultModel {
   final ApiTTKOperationType operationType;
   final bool success;
   final String? receipt;
+  final String date;
+  final String time;
   ApiResultModel({
     required this.clientId,
     required this.idempotenceKeyERN,
     required this.operationType,
     required this.success,
+    required this.date,
+    required this.time,
     this.receipt,
   });
 
-  ApiResultModel copyWith({
-    String? clientId,
-    String? idempotenceKeyERN,
-    ApiTTKOperationType? operationType,
-    bool? success,
-    String? receipt,
-  }) {
+  ApiResultModel copyWith(
+      {String? clientId,
+      String? idempotenceKeyERN,
+      ApiTTKOperationType? operationType,
+      bool? success,
+      String? receipt,
+      String? date,
+      String? time}) {
     return ApiResultModel(
       clientId: clientId ?? this.clientId,
       idempotenceKeyERN: idempotenceKeyERN ?? this.idempotenceKeyERN,
       operationType: operationType ?? this.operationType,
       success: success ?? this.success,
       receipt: receipt ?? this.receipt,
+      date: date ?? this.date,
+      time: time ?? this.time,
     );
   }
 
@@ -51,6 +58,8 @@ class ApiResultModel {
           (element) => element.name == map['operationType'] as String),
       success: map['success'] as bool,
       receipt: map['receipt'] != null ? map['receipt'] as String : null,
+      date: map['date'] as String,
+      time: map['time'] as String,
     );
   }
 

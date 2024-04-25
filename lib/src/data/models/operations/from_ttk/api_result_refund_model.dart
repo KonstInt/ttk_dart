@@ -9,6 +9,8 @@ class ApiResultRefundModel extends ApiResultModel {
     required super.idempotenceKeyERN,
     required super.operationType,
     required super.success,
+    required super.date,
+    required super.time,
     required this.amount,
     super.receipt,
   });
@@ -22,6 +24,8 @@ class ApiResultRefundModel extends ApiResultModel {
           (element) => element.name == map['operationType'] as String),
       success: map['success'] as bool,
       receipt: map['receipt'] != null ? map['receipt'] as String : null,
+      date: map['date'] as String,
+      time: map['time'] as String,
     );
   }
 
@@ -38,6 +42,8 @@ class ApiResultRefundModel extends ApiResultModel {
     ApiTTKOperationType? operationType,
     bool? success,
     String? receipt,
+    String? date,
+    String? time,
   }) {
     return ApiResultRefundModel(
       amount: amount ?? this.amount,
@@ -46,18 +52,17 @@ class ApiResultRefundModel extends ApiResultModel {
       operationType: operationType ?? this.operationType,
       success: success ?? this.success,
       receipt: receipt ?? this.receipt,
+      date: date ?? this.date,
+      time: time ?? this.time,
     );
   }
 
   @override
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'clientId': clientId,
-      'idempotenceKeyERN': idempotenceKeyERN,
-      'operationType': operationType.name,
-      'success': success,
-      'receipt': receipt,
-    };
+    return super.toMap()
+      ..addAll(<String, dynamic>{
+        'amount': amount,
+      });
   }
 
   @override
@@ -65,28 +70,18 @@ class ApiResultRefundModel extends ApiResultModel {
 
   @override
   String toString() {
-    return 'ApiResultPaymentModel(amount: $amount, clientId: $clientId, idempotenceKeyERN: $idempotenceKeyERN, operationType: $operationType, success: $success, receipt: $receipt)';
+    return 'ApiResultPaymentModel(amount: $amount)${super}';
   }
 
   @override
   bool operator ==(covariant ApiResultRefundModel other) {
     if (identical(this, other)) return true;
 
-    return other.clientId == clientId &&
-        other.idempotenceKeyERN == idempotenceKeyERN &&
-        other.operationType == operationType &&
-        other.success == success &&
-        other.receipt == receipt &&
-        other.amount == amount;
+    return super == other && other.amount == amount;
   }
 
   @override
   int get hashCode {
-    return clientId.hashCode ^
-        idempotenceKeyERN.hashCode ^
-        operationType.hashCode ^
-        success.hashCode ^
-        receipt.hashCode ^
-        amount.hashCode;
+    return super.hashCode ^ amount.hashCode;
   }
 }

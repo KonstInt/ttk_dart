@@ -34,7 +34,7 @@ Future<void> test() async {
         onError: errorHandler, onDone: doneHandler, cancelOnError: false);
 
     final List<ApiTTKClientTagModel> client = [
-      ApiTTKClientTagModel(message: 'REF', tagName: TTKClientTagsEnum.T01),
+      ApiTTKClientTagModel(message: 'PUR', tagName: TTKClientTagsEnum.T01),
       ApiTTKClientTagModel(message: '5', tagName: TTKClientTagsEnum.T02),
       ApiTTKClientTagModel(message: '66558906', tagName: TTKClientTagsEnum.T03),
       ApiTTKClientTagModel(message: '150', tagName: TTKClientTagsEnum.T04),
@@ -42,11 +42,11 @@ Future<void> test() async {
       //     message: Uint8List.fromList([128]), tagName: TTKClientTagsEnum.T08)
 
       // Сверка итогов
-      // TTKClientTagModel(message: 'SRV', tagName: TTKClientTagsEnum.T01),
-      // TTKClientTagModel(message: '9', tagName: TTKClientTagsEnum.T02),
-      // TTKClientTagModel(message: '66558909', tagName: TTKClientTagsEnum.T03),
+      // ApiTTKClientTagModel(message: 'SRV', tagName: TTKClientTagsEnum.T01),
+      // ApiTTKClientTagModel(message: '9', tagName: TTKClientTagsEnum.T02),
+      // ApiTTKClientTagModel(message: '66558909', tagName: TTKClientTagsEnum.T03),
       // // TTKClientTagModel(message: '10000000', tagName: TTKClientTagsEnum.T04),
-      // TTKClientTagModel(message: '2', tagName: TTKClientTagsEnum.T1A),
+      // ApiTTKClientTagModel(message: '2', tagName: TTKClientTagsEnum.T1A),
       // //  TTKClientTagModel(message: '2С01000101 ', tagName: TTKClientTagsEnum.T1D),
       // // TTKClientTagModel(
       // //     message: Uint8List.fromList([128]), tagName: TTKClientTagsEnum.T08)

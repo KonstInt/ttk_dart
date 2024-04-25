@@ -12,6 +12,8 @@ class ApiResultServiceModel extends ApiResultModel {
     required super.idempotenceKeyERN,
     required super.operationType,
     required super.success,
+    required super.date,
+    required super.time,
     required this.serviceType,
     super.receipt,
   });
@@ -24,15 +26,18 @@ class ApiResultServiceModel extends ApiResultModel {
     ApiTTKOperationType? operationType,
     bool? success,
     String? receipt,
+    String? date,
+    String? time,
   }) {
     return ApiResultServiceModel(
-      serviceType: serviceType ?? this.serviceType,
-      clientId: clientId ?? this.clientId,
-      idempotenceKeyERN: idempotenceKeyERN ?? this.idempotenceKeyERN,
-      operationType: operationType ?? this.operationType,
-      success: success ?? this.success,
-      receipt: receipt ?? this.receipt,
-    );
+        serviceType: serviceType ?? this.serviceType,
+        clientId: clientId ?? this.clientId,
+        idempotenceKeyERN: idempotenceKeyERN ?? this.idempotenceKeyERN,
+        operationType: operationType ?? this.operationType,
+        success: success ?? this.success,
+        receipt: receipt ?? this.receipt,
+        date: date ?? this.date,
+        time: time ?? this.time);
   }
 
   @override
@@ -53,6 +58,8 @@ class ApiResultServiceModel extends ApiResultModel {
           (element) => element.name == map['operationType'] as String),
       success: map['success'] as bool,
       receipt: map['receipt'] != null ? map['receipt'] as String : null,
+      date: map['date'] as String,
+      time: map['time'] as String,
     );
   }
 
@@ -64,17 +71,13 @@ class ApiResultServiceModel extends ApiResultModel {
           json.decode(source) as Map<String, dynamic>);
 
   @override
-  String toString() => 'ApiResultServiceModel(serviceType: $serviceType)';
+  String toString() => 'ApiResultServiceModel(serviceType: $serviceType)${super}';
 
   @override
   bool operator ==(covariant ApiResultServiceModel other) {
     if (identical(this, other)) return true;
 
-    return other.clientId == clientId &&
-        other.idempotenceKeyERN == idempotenceKeyERN &&
-        other.operationType == operationType &&
-        other.success == success &&
-        other.receipt == receipt &&
+    return super == other &&
         other.serviceType == serviceType;
   }
 
