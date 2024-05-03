@@ -55,7 +55,7 @@ enum TTKClientTagsEnum {
   /// Input Data | ASCII
   T1F01(messageType: TTKMessageType.ASCII, maxLength: null),
 
-   /// Input Data | ASCII
+  /// Input Data | ASCII
   T9F42(messageType: TTKMessageType.ASCII, maxLength: null),
   ;
 

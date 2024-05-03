@@ -76,7 +76,7 @@ class ApiResultPaymentModel extends ApiResultModel {
 
   @override
   String toString() {
-    return 'ApiResultPaymentModel(rrn: $retrievalReferenceNumber, amount: $amount)${super}';
+    return 'ApiResultPaymentModel(rrn: $retrievalReferenceNumber, amount: $amount)${super.toString()}';
   }
 
   @override

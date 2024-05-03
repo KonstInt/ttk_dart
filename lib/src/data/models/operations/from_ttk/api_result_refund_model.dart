@@ -70,7 +70,7 @@ class ApiResultRefundModel extends ApiResultModel {
 
   @override
   String toString() {
-    return 'ApiResultPaymentModel(amount: $amount)${super}';
+    return 'ApiResultPaymentModel(amount: $amount)${super.toString()}';
   }
 
   @override

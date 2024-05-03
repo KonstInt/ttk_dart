@@ -54,7 +54,7 @@ class ApiReconciliationModel extends ApiRequestModel {
 
   @override
   String toString() =>
-      'ApiReconciliationModel(serviceType: $serviceType)${super}';
+      'ApiReconciliationModel(serviceType: $serviceType)${super.toString()}';
 
   @override
   bool operator ==(covariant ApiReconciliationModel other) {

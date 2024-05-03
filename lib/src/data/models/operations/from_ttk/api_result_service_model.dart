@@ -71,14 +71,14 @@ class ApiResultServiceModel extends ApiResultModel {
           json.decode(source) as Map<String, dynamic>);
 
   @override
-  String toString() => 'ApiResultServiceModel(serviceType: $serviceType)${super}';
+  String toString() =>
+      'ApiResultServiceModel(serviceType: $serviceType)${super.toString()}';
 
   @override
   bool operator ==(covariant ApiResultServiceModel other) {
     if (identical(this, other)) return true;
 
-    return super == other &&
-        other.serviceType == serviceType;
+    return super == other && other.serviceType == serviceType;
   }
 
   @override

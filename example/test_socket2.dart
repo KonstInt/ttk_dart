@@ -27,30 +27,37 @@ Future<Uint8List> readFileByte(String filePath) async {
 
 Future<void> test() async {
   try {
+    //    var service =PDP. TTKService(ip: '10.0.0.104', port: 8888);
+    // await service.ttkSocketConnect();
+    // var res = await service.createPayment(PPP.ApiPaymentModel(
+    //     amount: 10000, clientId: "245", idempotenceKeyERN: "12345678E"));
+
     socket = await Socket.connect('10.0.0.104', 8888).catchError((e) {
       const int i = 0;
     });
     socket.listen(dataHandler,
         onError: errorHandler, onDone: doneHandler, cancelOnError: false);
 
-    final List<ApiTTKClientTagModel> client = [
-      ApiTTKClientTagModel(message: 'PUR', tagName: TTKClientTagsEnum.T01),
-      ApiTTKClientTagModel(message: '5', tagName: TTKClientTagsEnum.T02),
-      ApiTTKClientTagModel(message: '66558906', tagName: TTKClientTagsEnum.T03),
-      ApiTTKClientTagModel(message: '150', tagName: TTKClientTagsEnum.T04),
-      // TTKClientTagModel(
-      //     message: Uint8List.fromList([128]), tagName: TTKClientTagsEnum.T08)
+    final Map<TTKClientTagsEnum, ApiTTKClientTagModel> client = {
+      // TTKClientTagsEnum.T01: ApiTTKClientTagModel(message: 'PUR', tagName: TTKClientTagsEnum.T01),
+      // TTKClientTagsEnum.T02: ApiTTKClientTagModel(message: '5', tagName: TTKClientTagsEnum.T02),
+      // TTKClientTagsEnum.T03: ApiTTKClientTagModel(message: '66558906', tagName: TTKClientTagsEnum.T03),
+      //  TTKClientTagsEnum.T04: ApiTTKClientTagModel(message: '150', tagName: TTKClientTagsEnum.T04),
 
       // Сверка итогов
-      // ApiTTKClientTagModel(message: 'SRV', tagName: TTKClientTagsEnum.T01),
-      // ApiTTKClientTagModel(message: '9', tagName: TTKClientTagsEnum.T02),
-      // ApiTTKClientTagModel(message: '66558909', tagName: TTKClientTagsEnum.T03),
-      // // TTKClientTagModel(message: '10000000', tagName: TTKClientTagsEnum.T04),
-      // ApiTTKClientTagModel(message: '2', tagName: TTKClientTagsEnum.T1A),
-      // //  TTKClientTagModel(message: '2С01000101 ', tagName: TTKClientTagsEnum.T1D),
-      // // TTKClientTagModel(
-      // //     message: Uint8List.fromList([128]), tagName: TTKClientTagsEnum.T08)
-    ];
+      TTKClientTagsEnum.T01:
+          ApiTTKClientTagModel(message: 'SRV', tagName: TTKClientTagsEnum.T01),
+      TTKClientTagsEnum.T02:
+          ApiTTKClientTagModel(message: '9', tagName: TTKClientTagsEnum.T02),
+      TTKClientTagsEnum.T03: ApiTTKClientTagModel(
+          message: '66558909', tagName: TTKClientTagsEnum.T03),
+      // TTKClientTagModel(message: '10000000', tagName: TTKClientTagsEnum.T04),
+      TTKClientTagsEnum.T1A:
+          ApiTTKClientTagModel(message: '2', tagName: TTKClientTagsEnum.T1A),
+      //  TTKClientTagModel(message: '2С01000101 ', tagName: TTKClientTagsEnum.T1D),
+      // TTKClientTagModel(
+      //     message: Uint8List.fromList([128]), tagName: TTKClientTagsEnum.T08)
+    };
     final bytes = BerTlvEncoderEncoder.encoderClient(client);
     logger.t(bytes);
 

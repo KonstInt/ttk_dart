@@ -51,7 +51,7 @@ class ApiPaymentModel extends ApiRequestModel {
       ApiPaymentModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
-  String toString() => 'ApiPaymentModel(amount: $amount)${super}';
+  String toString() => 'ApiPaymentModel(amount: $amount)${super.toString()}';
 
   @override
   bool operator ==(covariant ApiPaymentModel other) {

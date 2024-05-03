@@ -51,7 +51,7 @@ class ApiRefundModel extends ApiRequestModel {
       ApiRefundModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
-  String toString() => 'ApiPaymentModel(amount: $amount)${super}';
+  String toString() => 'ApiPaymentModel(amount: $amount)${super.toString()}';
 
   @override
   bool operator ==(covariant ApiRefundModel other) {

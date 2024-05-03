@@ -23,14 +23,15 @@ class BerTlvEncoderEncoder {
     return result;
   }
 
-  static Uint8List? encoderClient(List<ApiTTKClientTagModel> clientList) {
+  static Uint8List? encoderClient(
+      Map<TTKClientTagsEnum, ApiTTKClientTagModel> clientList) {
     try {
       final List<int> result = [0, 0, 0, 0];
       int length = 4;
-      for (final client in clientList) {
-        final (tag, tagLength) = getServiceTag(client.tagName);
+      for (final client in clientList.entries) {
+        final (tag, tagLength) = getServiceTag(client.value.tagName);
         final (data, dataLength) =
-            getDataWithSize(client.message, client.messageType);
+            getDataWithSize(client.value.message, client.value.messageType);
         final (size, lengthSize) = getDataLength(dataLength);
         result
           ..addAll(tag)

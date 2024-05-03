@@ -5,7 +5,8 @@ import 'package:ttk_payment_terminal/src/data/models/ttk/enums/ttk_status_code_e
 
 class TagListAnalyzer {
   //TODO:check it
-  bool operationSuccess(Map<TTKServiceTagsEnum, ApiTTKServiceTagModel> tags) {
+  static bool operationSuccess(
+      Map<TTKServiceTagsEnum, ApiTTKServiceTagModel> tags) {
     if (tags.containsKey(TTKServiceTagsEnum.TA1)) {
       if (tags[TTKServiceTagsEnum.TA1]!.message as String == 'Y') {
         return true;
@@ -15,43 +16,46 @@ class TagListAnalyzer {
     return false;
   }
 
-  bool hasOperationResultCode(
+  static bool hasOperationResultCode(
       Map<TTKServiceTagsEnum, ApiTTKServiceTagModel> tags) {
     return tags.containsKey(TTKServiceTagsEnum.T9B);
   }
 
-  TTKStatusCodeEnum? getStatusCode(
+  static TTKStatusCodeEnum? getStatusCode(
       Map<TTKServiceTagsEnum, ApiTTKServiceTagModel> tags) {
     return tags[TTKServiceTagsEnum.T9B]?.message as TTKStatusCodeEnum?;
   }
 
-  bool isBelongToOperation(
-      {required Map<TTKServiceTagsEnum, ApiTTKServiceTagModel> tags,
-      required String ern,
-      required ApiTTKOperationType type,
-      required String clientID,
-      required String terminalID}) {
+  static bool isBelongToOperation({
+    required Map<TTKServiceTagsEnum, ApiTTKServiceTagModel> tags,
+    required String ern,
+    required ApiTTKOperationType type,
+    required String clientID,
+    /* required String terminalID*/
+  }) {
     bool ernFlag = false;
     bool typeFlag = false;
     bool clientNumberFlag = false;
-    bool terminalIdFlag = false;
+    //bool terminalIdFlag = false;
 
     if (tags.containsKey(TTKServiceTagsEnum.T83)) {
       ernFlag = (ern == tags[TTKServiceTagsEnum.T83]!.message as String);
     }
     if (tags.containsKey(TTKServiceTagsEnum.T81)) {
       typeFlag = (type ==
-          tags[TTKServiceTagsEnum.T81]!.message as ApiTTKOperationType);
+          ApiTTKOperationType.values.firstWhere((element) =>
+              element.name ==
+              (tags[TTKServiceTagsEnum.T81]!.message as String)));
     }
     if (tags.containsKey(TTKServiceTagsEnum.T82)) {
       clientNumberFlag =
           (clientID == tags[TTKServiceTagsEnum.T82]!.message as String);
     }
-    if (tags.containsKey(TTKServiceTagsEnum.T9D)) {
-      terminalIdFlag =
-          (terminalID == tags[TTKServiceTagsEnum.T9D]!.message as String);
-    }
+    // if (tags.containsKey(TTKServiceTagsEnum.T9D)) {
+    //   terminalIdFlag =
+    //       (terminalID == tags[TTKServiceTagsEnum.T9D]!.message as String);
+    // }
 
-    return ernFlag && typeFlag && terminalIdFlag && clientNumberFlag;
+    return ernFlag && typeFlag && clientNumberFlag; // &&terminalIdFlag ;
   }
 }
