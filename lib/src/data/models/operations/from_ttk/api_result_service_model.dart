@@ -1,7 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-import 'package:ttk_payment_terminal/src/data/models/operations/enums/to_ttk/api_ttk_operation_service_type.dart';
 import 'package:ttk_payment_terminal/src/data/models/operations/enums/to_ttk/api_ttk_operations_types.dart';
 import 'package:ttk_payment_terminal/src/data/models/operations/from_ttk/api_result_model.dart';
 
@@ -38,9 +37,7 @@ class ApiResultServiceModel extends ApiResultModel {
 
   @override
   Map<String, dynamic> toMap() {
-    return super.toMap()
-      ..addAll(<String, dynamic>{
-      });
+    return super.toMap()..addAll(<String, dynamic>{});
   }
 
   factory ApiResultServiceModel.fromMap(Map<String, dynamic> map) {
@@ -64,8 +61,7 @@ class ApiResultServiceModel extends ApiResultModel {
           json.decode(source) as Map<String, dynamic>);
 
   @override
-  String toString() =>
-      'ApiResultServiceModel(${super.toString()}';
+  String toString() => 'ApiResultServiceModel(${super.toString()}';
 
   @override
   bool operator ==(covariant ApiResultServiceModel other) {
@@ -74,6 +70,4 @@ class ApiResultServiceModel extends ApiResultModel {
     return super == other;
   }
 
-  @override
-  int get hashCode => super.hashCode;
 }

@@ -61,7 +61,8 @@ class TTKService {
   }
 
   Future<ApiResultPaymentModel> createPayment(ApiPaymentModel payment) async {
-    final Completer<ApiResultPaymentModel> c = Completer<ApiResultPaymentModel>();
+    final Completer<ApiResultPaymentModel> c =
+        Completer<ApiResultPaymentModel>();
     ttkSocket.add(BerTlvEncoderEncoder.encoderClient(
             TTKApiResultMapper.paymentModelToAPI(payment)) ??
         []);
@@ -99,13 +100,11 @@ class TTKService {
           }
         }
       } on Exception {
-        logger.e("Exception on service level payment");
+        logger.e('Exception on service level payment');
       }
     });
     return c.future;
   }
-
-
 
   Future<(bool, String?)> createRefund(ApiRefundModel refund) async {
     final Completer<(bool, String?)> c = Completer<(bool, String?)>();
@@ -139,23 +138,21 @@ class TTKService {
             if (TagListAnalyzer.hasOperationResultCode(decodedData)) {
               final response =
                   TTKApiResultMapper.resultRefundModelFromAPI(decodedData);
-              
+
               c.complete((response.success, response.receipt));
               _ttkApiStreamSubscription.cancel();
             }
           }
         }
       } on Exception {
-        logger.e("Exception on service level payment");
+        logger.e('Exception on service level payment');
       }
     });
     return c.future;
   }
 
-
-
-
-  Future<(bool, String?)> createServiceOperation(ApiServiceModel service) async {
+  Future<(bool, String?)> createServiceOperation(
+      ApiServiceModel service) async {
     final Completer<(bool, String?)> c = Completer<(bool, String?)>();
     ttkSocket.add(BerTlvEncoderEncoder.encoderClient(
             TTKApiResultMapper.serviceModelToAPI(service)) ??
@@ -187,14 +184,14 @@ class TTKService {
             if (TagListAnalyzer.hasOperationResultCode(decodedData)) {
               final response =
                   TTKApiResultMapper.resultServiceModelFromAPI(decodedData);
-              
+
               c.complete((response.success, response.receipt));
               _ttkApiStreamSubscription.cancel();
             }
           }
         }
       } on Exception {
-        logger.e("Exception on service level payment");
+        logger.e('Exception on service level payment');
       }
     });
     return c.future;

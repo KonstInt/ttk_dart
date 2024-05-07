@@ -19,7 +19,7 @@ Future<void> test() async {
 
   final receip = await service.createServiceOperation(
     ApiServiceModel(
-     serviceType:ApiTTKOperationServiceType.CHECK_SUM,
+      serviceType: ApiTTKOperationServiceType.CHECK_SUM,
       clientId: '2456',
       idempotenceKeyERN: '123456789E',
     ),
@@ -30,7 +30,7 @@ Future<void> test() async {
         amount: 1.5,
         clientId: '2456',
         idempotenceKeyERN: '123456789E',
-        retrievalReferenceNumber: res.retrievalReferenceNumber??'55'),
+        retrievalReferenceNumber: res.retrievalReferenceNumber ?? '55'),
   );
   const int i = 0;
   await service.ttkSocketDisconnect();

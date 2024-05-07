@@ -23,7 +23,8 @@ class TTKApiResultMapper {
       date: tags[TTKServiceTagsEnum.T8D]!.message as String,
       time: tags[TTKServiceTagsEnum.T8E]!.message as String,
       amount: int.parse(tags[TTKServiceTagsEnum.T84]!.message as String) / 100,
-      retrievalReferenceNumber: tags[TTKServiceTagsEnum.T98]?.message as String?,
+      retrievalReferenceNumber:
+          tags[TTKServiceTagsEnum.T98]?.message as String?,
       receipt: tags[TTKServiceTagsEnum.T9C]?.message as String?,
     );
   }

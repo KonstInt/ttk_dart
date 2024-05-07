@@ -36,10 +36,8 @@ class ApiRefundModel extends ApiRequestModel {
   @override
   Map<String, dynamic> toMap() {
     return super.toMap()
-      ..addAll(<String, dynamic>{
-        'amount': amount,
-        'rrn':retrievalReferenceNumber
-      });
+      ..addAll(
+          <String, dynamic>{'amount': amount, 'rrn': retrievalReferenceNumber});
   }
 
   factory ApiRefundModel.fromMap(Map<String, dynamic> map) {
@@ -47,7 +45,6 @@ class ApiRefundModel extends ApiRequestModel {
       amount: map['amount'] as double,
       clientId: map['clientId'] as String,
       idempotenceKeyERN: map['idempotenceKeyERN'] as String,
-      
       retrievalReferenceNumber: map['rrn'] as String,
     );
   }

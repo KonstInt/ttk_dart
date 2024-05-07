@@ -49,8 +49,7 @@ class ApiServiceModel extends ApiRequestModel {
   String toJson() => json.encode(toMap());
 
   factory ApiServiceModel.fromJson(String source) =>
-      ApiServiceModel.fromMap(
-          json.decode(source) as Map<String, dynamic>);
+      ApiServiceModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() =>
