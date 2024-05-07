@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:ttk_payment_terminal/src/data/models/operations/enums/to_ttk/api_ttk_operation_service_type.dart';
 import 'package:ttk_payment_terminal/src/data/models/operations/enums/to_ttk/api_ttk_operations_types.dart';
 import 'package:ttk_payment_terminal/src/data/models/operations/from_ttk/api_result_model.dart';
 
@@ -70,4 +71,6 @@ class ApiResultServiceModel extends ApiResultModel {
     return super == other;
   }
 
+  @override
+  int get hashCode => super.hashCode;
 }
