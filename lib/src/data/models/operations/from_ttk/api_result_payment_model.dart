@@ -36,7 +36,7 @@ class ApiResultPaymentModel extends ApiResultModel {
           json.decode(source) as Map<String, dynamic>);
 
   final double amount;
-  final String retrievalReferenceNumber;
+  final String? retrievalReferenceNumber;
 
   @override
   ApiResultPaymentModel copyWith({

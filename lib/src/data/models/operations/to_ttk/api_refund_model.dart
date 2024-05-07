@@ -6,8 +6,10 @@ import 'package:ttk_payment_terminal/src/data/models/operations/to_ttk/api_reque
 
 class ApiRefundModel extends ApiRequestModel {
   final double amount;
+  final String retrievalReferenceNumber;
   ApiRefundModel({
     required this.amount,
+    required this.retrievalReferenceNumber,
     required String clientId,
     required String idempotenceKeyERN,
   }) : super(
@@ -18,12 +20,15 @@ class ApiRefundModel extends ApiRequestModel {
   @override
   ApiRefundModel copyWith(
       {double? amount,
+      String? retrievalReferenceNumber,
       String? clientId,
       String? idempotenceKeyERN,
       ApiTTKOperationType? operationType}) {
     return ApiRefundModel(
       amount: amount ?? this.amount,
       clientId: clientId ?? this.clientId,
+      retrievalReferenceNumber:
+          retrievalReferenceNumber ?? this.retrievalReferenceNumber,
       idempotenceKeyERN: idempotenceKeyERN ?? this.idempotenceKeyERN,
     );
   }
@@ -33,6 +38,7 @@ class ApiRefundModel extends ApiRequestModel {
     return super.toMap()
       ..addAll(<String, dynamic>{
         'amount': amount,
+        'rrn':retrievalReferenceNumber
       });
   }
 
@@ -41,6 +47,8 @@ class ApiRefundModel extends ApiRequestModel {
       amount: map['amount'] as double,
       clientId: map['clientId'] as String,
       idempotenceKeyERN: map['idempotenceKeyERN'] as String,
+      
+      retrievalReferenceNumber: map['rrn'] as String,
     );
   }
 

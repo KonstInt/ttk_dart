@@ -5,9 +5,9 @@ import 'package:ttk_payment_terminal/src/data/models/operations/enums/to_ttk/api
 import 'package:ttk_payment_terminal/src/data/models/operations/enums/to_ttk/api_ttk_operations_types.dart';
 import 'package:ttk_payment_terminal/src/data/models/operations/to_ttk/api_request_model.dart';
 
-class ApiReconciliationModel extends ApiRequestModel {
+class ApiServiceModel extends ApiRequestModel {
   final ApiTTKOperationServiceType serviceType;
-  ApiReconciliationModel({
+  ApiServiceModel({
     required String clientId,
     required String idempotenceKeyERN,
     required this.serviceType,
@@ -17,12 +17,12 @@ class ApiReconciliationModel extends ApiRequestModel {
             operationType: ApiTTKOperationType.SRV);
 
   @override
-  ApiReconciliationModel copyWith(
+  ApiServiceModel copyWith(
       {ApiTTKOperationServiceType? serviceType,
       String? clientId,
       String? idempotenceKeyERN,
       ApiTTKOperationType? operationType}) {
-    return ApiReconciliationModel(
+    return ApiServiceModel(
       serviceType: serviceType ?? this.serviceType,
       clientId: clientId ?? this.clientId,
       idempotenceKeyERN: idempotenceKeyERN ?? this.idempotenceKeyERN,
@@ -37,8 +37,8 @@ class ApiReconciliationModel extends ApiRequestModel {
       });
   }
 
-  factory ApiReconciliationModel.fromMap(Map<String, dynamic> map) {
-    return ApiReconciliationModel(
+  factory ApiServiceModel.fromMap(Map<String, dynamic> map) {
+    return ApiServiceModel(
         clientId: map['clientId'] as String,
         idempotenceKeyERN: map['idempotenceKeyERN'] as String,
         serviceType: ApiTTKOperationServiceType.values.firstWhere(
@@ -48,8 +48,8 @@ class ApiReconciliationModel extends ApiRequestModel {
   @override
   String toJson() => json.encode(toMap());
 
-  factory ApiReconciliationModel.fromJson(String source) =>
-      ApiReconciliationModel.fromMap(
+  factory ApiServiceModel.fromJson(String source) =>
+      ApiServiceModel.fromMap(
           json.decode(source) as Map<String, dynamic>);
 
   @override
@@ -57,7 +57,7 @@ class ApiReconciliationModel extends ApiRequestModel {
       'ApiReconciliationModel(serviceType: $serviceType)${super.toString()}';
 
   @override
-  bool operator ==(covariant ApiReconciliationModel other) {
+  bool operator ==(covariant ApiServiceModel other) {
     if (identical(this, other)) return true;
 
     return other.clientId == clientId &&

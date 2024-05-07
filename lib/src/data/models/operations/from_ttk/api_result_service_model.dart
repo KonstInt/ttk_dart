@@ -6,7 +6,6 @@ import 'package:ttk_payment_terminal/src/data/models/operations/enums/to_ttk/api
 import 'package:ttk_payment_terminal/src/data/models/operations/from_ttk/api_result_model.dart';
 
 class ApiResultServiceModel extends ApiResultModel {
-  ApiTTKOperationServiceType serviceType;
   ApiResultServiceModel({
     required super.clientId,
     required super.idempotenceKeyERN,
@@ -14,13 +13,11 @@ class ApiResultServiceModel extends ApiResultModel {
     required super.success,
     required super.date,
     required super.time,
-    required this.serviceType,
     super.receipt,
   });
 
   @override
   ApiResultServiceModel copyWith({
-    ApiTTKOperationServiceType? serviceType,
     String? clientId,
     String? idempotenceKeyERN,
     ApiTTKOperationType? operationType,
@@ -30,7 +27,6 @@ class ApiResultServiceModel extends ApiResultModel {
     String? time,
   }) {
     return ApiResultServiceModel(
-        serviceType: serviceType ?? this.serviceType,
         clientId: clientId ?? this.clientId,
         idempotenceKeyERN: idempotenceKeyERN ?? this.idempotenceKeyERN,
         operationType: operationType ?? this.operationType,
@@ -44,14 +40,11 @@ class ApiResultServiceModel extends ApiResultModel {
   Map<String, dynamic> toMap() {
     return super.toMap()
       ..addAll(<String, dynamic>{
-        'serviceType': serviceType.value,
       });
   }
 
   factory ApiResultServiceModel.fromMap(Map<String, dynamic> map) {
     return ApiResultServiceModel(
-      serviceType: ApiTTKOperationServiceType.values.firstWhere(
-          (element) => element.value == map['serviceType'] as String),
       clientId: map['clientId'] as String,
       idempotenceKeyERN: map['idempotenceKeyERN'] as String,
       operationType: ApiTTKOperationType.values.firstWhere(
@@ -72,15 +65,15 @@ class ApiResultServiceModel extends ApiResultModel {
 
   @override
   String toString() =>
-      'ApiResultServiceModel(serviceType: $serviceType)${super.toString()}';
+      'ApiResultServiceModel(${super.toString()}';
 
   @override
   bool operator ==(covariant ApiResultServiceModel other) {
     if (identical(this, other)) return true;
 
-    return super == other && other.serviceType == serviceType;
+    return super == other;
   }
 
   @override
-  int get hashCode => serviceType.hashCode ^ super.hashCode;
+  int get hashCode => super.hashCode;
 }

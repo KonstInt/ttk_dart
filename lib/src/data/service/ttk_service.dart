@@ -2,11 +2,17 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:logger/logger.dart';
+import 'package:ttk_payment_terminal/logger/logger.dart';
 import 'package:ttk_payment_terminal/src/data/helpers/encoders_decoders/tlv_decoder.dart';
 import 'package:ttk_payment_terminal/src/data/helpers/encoders_decoders/tlv_encoder.dart';
 import 'package:ttk_payment_terminal/src/data/helpers/tag_analizer.dart';
 import 'package:ttk_payment_terminal/src/data/mapper/ttk_api/ttk_api_mapper.dart';
+import 'package:ttk_payment_terminal/src/data/models/operations/from_ttk/api_result_payment_model.dart';
 import 'package:ttk_payment_terminal/src/data/models/operations/to_ttk/api_payment_model.dart';
+import 'package:ttk_payment_terminal/src/data/models/operations/to_ttk/api_refund_model.dart';
+import 'package:ttk_payment_terminal/src/data/models/operations/to_ttk/api_service_model.dart';
+import 'package:ttk_payment_terminal/src/data/models/ttk/base_models/api_ttk_service_tag_model.dart';
 import 'package:ttk_payment_terminal/src/data/models/ttk/enums/tags/ttk_service_tags/ttk_service_tags_enum.dart';
 
 class TTKService {
@@ -54,37 +60,144 @@ class TTKService {
     }
   }
 
-  Future<bool> createPayment(ApiPaymentModel payment) async {
-    final Completer<bool> c = Completer<bool>();
-    final ssdf =  TTKApiResultMapper.paymentModelToAPI(payment);
-    final Uint8List? cssat= BerTlvEncoderEncoder.encoderClient(
-       ssdf     );
-    ttkSocket.add(cssat??[]);
+  Future<ApiResultPaymentModel> createPayment(ApiPaymentModel payment) async {
+    final Completer<ApiResultPaymentModel> c = Completer<ApiResultPaymentModel>();
+    ttkSocket.add(BerTlvEncoderEncoder.encoderClient(
+            TTKApiResultMapper.paymentModelToAPI(payment)) ??
+        []);
     _ttkApiStreamSubscription.onData((data) {
-      try{
-      final (decodedData, _) = BerTlvEncoderDecoder.decoderService(data);
-      if (TagListAnalyzer.isBelongToOperation(
-          tags: decodedData ?? {},
-          ern: payment.idempotenceKeyERN,
-          type: payment.operationType,
-          clientID: payment.clientId,
-          // terminalID:
-          //     ''
-          )) {
-        if (TagListAnalyzer.hasOperationResultCode(decodedData ?? {})) {
+      try {
+        var tmpData = data;
+        var dataLength = data.length;
+        final List<Map<TTKServiceTagsEnum, ApiTTKServiceTagModel>> tags = [];
+        while (dataLength != 0) {
+          final (tmpTagData, tmpTagLength) =
+              BerTlvEncoderDecoder.decoderService(tmpData);
+          if (tmpTagData != null) tags.add(tmpTagData);
+          dataLength -= tmpTagLength + 2;
+          if (dataLength >= 0) {
+            tmpData = tmpData.sublist(tmpTagLength + 2);
+          }
 
-          final response =
-              TTKApiResultMapper.resultPaymentModelFromAPI(decodedData ?? {});
-          c.complete(response.success);
+          logger.log(Level.debug, tmpTagData);
         }
+
+        for (final decodedData in tags) {
+          if (TagListAnalyzer.isBelongToOperation(
+            tags: decodedData,
+            ern: payment.idempotenceKeyERN,
+            type: payment.operationType,
+            clientID: payment.clientId,
+          )) {
+            if (TagListAnalyzer.hasOperationResultCode(decodedData)) {
+              final response =
+                  TTKApiResultMapper.resultPaymentModelFromAPI(decodedData);
+
+              c.complete(response);
+              _ttkApiStreamSubscription.cancel();
+            }
+          }
+        }
+      } on Exception {
+        logger.e("Exception on service level payment");
       }
-      }
-      catch(e){
-        int i = 0;
-      }
-      //c.complete(decodedData);
     });
-    return await c.future;
+    return c.future;
+  }
+
+
+
+  Future<(bool, String?)> createRefund(ApiRefundModel refund) async {
+    final Completer<(bool, String?)> c = Completer<(bool, String?)>();
+    ttkSocket.add(BerTlvEncoderEncoder.encoderClient(
+            TTKApiResultMapper.refundModelToAPI(refund)) ??
+        []);
+    _ttkApiStreamSubscription.onData((data) {
+      try {
+        var tmpData = data;
+        var dataLength = data.length;
+        final List<Map<TTKServiceTagsEnum, ApiTTKServiceTagModel>> tags = [];
+        while (dataLength != 0) {
+          final (tmpTagData, tmpTagLength) =
+              BerTlvEncoderDecoder.decoderService(tmpData);
+          if (tmpTagData != null) tags.add(tmpTagData);
+          dataLength -= tmpTagLength + 2;
+          if (dataLength >= 0) {
+            tmpData = tmpData.sublist(tmpTagLength + 2);
+          }
+
+          logger.log(Level.debug, tmpTagData);
+        }
+
+        for (final decodedData in tags) {
+          if (TagListAnalyzer.isBelongToOperation(
+            tags: decodedData,
+            ern: refund.idempotenceKeyERN,
+            type: refund.operationType,
+            clientID: refund.clientId,
+          )) {
+            if (TagListAnalyzer.hasOperationResultCode(decodedData)) {
+              final response =
+                  TTKApiResultMapper.resultRefundModelFromAPI(decodedData);
+              
+              c.complete((response.success, response.receipt));
+              _ttkApiStreamSubscription.cancel();
+            }
+          }
+        }
+      } on Exception {
+        logger.e("Exception on service level payment");
+      }
+    });
+    return c.future;
+  }
+
+
+
+
+  Future<(bool, String?)> createServiceOperation(ApiServiceModel service) async {
+    final Completer<(bool, String?)> c = Completer<(bool, String?)>();
+    ttkSocket.add(BerTlvEncoderEncoder.encoderClient(
+            TTKApiResultMapper.serviceModelToAPI(service)) ??
+        []);
+    _ttkApiStreamSubscription.onData((data) {
+      try {
+        var tmpData = data;
+        var dataLength = data.length;
+        final List<Map<TTKServiceTagsEnum, ApiTTKServiceTagModel>> tags = [];
+        while (dataLength != 0) {
+          final (tmpTagData, tmpTagLength) =
+              BerTlvEncoderDecoder.decoderService(tmpData);
+          if (tmpTagData != null) tags.add(tmpTagData);
+          dataLength -= tmpTagLength + 2;
+          if (dataLength >= 0) {
+            tmpData = tmpData.sublist(tmpTagLength + 2);
+          }
+
+          logger.log(Level.debug, tmpTagData);
+        }
+
+        for (final decodedData in tags) {
+          if (TagListAnalyzer.isBelongToOperation(
+            tags: decodedData,
+            ern: service.idempotenceKeyERN,
+            type: service.operationType,
+            clientID: service.clientId,
+          )) {
+            if (TagListAnalyzer.hasOperationResultCode(decodedData)) {
+              final response =
+                  TTKApiResultMapper.resultServiceModelFromAPI(decodedData);
+              
+              c.complete((response.success, response.receipt));
+              _ttkApiStreamSubscription.cancel();
+            }
+          }
+        }
+      } on Exception {
+        logger.e("Exception on service level payment");
+      }
+    });
+    return c.future;
   }
 
   void _errorHandler(error, StackTrace trace) {
