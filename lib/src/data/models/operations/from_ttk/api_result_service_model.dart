@@ -72,5 +72,6 @@ class ApiResultServiceModel extends ApiResultModel {
   }
 
   @override
+  // ignore: avoid_equals_and_hash_code_on_mutable_classes, unnecessary_overrides
   int get hashCode => super.hashCode;
 }
