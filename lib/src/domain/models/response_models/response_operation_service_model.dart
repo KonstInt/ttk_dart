@@ -1,11 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-import 'package:ttk_payment_terminal/src/data/models/operations/enums/to_ttk/api_ttk_operations_types.dart';
-import 'package:ttk_payment_terminal/src/data/models/operations/from_ttk/api_result_model.dart';
+import 'package:ttk_payment_terminal/src/domain/models/enums/response/operations_types.dart';
+import 'package:ttk_payment_terminal/src/domain/models/response_models/response_operation_model.dart';
 
-class ApiResultServiceModel extends ApiResultModel {
-  ApiResultServiceModel({
+class ResponseOperationServiceModel extends ResponseOperationModel {
+  ResponseOperationServiceModel({
     required super.clientId,
     required super.idempotenceKeyERN,
     required super.operationType,
@@ -16,16 +16,16 @@ class ApiResultServiceModel extends ApiResultModel {
   });
 
   @override
-  ApiResultServiceModel copyWith({
+  ResponseOperationServiceModel copyWith({
     String? clientId,
     String? idempotenceKeyERN,
-    ApiTTKOperationType? operationType,
+    OperationType? operationType,
     bool? success,
     String? receipt,
     String? date,
     String? time,
   }) {
-    return ApiResultServiceModel(
+    return ResponseOperationServiceModel(
         clientId: clientId ?? this.clientId,
         idempotenceKeyERN: idempotenceKeyERN ?? this.idempotenceKeyERN,
         operationType: operationType ?? this.operationType,
@@ -40,11 +40,11 @@ class ApiResultServiceModel extends ApiResultModel {
     return super.toMap()..addAll(<String, dynamic>{});
   }
 
-  factory ApiResultServiceModel.fromMap(Map<String, dynamic> map) {
-    return ApiResultServiceModel(
+  factory ResponseOperationServiceModel.fromMap(Map<String, dynamic> map) {
+    return ResponseOperationServiceModel(
       clientId: map['clientId'] as String,
       idempotenceKeyERN: map['idempotenceKeyERN'] as String,
-      operationType: ApiTTKOperationType.values.firstWhere(
+      operationType: OperationType.values.firstWhere(
           (element) => element.name == map['operationType'] as String),
       success: map['success'] as bool,
       receipt: map['receipt'] != null ? map['receipt'] as String : null,
@@ -56,15 +56,15 @@ class ApiResultServiceModel extends ApiResultModel {
   @override
   String toJson() => json.encode(toMap());
 
-  factory ApiResultServiceModel.fromJson(String source) =>
-      ApiResultServiceModel.fromMap(
+  factory ResponseOperationServiceModel.fromJson(String source) =>
+      ResponseOperationServiceModel.fromMap(
           json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() => 'ApiResultServiceModel(${super.toString()}';
 
   @override
-  bool operator ==(covariant ApiResultServiceModel other) {
+  bool operator ==(covariant ResponseOperationServiceModel other) {
     if (identical(this, other)) return true;
 
     return super == other;

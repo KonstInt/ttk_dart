@@ -1,38 +1,27 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, avoid_equals_and_hash_code_on_mutable_classes
 import 'dart:convert';
 
-/*
-Message ID «PUR» Операция Продажа
-ECR Number «PC001234» Номер клиента
-ERN «12345678» Номер кассового документа
-Transaction Amount «10000» Сумма продажи
-Transaction Mode 0b10000000 Расширенный формат тэгов в ответе
-Local Time 0x20151231235945 Местное время
-*/
-import 'package:ttk_payment_terminal/src/domain/models/enums/ttk_operations_types.dart';
+import 'package:ttk_payment_terminal/src/domain/models/enums/response/operations_types.dart';
 
-class PaymentModel {
+class RequestModel {
   final String clientId;
   final String idempotenceKeyERN;
-  final double amount;
-  final TTKOperationType operationType;
-  PaymentModel({
+  final OperationType operationType;
+
+  RequestModel({
     required this.clientId,
     required this.idempotenceKeyERN,
-    required this.amount,
     required this.operationType,
   });
 
-  PaymentModel copyWith({
+  RequestModel copyWith({
     String? clientId,
     String? idempotenceKeyERN,
-    double? amount,
-    TTKOperationType? operationType,
+   OperationType? operationType,
   }) {
-    return PaymentModel(
+    return RequestModel(
       clientId: clientId ?? this.clientId,
       idempotenceKeyERN: idempotenceKeyERN ?? this.idempotenceKeyERN,
-      amount: amount ?? this.amount,
       operationType: operationType ?? this.operationType,
     );
   }
@@ -41,38 +30,35 @@ class PaymentModel {
     return <String, dynamic>{
       'clientId': clientId,
       'idempotenceKeyERN': idempotenceKeyERN,
-      'amount': amount,
       'operationType': operationType.name,
     };
   }
 
-  factory PaymentModel.fromMap(Map<String, dynamic> map) {
-    return PaymentModel(
+  factory RequestModel.fromMap(Map<String, dynamic> map) {
+    return RequestModel(
       clientId: map['clientId'] as String,
       idempotenceKeyERN: map['idempotenceKeyERN'] as String,
-      amount: map['amount'] as double,
-      operationType: TTKOperationType.values.firstWhere(
+      operationType: OperationType.values.firstWhere(
           (element) => element.name == map['operationType'] as String),
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory PaymentModel.fromJson(String source) =>
-      PaymentModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory RequestModel.fromJson(String source) =>
+      RequestModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
-    return 'PaymentModel(clientId: $clientId, idempotenceKeyERN: $idempotenceKeyERN, amount: $amount, operationType: $operationType)';
+    return 'ApiRequestModel(clientId: $clientId, idempotenceKeyERN: $idempotenceKeyERN, operationType: $operationType)';
   }
 
   @override
-  bool operator ==(covariant PaymentModel other) {
+  bool operator ==(covariant RequestModel other) {
     if (identical(this, other)) return true;
 
     return other.clientId == clientId &&
         other.idempotenceKeyERN == idempotenceKeyERN &&
-        other.amount == amount &&
         other.operationType == operationType;
   }
 
@@ -80,7 +66,6 @@ class PaymentModel {
   int get hashCode {
     return clientId.hashCode ^
         idempotenceKeyERN.hashCode ^
-        amount.hashCode ^
         operationType.hashCode;
   }
 }

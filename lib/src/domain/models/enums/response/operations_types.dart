@@ -1,6 +1,6 @@
 // ignore_for_file: constant_identifier_names
 
-enum TTKOperationType {
+enum OperationType {
   /// Sale of goods or services (financial transaction)
   PUR,
 

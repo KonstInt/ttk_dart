@@ -9,6 +9,8 @@ import 'package:ttk_payment_terminal/src/data/helpers/encoders_decoders/tlv_enco
 import 'package:ttk_payment_terminal/src/data/helpers/tag_analizer.dart';
 import 'package:ttk_payment_terminal/src/data/mapper/ttk_api/ttk_api_mapper.dart';
 import 'package:ttk_payment_terminal/src/data/models/operations/from_ttk/api_result_payment_model.dart';
+import 'package:ttk_payment_terminal/src/data/models/operations/from_ttk/api_result_refund_model.dart';
+import 'package:ttk_payment_terminal/src/data/models/operations/from_ttk/api_result_service_model.dart';
 import 'package:ttk_payment_terminal/src/data/models/operations/to_ttk/api_payment_model.dart';
 import 'package:ttk_payment_terminal/src/data/models/operations/to_ttk/api_refund_model.dart';
 import 'package:ttk_payment_terminal/src/data/models/operations/to_ttk/api_service_model.dart';
@@ -61,6 +63,7 @@ class TTKService {
   }
 
   Future<ApiResultPaymentModel> createPayment(ApiPaymentModel payment) async {
+    _checkIfConnected();
     final Completer<ApiResultPaymentModel> c =
         Completer<ApiResultPaymentModel>();
     ttkSocket.add(BerTlvEncoderEncoder.encoderClient(
@@ -106,8 +109,9 @@ class TTKService {
     return c.future;
   }
 
-  Future<(bool, String?)> createRefund(ApiRefundModel refund) async {
-    final Completer<(bool, String?)> c = Completer<(bool, String?)>();
+  Future<ApiResultRefundModel> createRefund(ApiRefundModel refund) async {
+    _checkIfConnected();
+    final Completer<ApiResultRefundModel> c = Completer<ApiResultRefundModel>();
     ttkSocket.add(BerTlvEncoderEncoder.encoderClient(
             TTKApiResultMapper.refundModelToAPI(refund)) ??
         []);
@@ -139,7 +143,7 @@ class TTKService {
               final response =
                   TTKApiResultMapper.resultRefundModelFromAPI(decodedData);
 
-              c.complete((response.success, response.receipt));
+              c.complete(response);
               _ttkApiStreamSubscription.cancel();
             }
           }
@@ -151,9 +155,10 @@ class TTKService {
     return c.future;
   }
 
-  Future<(bool, String?)> createServiceOperation(
+  Future<ApiResultServiceModel> createServiceOperation(
       ApiServiceModel service) async {
-    final Completer<(bool, String?)> c = Completer<(bool, String?)>();
+    _checkIfConnected();
+    final Completer<ApiResultServiceModel> c = Completer<ApiResultServiceModel>();
     ttkSocket.add(BerTlvEncoderEncoder.encoderClient(
             TTKApiResultMapper.serviceModelToAPI(service)) ??
         []);
@@ -185,7 +190,7 @@ class TTKService {
               final response =
                   TTKApiResultMapper.resultServiceModelFromAPI(decodedData);
 
-              c.complete((response.success, response.receipt));
+              c.complete(response);
               _ttkApiStreamSubscription.cancel();
             }
           }
@@ -197,11 +202,11 @@ class TTKService {
     return c.future;
   }
 
-  void _errorHandler(error, StackTrace trace) {
-    // print(error);
+  void _checkIfConnected() {
+    if (!_ttkStreamInitialized) {
+      throw Exception('Connection is not initialized');
+    }
   }
 
-  void _doneHandler() {
-    ttkSocket.destroy();
-  }
+  
 }

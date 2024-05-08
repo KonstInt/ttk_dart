@@ -1,4 +1,4 @@
-enum TTKResultStatus {
+enum ResultStatus {
   success,
   message,
   error,

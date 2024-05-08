@@ -1,4 +1,0 @@
-enum TTKPaymentErrorType {
-  TTKSessionNotClosed,
-  TTKPaymentError,
-}

@@ -1,3 +1,0 @@
-class TTKResultModel {
-  var result;
-}
