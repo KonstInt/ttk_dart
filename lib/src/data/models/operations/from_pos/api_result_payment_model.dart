@@ -1,10 +1,10 @@
 import 'dart:convert';
 
-import 'package:pos_payment_terminal/src/domain/models/enums/response/operations_types.dart';
-import 'package:pos_payment_terminal/src/domain/models/response_models/response_operation_model.dart';
+import 'package:pos_payment_terminal/src/data/models/operations/enums/to_pos/api_pos_operations_types.dart';
+import 'package:pos_payment_terminal/src/data/models/operations/from_pos/api_result_model.dart';
 
-class ResponseOperationRefundModel extends ResponseOperationModel {
-  ResponseOperationRefundModel({
+class ApiResultPaymentModel extends ApiResultModel {
+  ApiResultPaymentModel({
     required super.clientId,
     required super.idempotenceKeyERN,
     required super.operationType,
@@ -12,47 +12,53 @@ class ResponseOperationRefundModel extends ResponseOperationModel {
     required super.date,
     required super.time,
     required this.amount,
+    required this.retrievalReferenceNumber,
     super.receipt,
   });
 
-  factory ResponseOperationRefundModel.fromMap(Map<String, dynamic> map) {
-    return ResponseOperationRefundModel(
+  factory ApiResultPaymentModel.fromMap(Map<String, dynamic> map) {
+    return ApiResultPaymentModel(
       amount: map['amount'] as double,
       clientId: map['clientId'] as String,
       idempotenceKeyERN: map['idempotenceKeyERN'] as String,
-      operationType: OperationType.values.firstWhere(
+      operationType: ApiPOSOperationType.values.firstWhere(
           (element) => element.name == map['operationType'] as String),
       success: map['success'] as bool,
+      retrievalReferenceNumber: map['rrn'] as String,
       receipt: map['receipt'] != null ? map['receipt'] as String : null,
       date: map['date'] as String,
       time: map['time'] as String,
     );
   }
 
-  factory ResponseOperationRefundModel.fromJson(String source) =>
-      ResponseOperationRefundModel.fromMap(
+  factory ApiResultPaymentModel.fromJson(String source) =>
+      ApiResultPaymentModel.fromMap(
           json.decode(source) as Map<String, dynamic>);
 
   final double amount;
+  final String? retrievalReferenceNumber;
 
   @override
-  ResponseOperationRefundModel copyWith({
+  ApiResultPaymentModel copyWith({
     double? amount,
     String? clientId,
     String? idempotenceKeyERN,
-    OperationType? operationType,
+    ApiPOSOperationType? operationType,
     bool? success,
     String? receipt,
+    String? retrievalReferenceNumber,
     String? date,
     String? time,
   }) {
-    return ResponseOperationRefundModel(
+    return ApiResultPaymentModel(
       amount: amount ?? this.amount,
       clientId: clientId ?? this.clientId,
       idempotenceKeyERN: idempotenceKeyERN ?? this.idempotenceKeyERN,
       operationType: operationType ?? this.operationType,
       success: success ?? this.success,
       receipt: receipt ?? this.receipt,
+      retrievalReferenceNumber:
+          retrievalReferenceNumber ?? this.retrievalReferenceNumber,
       date: date ?? this.date,
       time: time ?? this.time,
     );
@@ -61,9 +67,8 @@ class ResponseOperationRefundModel extends ResponseOperationModel {
   @override
   Map<String, dynamic> toMap() {
     return super.toMap()
-      ..addAll(<String, dynamic>{
-        'amount': amount,
-      });
+      ..addAll(
+          <String, dynamic>{'rrn': retrievalReferenceNumber, 'amount': amount});
   }
 
   @override
@@ -71,18 +76,20 @@ class ResponseOperationRefundModel extends ResponseOperationModel {
 
   @override
   String toString() {
-    return 'ApiResultPaymentModel(amount: $amount)${super.toString()}';
+    return 'ApiResultPaymentModel(rrn: $retrievalReferenceNumber, amount: $amount)${super.toString()}';
   }
 
   @override
-  bool operator ==(covariant ResponseOperationRefundModel other) {
+  bool operator ==(covariant ApiResultPaymentModel other) {
     if (identical(this, other)) return true;
 
-    return super == other && other.amount == amount;
+    return other.amount == amount &&
+        other.retrievalReferenceNumber == retrievalReferenceNumber &&
+        super == other;
   }
 
   @override
   int get hashCode {
-    return super.hashCode ^ amount.hashCode;
+    return super.hashCode ^ amount.hashCode ^ retrievalReferenceNumber.hashCode;
   }
 }

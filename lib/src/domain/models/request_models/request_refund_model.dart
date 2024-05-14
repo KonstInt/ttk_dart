@@ -1,9 +1,7 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-import 'package:ttk_payment_terminal/src/domain/models/enums/response/operations_types.dart';
-import 'package:ttk_payment_terminal/src/domain/models/request_models/request_model.dart';
-
+import 'package:pos_payment_terminal/src/domain/models/enums/response/operations_types.dart';
+import 'package:pos_payment_terminal/src/domain/models/request_models/request_model.dart';
 
 class RequestRefundModel extends RequestModel {
   final double amount;
@@ -11,12 +9,9 @@ class RequestRefundModel extends RequestModel {
   RequestRefundModel({
     required this.amount,
     required this.retrievalReferenceNumber,
-    required String clientId,
-    required String idempotenceKeyERN,
-  }) : super(
-            clientId: clientId,
-            idempotenceKeyERN: idempotenceKeyERN,
-            operationType: OperationType.REF);
+    required super.clientId,
+    required super.idempotenceKeyERN,
+  }) : super(operationType: OperationType.REF);
 
   @override
   RequestRefundModel copyWith(

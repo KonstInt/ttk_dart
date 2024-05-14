@@ -1,23 +1,23 @@
 import 'dart:convert';
 
-import 'package:pos_payment_terminal/src/domain/models/enums/response/operations_types.dart';
-import 'package:pos_payment_terminal/src/domain/models/request_models/request_model.dart';
+import 'package:pos_payment_terminal/src/data/models/operations/enums/to_pos/api_pos_operations_types.dart';
+import 'package:pos_payment_terminal/src/data/models/operations/to_pos/api_request_model.dart';
 
-class RequestPaymentModel extends RequestModel {
+class ApiPaymentModel extends ApiRequestModel {
   final double amount;
-  RequestPaymentModel({
+  ApiPaymentModel({
     required this.amount,
     required super.clientId,
     required super.idempotenceKeyERN,
-  }) : super(operationType: OperationType.PUR);
+  }) : super(operationType: ApiPOSOperationType.PUR);
 
   @override
-  RequestPaymentModel copyWith(
+  ApiPaymentModel copyWith(
       {double? amount,
       String? clientId,
       String? idempotenceKeyERN,
-      OperationType? operationType}) {
-    return RequestPaymentModel(
+      ApiPOSOperationType? operationType}) {
+    return ApiPaymentModel(
       amount: amount ?? this.amount,
       clientId: clientId ?? this.clientId,
       idempotenceKeyERN: idempotenceKeyERN ?? this.idempotenceKeyERN,
@@ -32,8 +32,8 @@ class RequestPaymentModel extends RequestModel {
       });
   }
 
-  factory RequestPaymentModel.fromMap(Map<String, dynamic> map) {
-    return RequestPaymentModel(
+  factory ApiPaymentModel.fromMap(Map<String, dynamic> map) {
+    return ApiPaymentModel(
       amount: map['amount'] as double,
       clientId: map['clientId'] as String,
       idempotenceKeyERN: map['idempotenceKeyERN'] as String,
@@ -43,14 +43,14 @@ class RequestPaymentModel extends RequestModel {
   @override
   String toJson() => json.encode(toMap());
 
-  factory RequestPaymentModel.fromJson(String source) =>
-      RequestPaymentModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory ApiPaymentModel.fromJson(String source) =>
+      ApiPaymentModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() => 'ApiPaymentModel(amount: $amount)${super.toString()}';
 
   @override
-  bool operator ==(covariant RequestPaymentModel other) {
+  bool operator ==(covariant ApiPaymentModel other) {
     if (identical(this, other)) return true;
 
     return other.clientId == clientId &&

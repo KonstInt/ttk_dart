@@ -1,24 +1,24 @@
 import 'dart:convert';
 
-import 'package:pos_payment_terminal/src/domain/models/enums/response/operations_types.dart';
+import 'package:pos_payment_terminal/src/data/models/operations/enums/to_pos/api_pos_operations_types.dart';
 
-class RequestModel {
+class ApiRequestModel {
   final String clientId;
   final String idempotenceKeyERN;
-  final OperationType operationType;
+  final ApiPOSOperationType operationType;
 
-  RequestModel({
+  ApiRequestModel({
     required this.clientId,
     required this.idempotenceKeyERN,
     required this.operationType,
   });
 
-  RequestModel copyWith({
+  ApiRequestModel copyWith({
     String? clientId,
     String? idempotenceKeyERN,
-    OperationType? operationType,
+    ApiPOSOperationType? operationType,
   }) {
-    return RequestModel(
+    return ApiRequestModel(
       clientId: clientId ?? this.clientId,
       idempotenceKeyERN: idempotenceKeyERN ?? this.idempotenceKeyERN,
       operationType: operationType ?? this.operationType,
@@ -33,19 +33,19 @@ class RequestModel {
     };
   }
 
-  factory RequestModel.fromMap(Map<String, dynamic> map) {
-    return RequestModel(
+  factory ApiRequestModel.fromMap(Map<String, dynamic> map) {
+    return ApiRequestModel(
       clientId: map['clientId'] as String,
       idempotenceKeyERN: map['idempotenceKeyERN'] as String,
-      operationType: OperationType.values.firstWhere(
+      operationType: ApiPOSOperationType.values.firstWhere(
           (element) => element.name == map['operationType'] as String),
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory RequestModel.fromJson(String source) =>
-      RequestModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory ApiRequestModel.fromJson(String source) =>
+      ApiRequestModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
@@ -53,7 +53,7 @@ class RequestModel {
   }
 
   @override
-  bool operator ==(covariant RequestModel other) {
+  bool operator ==(covariant ApiRequestModel other) {
     if (identical(this, other)) return true;
 
     return other.clientId == clientId &&

@@ -1,10 +1,10 @@
 import 'dart:convert';
 
-import 'package:pos_payment_terminal/src/domain/models/enums/response/operations_types.dart';
-import 'package:pos_payment_terminal/src/domain/models/response_models/response_operation_model.dart';
+import 'package:pos_payment_terminal/src/data/models/operations/enums/to_pos/api_pos_operations_types.dart';
+import 'package:pos_payment_terminal/src/data/models/operations/from_pos/api_result_model.dart';
 
-class ResponseOperationRefundModel extends ResponseOperationModel {
-  ResponseOperationRefundModel({
+class ApiResultRefundModel extends ApiResultModel {
+  ApiResultRefundModel({
     required super.clientId,
     required super.idempotenceKeyERN,
     required super.operationType,
@@ -15,12 +15,12 @@ class ResponseOperationRefundModel extends ResponseOperationModel {
     super.receipt,
   });
 
-  factory ResponseOperationRefundModel.fromMap(Map<String, dynamic> map) {
-    return ResponseOperationRefundModel(
+  factory ApiResultRefundModel.fromMap(Map<String, dynamic> map) {
+    return ApiResultRefundModel(
       amount: map['amount'] as double,
       clientId: map['clientId'] as String,
       idempotenceKeyERN: map['idempotenceKeyERN'] as String,
-      operationType: OperationType.values.firstWhere(
+      operationType: ApiPOSOperationType.values.firstWhere(
           (element) => element.name == map['operationType'] as String),
       success: map['success'] as bool,
       receipt: map['receipt'] != null ? map['receipt'] as String : null,
@@ -29,24 +29,23 @@ class ResponseOperationRefundModel extends ResponseOperationModel {
     );
   }
 
-  factory ResponseOperationRefundModel.fromJson(String source) =>
-      ResponseOperationRefundModel.fromMap(
-          json.decode(source) as Map<String, dynamic>);
+  factory ApiResultRefundModel.fromJson(String source) =>
+      ApiResultRefundModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   final double amount;
 
   @override
-  ResponseOperationRefundModel copyWith({
+  ApiResultRefundModel copyWith({
     double? amount,
     String? clientId,
     String? idempotenceKeyERN,
-    OperationType? operationType,
+    ApiPOSOperationType? operationType,
     bool? success,
     String? receipt,
     String? date,
     String? time,
   }) {
-    return ResponseOperationRefundModel(
+    return ApiResultRefundModel(
       amount: amount ?? this.amount,
       clientId: clientId ?? this.clientId,
       idempotenceKeyERN: idempotenceKeyERN ?? this.idempotenceKeyERN,
@@ -75,7 +74,7 @@ class ResponseOperationRefundModel extends ResponseOperationModel {
   }
 
   @override
-  bool operator ==(covariant ResponseOperationRefundModel other) {
+  bool operator ==(covariant ApiResultRefundModel other) {
     if (identical(this, other)) return true;
 
     return super == other && other.amount == amount;

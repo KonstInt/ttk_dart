@@ -1,8 +1,7 @@
 import 'dart:convert';
 
-import 'package:ttk_payment_terminal/src/domain/models/enums/response/operations_types.dart';
-import 'package:ttk_payment_terminal/src/domain/models/response_models/response_operation_model.dart';
-
+import 'package:pos_payment_terminal/src/domain/models/enums/response/operations_types.dart';
+import 'package:pos_payment_terminal/src/domain/models/response_models/response_operation_model.dart';
 
 class ResponseOperationPaymentModel extends ResponseOperationModel {
   ResponseOperationPaymentModel({

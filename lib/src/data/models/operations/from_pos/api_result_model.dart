@@ -1,16 +1,16 @@
 import 'dart:convert';
 
-import 'package:pos_payment_terminal/src/domain/models/enums/response/operations_types.dart';
+import 'package:pos_payment_terminal/src/data/models/operations/enums/to_pos/api_pos_operations_types.dart';
 
-class ResponseOperationModel {
+class ApiResultModel {
   final String clientId;
   final String idempotenceKeyERN;
-  final OperationType operationType;
+  final ApiPOSOperationType operationType;
   final bool success;
   final String? receipt;
   final String date;
   final String time;
-  ResponseOperationModel({
+  ApiResultModel({
     required this.clientId,
     required this.idempotenceKeyERN,
     required this.operationType,
@@ -20,15 +20,15 @@ class ResponseOperationModel {
     this.receipt,
   });
 
-  ResponseOperationModel copyWith(
+  ApiResultModel copyWith(
       {String? clientId,
       String? idempotenceKeyERN,
-      OperationType? operationType,
+      ApiPOSOperationType? operationType,
       bool? success,
       String? receipt,
       String? date,
       String? time}) {
-    return ResponseOperationModel(
+    return ApiResultModel(
       clientId: clientId ?? this.clientId,
       idempotenceKeyERN: idempotenceKeyERN ?? this.idempotenceKeyERN,
       operationType: operationType ?? this.operationType,
@@ -49,11 +49,11 @@ class ResponseOperationModel {
     };
   }
 
-  factory ResponseOperationModel.fromMap(Map<String, dynamic> map) {
-    return ResponseOperationModel(
+  factory ApiResultModel.fromMap(Map<String, dynamic> map) {
+    return ApiResultModel(
       clientId: map['clientId'] as String,
       idempotenceKeyERN: map['idempotenceKeyERN'] as String,
-      operationType: OperationType.values.firstWhere(
+      operationType: ApiPOSOperationType.values.firstWhere(
           (element) => element.name == map['operationType'] as String),
       success: map['success'] as bool,
       receipt: map['receipt'] != null ? map['receipt'] as String : null,
@@ -64,9 +64,8 @@ class ResponseOperationModel {
 
   String toJson() => json.encode(toMap());
 
-  factory ResponseOperationModel.fromJson(String source) =>
-      ResponseOperationModel.fromMap(
-          json.decode(source) as Map<String, dynamic>);
+  factory ApiResultModel.fromJson(String source) =>
+      ApiResultModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
@@ -74,7 +73,7 @@ class ResponseOperationModel {
   }
 
   @override
-  bool operator ==(covariant ResponseOperationModel other) {
+  bool operator ==(covariant ApiResultModel other) {
     if (identical(this, other)) return true;
 
     return other.clientId == clientId &&

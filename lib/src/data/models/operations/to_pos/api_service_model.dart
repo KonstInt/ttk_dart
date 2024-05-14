@@ -1,24 +1,24 @@
 import 'dart:convert';
 
-import 'package:pos_payment_terminal/src/domain/models/enums/response/operation_service_type.dart';
-import 'package:pos_payment_terminal/src/domain/models/enums/response/operations_types.dart';
-import 'package:pos_payment_terminal/src/domain/models/request_models/request_model.dart';
+import 'package:pos_payment_terminal/src/data/models/operations/enums/to_pos/api_pos_operation_service_type.dart';
+import 'package:pos_payment_terminal/src/data/models/operations/enums/to_pos/api_pos_operations_types.dart';
+import 'package:pos_payment_terminal/src/data/models/operations/to_pos/api_request_model.dart';
 
-class RequestServiceModel extends RequestModel {
-  final OperationServiceType serviceType;
-  RequestServiceModel({
+class ApiServiceModel extends ApiRequestModel {
+  final ApiPOSOperationServiceType serviceType;
+  ApiServiceModel({
     required super.clientId,
     required super.idempotenceKeyERN,
     required this.serviceType,
-  }) : super(operationType: OperationType.SRV);
+  }) : super(operationType: ApiPOSOperationType.SRV);
 
   @override
-  RequestServiceModel copyWith(
-      {OperationServiceType? serviceType,
+  ApiServiceModel copyWith(
+      {ApiPOSOperationServiceType? serviceType,
       String? clientId,
       String? idempotenceKeyERN,
-      OperationType? operationType}) {
-    return RequestServiceModel(
+      ApiPOSOperationType? operationType}) {
+    return ApiServiceModel(
       serviceType: serviceType ?? this.serviceType,
       clientId: clientId ?? this.clientId,
       idempotenceKeyERN: idempotenceKeyERN ?? this.idempotenceKeyERN,
@@ -33,26 +33,26 @@ class RequestServiceModel extends RequestModel {
       });
   }
 
-  factory RequestServiceModel.fromMap(Map<String, dynamic> map) {
-    return RequestServiceModel(
+  factory ApiServiceModel.fromMap(Map<String, dynamic> map) {
+    return ApiServiceModel(
         clientId: map['clientId'] as String,
         idempotenceKeyERN: map['idempotenceKeyERN'] as String,
-        serviceType: OperationServiceType.values.firstWhere(
+        serviceType: ApiPOSOperationServiceType.values.firstWhere(
             (element) => map['serviceType'] as String == element.value));
   }
 
   @override
   String toJson() => json.encode(toMap());
 
-  factory RequestServiceModel.fromJson(String source) =>
-      RequestServiceModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory ApiServiceModel.fromJson(String source) =>
+      ApiServiceModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() =>
       'ApiReconciliationModel(serviceType: $serviceType)${super.toString()}';
 
   @override
-  bool operator ==(covariant RequestServiceModel other) {
+  bool operator ==(covariant ApiServiceModel other) {
     if (identical(this, other)) return true;
 
     return other.clientId == clientId &&

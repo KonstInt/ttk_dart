@@ -1,14 +1,13 @@
-import 'package:ttk_payment_terminal/src/data/models/operations/enums/to_ttk/api_ttk_operations_types.dart';
-import 'package:ttk_payment_terminal/src/data/models/ttk/base_models/api_ttk_service_tag_model.dart';
-import 'package:ttk_payment_terminal/src/data/models/ttk/enums/tags/ttk_service_tags/ttk_service_tags_enum.dart';
-import 'package:ttk_payment_terminal/src/data/models/ttk/enums/ttk_status_code_enum.dart';
+import 'package:pos_payment_terminal/src/data/models/operations/enums/to_pos/api_pos_operations_types.dart';
+import 'package:pos_payment_terminal/src/data/models/pos/base_models/api_pos_service_tag_model.dart';
+import 'package:pos_payment_terminal/src/data/models/pos/enums/tags/pos_service_tags/pos_service_tags_enum.dart';
+import 'package:pos_payment_terminal/src/data/models/pos/enums/pos_status_code_enum.dart';
 
 class TagListAnalyzer {
-  //TODO:check it
   static bool operationSuccess(
-      Map<TTKServiceTagsEnum, ApiTTKServiceTagModel> tags) {
-    if (tags.containsKey(TTKServiceTagsEnum.TA1)) {
-      if (tags[TTKServiceTagsEnum.TA1]!.message as String == 'Y') {
+      Map<POSServiceTagsEnum, ApiPOSServiceTagModel> tags) {
+    if (tags.containsKey(POSServiceTagsEnum.TA1)) {
+      if (tags[POSServiceTagsEnum.TA1]!.message as String == 'Y') {
         return true;
       }
     }
@@ -17,19 +16,19 @@ class TagListAnalyzer {
   }
 
   static bool hasOperationResultCode(
-      Map<TTKServiceTagsEnum, ApiTTKServiceTagModel> tags) {
-    return tags.containsKey(TTKServiceTagsEnum.T9B);
+      Map<POSServiceTagsEnum, ApiPOSServiceTagModel> tags) {
+    return tags.containsKey(POSServiceTagsEnum.T9B);
   }
 
-  static TTKStatusCodeEnum? getStatusCode(
-      Map<TTKServiceTagsEnum, ApiTTKServiceTagModel> tags) {
-    return tags[TTKServiceTagsEnum.T9B]?.message as TTKStatusCodeEnum?;
+  static POSStatusCodeEnum? getStatusCode(
+      Map<POSServiceTagsEnum, ApiPOSServiceTagModel> tags) {
+    return tags[POSServiceTagsEnum.T9B]?.message as POSStatusCodeEnum?;
   }
 
   static bool isBelongToOperation({
-    required Map<TTKServiceTagsEnum, ApiTTKServiceTagModel> tags,
+    required Map<POSServiceTagsEnum, ApiPOSServiceTagModel> tags,
     required String ern,
-    required ApiTTKOperationType type,
+    required ApiPOSOperationType type,
     required String clientID,
     /* required String terminalID*/
   }) {
@@ -38,22 +37,22 @@ class TagListAnalyzer {
     bool clientNumberFlag = false;
     //bool terminalIdFlag = false;
 
-    if (tags.containsKey(TTKServiceTagsEnum.T83)) {
-      ernFlag = (ern == tags[TTKServiceTagsEnum.T83]!.message as String);
+    if (tags.containsKey(POSServiceTagsEnum.T83)) {
+      ernFlag = (ern == tags[POSServiceTagsEnum.T83]!.message as String);
     }
-    if (tags.containsKey(TTKServiceTagsEnum.T81)) {
+    if (tags.containsKey(POSServiceTagsEnum.T81)) {
       typeFlag = (type ==
-          ApiTTKOperationType.values.firstWhere((element) =>
+          ApiPOSOperationType.values.firstWhere((element) =>
               element.name ==
-              (tags[TTKServiceTagsEnum.T81]!.message as String)));
+              (tags[POSServiceTagsEnum.T81]!.message as String)));
     }
-    if (tags.containsKey(TTKServiceTagsEnum.T82)) {
+    if (tags.containsKey(POSServiceTagsEnum.T82)) {
       clientNumberFlag =
-          (clientID == tags[TTKServiceTagsEnum.T82]!.message as String);
+          (clientID == tags[POSServiceTagsEnum.T82]!.message as String);
     }
-    // if (tags.containsKey(TTKServiceTagsEnum.T9D)) {
+    // if (tags.containsKey(POSServiceTagsEnum.T9D)) {
     //   terminalIdFlag =
-    //       (terminalID == tags[TTKServiceTagsEnum.T9D]!.message as String);
+    //       (terminalID == tags[POSServiceTagsEnum.T9D]!.message as String);
     // }
 
     return ernFlag && typeFlag && clientNumberFlag; // &&terminalIdFlag ;

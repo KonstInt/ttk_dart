@@ -1,25 +1,30 @@
 import 'dart:convert';
 
-import 'package:pos_payment_terminal/src/domain/models/enums/response/operations_types.dart';
-import 'package:pos_payment_terminal/src/domain/models/request_models/request_model.dart';
+import 'package:pos_payment_terminal/src/data/models/operations/enums/to_pos/api_pos_operations_types.dart';
+import 'package:pos_payment_terminal/src/data/models/operations/to_pos/api_request_model.dart';
 
-class RequestPaymentModel extends RequestModel {
+class ApiRefundModel extends ApiRequestModel {
   final double amount;
-  RequestPaymentModel({
+  final String retrievalReferenceNumber;
+  ApiRefundModel({
     required this.amount,
+    required this.retrievalReferenceNumber,
     required super.clientId,
     required super.idempotenceKeyERN,
-  }) : super(operationType: OperationType.PUR);
+  }) : super(operationType: ApiPOSOperationType.REF);
 
   @override
-  RequestPaymentModel copyWith(
+  ApiRefundModel copyWith(
       {double? amount,
+      String? retrievalReferenceNumber,
       String? clientId,
       String? idempotenceKeyERN,
-      OperationType? operationType}) {
-    return RequestPaymentModel(
+      ApiPOSOperationType? operationType}) {
+    return ApiRefundModel(
       amount: amount ?? this.amount,
       clientId: clientId ?? this.clientId,
+      retrievalReferenceNumber:
+          retrievalReferenceNumber ?? this.retrievalReferenceNumber,
       idempotenceKeyERN: idempotenceKeyERN ?? this.idempotenceKeyERN,
     );
   }
@@ -27,30 +32,30 @@ class RequestPaymentModel extends RequestModel {
   @override
   Map<String, dynamic> toMap() {
     return super.toMap()
-      ..addAll(<String, dynamic>{
-        'amount': amount,
-      });
+      ..addAll(
+          <String, dynamic>{'amount': amount, 'rrn': retrievalReferenceNumber});
   }
 
-  factory RequestPaymentModel.fromMap(Map<String, dynamic> map) {
-    return RequestPaymentModel(
+  factory ApiRefundModel.fromMap(Map<String, dynamic> map) {
+    return ApiRefundModel(
       amount: map['amount'] as double,
       clientId: map['clientId'] as String,
       idempotenceKeyERN: map['idempotenceKeyERN'] as String,
+      retrievalReferenceNumber: map['rrn'] as String,
     );
   }
 
   @override
   String toJson() => json.encode(toMap());
 
-  factory RequestPaymentModel.fromJson(String source) =>
-      RequestPaymentModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory ApiRefundModel.fromJson(String source) =>
+      ApiRefundModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() => 'ApiPaymentModel(amount: $amount)${super.toString()}';
 
   @override
-  bool operator ==(covariant RequestPaymentModel other) {
+  bool operator ==(covariant ApiRefundModel other) {
     if (identical(this, other)) return true;
 
     return other.clientId == clientId &&

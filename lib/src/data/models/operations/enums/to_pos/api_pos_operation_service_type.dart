@@ -1,4 +1,4 @@
-enum OperationServiceType {
+enum ApiPOSOperationServiceType {
   CHECK_SUM('2'),
   TERMINAL_TEST('3'),
   BANK_HOST_TEST('4'),
@@ -11,5 +11,5 @@ enum OperationServiceType {
   ;
 
   final String value;
-  const OperationServiceType(this.value);
+  const ApiPOSOperationServiceType(this.value);
 }

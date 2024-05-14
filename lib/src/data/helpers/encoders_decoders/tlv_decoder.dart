@@ -1,15 +1,13 @@
-// ignore_for_file: constant_identifier_names
-
 import 'dart:math';
 import 'dart:typed_data';
 
-import 'package:ttk_payment_terminal/logger/logger.dart';
-import 'package:ttk_payment_terminal/src/data/helpers/converters/hex_converter.dart';
-import 'package:ttk_payment_terminal/src/data/models/ttk/base_models/api_ttk_service_tag_model.dart';
-import 'package:ttk_payment_terminal/src/data/models/ttk/enums/tags/ttk_service_tags/ttk_service_tags_enum.dart';
+import 'package:pos_payment_terminal/src/data/helpers/converters/hex_converter.dart';
+import 'package:pos_payment_terminal/src/data/models/pos/base_models/api_pos_service_tag_model.dart';
+import 'package:pos_payment_terminal/src/data/models/pos/enums/tags/pos_service_tags/pos_service_tags_enum.dart';
+import 'package:pos_payment_terminal/src/logger/logger.dart';
 
 class BerTlvEncoderDecoder {
-////Проверка бита
+  ///Проверка бита
   static bool isBitSet(int i, int j) {
     // Проверяем, установлен ли бит в позиции j в числе i
     return ((i >> j) & 1) == 1;
@@ -23,9 +21,9 @@ class BerTlvEncoderDecoder {
     return result;
   }
 
-  static (Map<TTKServiceTagsEnum, ApiTTKServiceTagModel>?, int) decoderService(
+  static (Map<POSServiceTagsEnum, ApiPOSServiceTagModel>?, int) decoderService(
       Uint8List dataList) {
-    final Map<TTKServiceTagsEnum, ApiTTKServiceTagModel> messageTags = {};
+    final Map<POSServiceTagsEnum, ApiPOSServiceTagModel> messageTags = {};
     int returnLength = 0;
     try {
       final iterator = dataList.iterator;
@@ -36,22 +34,22 @@ class BerTlvEncoderDecoder {
         iterator.moveNext();
         var length = _getLengthOfFile(iterator);
         returnLength = length;
-        final TTKType type = _getTypeFromServerTTKType(iterator);
-        if (type == TTKType.TTK1) {
-          //TODO: handle this case with remove to prev mean
+        final POSType type = _getTypeFromServerPOSType(iterator);
+        if (type == POSType.POS1) {
+          throw Exception('POS1 is not supported');
         } else {
           length -= 2;
         }
 
         while (length > 0) {
           final (
-            TTKServiceTagsEnum tagType,
+            POSServiceTagsEnum tagType,
             String tagStrName,
             int tmpTagSize
           ) = _getServiceTag(iterator);
           final (int tagSize, int tmpSizeSize) = _getLengthOfTagData(iterator);
           final Uint8List tagData = _getDataWithSize(iterator, tagSize);
-          messageTags[tagType] = ApiTTKServiceTagModel.fromBin(
+          messageTags[tagType] = ApiPOSServiceTagModel.fromBin(
               tagName: tagType, tagStrName: tagStrName, binaryMessage: tagData);
           length -= tmpSizeSize + tmpTagSize + tagSize;
         }
@@ -64,7 +62,7 @@ class BerTlvEncoderDecoder {
     return (messageTags, returnLength);
   }
 
-  static (TTKServiceTagsEnum, String, int) _getServiceTag(
+  static (POSServiceTagsEnum, String, int) _getServiceTag(
       Iterator<int> iterator) {
     bool hasNextTag = false;
     final tagStringBuffer = StringBuffer('T');
@@ -83,11 +81,11 @@ class BerTlvEncoderDecoder {
     } while (hasNextTag);
     final str = tagStringBuffer.toString();
     return (
-      TTKServiceTagsEnum.values.firstWhere(
+      POSServiceTagsEnum.values.firstWhere(
         (element) => element.name == str,
         orElse: () {
           logger.e(str);
-          return TTKServiceTagsEnum.TUnknown;
+          return POSServiceTagsEnum.TUnknown;
         },
       ),
       str,
@@ -135,19 +133,19 @@ class BerTlvEncoderDecoder {
     return firstLengthBit + secondLengthBit;
   }
 
-  static TTKType _getTypeFromServerTTKType(Iterator<int> iterator) {
+  static POSType _getTypeFromServerPOSType(Iterator<int> iterator) {
     final firstTypeBit = HexConverter.decimalToHex(iterator.current);
     iterator.moveNext();
     final secondTypeBit = HexConverter.decimalToHex(iterator.current);
     iterator.moveNext();
     if (firstTypeBit == '97' && secondTypeBit == 'F2') {
-      return TTKType.TTK2;
+      return POSType.POS2;
     } else if (firstTypeBit == '97' && secondTypeBit == 'F3') {
-      return TTKType.TTK2;
+      return POSType.POS2;
     } else {
-      return TTKType.TTK1;
+      return POSType.POS1;
     }
   }
 }
 
-enum TTKType { TTK1, TTK2, TTK3 }
+enum POSType { POS1, POS2, POS3 }

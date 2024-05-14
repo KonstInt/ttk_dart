@@ -1,14 +1,12 @@
-// ignore_for_file: constant_identifier_names
-
 import 'dart:typed_data';
 
-import 'package:ttk_payment_terminal/logger/logger.dart';
-import 'package:ttk_payment_terminal/src/data/helpers/converters/ascii_converter.dart';
-import 'package:ttk_payment_terminal/src/data/helpers/converters/bcd_converter.dart';
-import 'package:ttk_payment_terminal/src/data/helpers/converters/hex_converter.dart';
-import 'package:ttk_payment_terminal/src/data/models/ttk/base_models/api_ttk_client_tag_model.dart';
-import 'package:ttk_payment_terminal/src/data/models/ttk/enums/tags/ttk_client_tags/ttk_client_tags_enum.dart';
-import 'package:ttk_payment_terminal/src/data/models/ttk/enums/ttk_message_types.dart';
+import 'package:pos_payment_terminal/src/data/helpers/converters/ascii_converter.dart';
+import 'package:pos_payment_terminal/src/data/helpers/converters/bcd_converter.dart';
+import 'package:pos_payment_terminal/src/data/helpers/converters/hex_converter.dart';
+import 'package:pos_payment_terminal/src/data/models/pos/base_models/api_pos_client_tag_model.dart';
+import 'package:pos_payment_terminal/src/data/models/pos/enums/tags/pos_client_tags/pos_client_tags_enum.dart';
+import 'package:pos_payment_terminal/src/data/models/pos/enums/pos_message_types.dart';
+import 'package:pos_payment_terminal/src/logger/logger.dart';
 
 class BerTlvEncoderEncoder {
 ////Проверка бита
@@ -24,7 +22,7 @@ class BerTlvEncoderEncoder {
   }
 
   static Uint8List? encoderClient(
-      Map<TTKClientTagsEnum, ApiTTKClientTagModel> clientList) {
+      Map<POSClientTagsEnum, ApiPOSClientTagModel> clientList) {
     try {
       final List<int> result = [0, 0, 0, 0];
       int length = 4;
@@ -39,7 +37,7 @@ class BerTlvEncoderEncoder {
           ..addAll(data);
         length += tagLength + dataLength + lengthSize;
       }
-      final List<int> header = getTTKHeader(TTKType.TTK2, length - 2);
+      final List<int> header = getPOSHeader(POSType.POS2, length - 2);
       for (int i = 0; i < 4; i++) {
         result[i] = header[i];
       }
@@ -50,7 +48,7 @@ class BerTlvEncoderEncoder {
     }
   }
 
-  static (List<int>, int) getServiceTag(TTKClientTagsEnum clientTagEnum) {
+  static (List<int>, int) getServiceTag(POSClientTagsEnum clientTagEnum) {
     final clientTag = clientTagEnum.name.substring(1);
     final List<int> res = [];
     for (int i = 0; i < clientTag.length; i += 2) {
@@ -59,26 +57,26 @@ class BerTlvEncoderEncoder {
     return (res, res.length);
   }
 
-  static (List<int>, int) getDataWithSize(message, TTKMessageType type) {
+  static (List<int>, int) getDataWithSize(message, POSMessageType type) {
     final List<int> list = [];
     switch (type) {
-      case TTKMessageType.ASCII:
+      case POSMessageType.ASCII:
         final tmp = message as String;
         list.addAll(AsciiConverter.stringToAsciiArray(tmp));
         break;
-      case TTKMessageType.ASCII_BCD:
+      case POSMessageType.ASCII_BCD:
         final tmp = message as String;
         list.addAll(AsciiConverter.stringToAsciiArray(tmp.toString()));
         break;
-      case TTKMessageType.ASCII_HEX:
+      case POSMessageType.ASCII_HEX:
         final tmp = message as String;
         list.addAll(AsciiConverter.stringToAsciiArray(tmp));
         break;
-      case TTKMessageType.BIN:
+      case POSMessageType.BIN:
         final tmp = message as Uint8List;
         list.addAll(tmp);
         break;
-      case TTKMessageType.BCD:
+      case POSMessageType.BCD:
         final tmp = message as int;
         list.addAll(BCDConverter.bcdToUint8List(tmp));
         break;
@@ -101,18 +99,18 @@ class BerTlvEncoderEncoder {
     return (res.reversed.toList(), res.length);
   }
 
-  static List<int> getTTKHeader(TTKType ttkType, int size) {
+  static List<int> getPOSHeader(POSType posType, int size) {
     final List<int> dataSize = [size ~/ 256, size % 256];
-    switch (ttkType) {
-      case TTKType.TTK1:
+    switch (posType) {
+      case POSType.POS1:
         return dataSize;
-      case TTKType.TTK2:
+      case POSType.POS2:
         return dataSize +
             <int>[
               HexConverter.hexToDecimal('96'),
               HexConverter.hexToDecimal('F2')
             ];
-      case TTKType.TTK3:
+      case POSType.POS3:
         return dataSize +
             <int>[
               HexConverter.hexToDecimal('96'),
@@ -122,4 +120,4 @@ class BerTlvEncoderEncoder {
   }
 }
 
-enum TTKType { TTK1, TTK2, TTK3 }
+enum POSType { POS1, POS2, POS3 }

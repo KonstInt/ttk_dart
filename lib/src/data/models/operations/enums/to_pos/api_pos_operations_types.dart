@@ -1,4 +1,4 @@
-enum OperationType {
+enum ApiPOSOperationType {
   /// Sale of goods or services (financial transaction)
   PUR,
 
