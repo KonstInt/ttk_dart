@@ -104,7 +104,7 @@ class POSApiResultMapper {
       success: tags[POSServiceTagsEnum.TA1]!.message as String == 'Y',
       date: tags[POSServiceTagsEnum.T8D]!.message as String,
       time: tags[POSServiceTagsEnum.T8E]!.message as String,
-      receipt: tags[POSServiceTagsEnum.T9C]!.message as String,
+      receipt: tags[POSServiceTagsEnum.T9C]?.message as String?,
     );
   }
 

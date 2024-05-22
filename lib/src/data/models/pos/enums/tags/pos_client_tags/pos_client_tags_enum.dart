@@ -31,6 +31,9 @@ enum POSClientTagsEnum {
   /// Commodity Code | ASCII |
   T0E(messageType: POSMessageType.ASCII, maxLength: null),
 
+  /// Host Id | ASCII |
+  T0F(messageType: POSMessageType.ASCII, maxLength: null),
+
   /// RRN | ASCII-BCD | 12
   T18(messageType: POSMessageType.ASCII_BCD, maxLength: 12),
 
@@ -54,10 +57,15 @@ enum POSClientTagsEnum {
 
   /// Input Data | ASCII
   T1F01(messageType: POSMessageType.ASCII, maxLength: null),
+  
+  //TODO:
+  /// PAN | ASCII-BCD | 3
+  TA5(messageType: POSMessageType.ASCII_BCD, maxLength: 10),
 
   /// Input Data | ASCII
   T9F42(messageType: POSMessageType.ASCII, maxLength: null),
   ;
+
 
   final POSMessageType messageType;
   final int? maxLength;

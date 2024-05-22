@@ -1,5 +1,5 @@
 name: pos_payment_terminal
-description: A starting point for Dart libraries or applications.
+description: POS Terminal Communication Module
 version: 1.0.0
 repository: https://github.com/KonstInt/ttk_dart
 
