@@ -19,8 +19,8 @@ import 'package:pos_payment_terminal/src/logger/logger.dart';
 
 class POSService {
   POSService({required this.ip, required this.port});
-  late final Socket posSocket;
-  late final StreamSubscription<Uint8List> _posApiStreamSubscription;
+  late Socket posSocket;
+  late StreamSubscription<Uint8List> _posApiStreamSubscription;
   bool _posStreamInitialized = false;
   final String ip;
   final int port;
@@ -48,7 +48,7 @@ class POSService {
   }
 
   Future<bool> posSocketDisconnect() async {
-    if (!_posStreamInitialized) {
+    if (_posStreamInitialized) {
       try {
         await _posApiStreamSubscription.cancel();
         posSocket.destroy();
