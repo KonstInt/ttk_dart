@@ -57,7 +57,7 @@ enum POSClientTagsEnum {
 
   /// Input Data | ASCII
   T1F01(messageType: POSMessageType.ASCII, maxLength: null),
-  
+
   //TODO:
   /// PAN | ASCII-BCD | 3
   TA5(messageType: POSMessageType.ASCII_BCD, maxLength: 10),
@@ -65,7 +65,6 @@ enum POSClientTagsEnum {
   /// Input Data | ASCII
   T9F42(messageType: POSMessageType.ASCII, maxLength: null),
   ;
-
 
   final POSMessageType messageType;
   final int? maxLength;

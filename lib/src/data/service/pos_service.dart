@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
-
-import 'package:logger/logger.dart';
 import 'package:pos_payment_terminal/src/data/helpers/encoders_decoders/tlv_decoder.dart';
 import 'package:pos_payment_terminal/src/data/helpers/encoders_decoders/tlv_encoder.dart';
 import 'package:pos_payment_terminal/src/data/helpers/tag_analizer.dart';
@@ -68,9 +66,13 @@ class POSService {
     _checkIfConnected();
     final Completer<ApiResultPaymentModel> c =
         Completer<ApiResultPaymentModel>();
-        //TODO:
+    //TODO:
     posSocket.add(BerTlvEncoderEncoder.encoderClient(
-            POSApiResultMapper.paymentModelToAPI(payment)..addAll({POSClientTagsEnum.T0F : ApiPOSClientTagModel(message: 'h', tagName: POSClientTagsEnum.T0F)})) ??
+            POSApiResultMapper.paymentModelToAPI(payment)
+              ..addAll({
+                POSClientTagsEnum.T0F: ApiPOSClientTagModel(
+                    message: 'h', tagName: POSClientTagsEnum.T0F)
+              })) ??
         []);
     _posApiStreamSubscription.onData((data) {
       try {
@@ -86,7 +88,7 @@ class POSService {
             tmpData = tmpData.sublist(tmpTagLength + 2);
           }
 
-          logger.log(Level.debug, tmpTagData);
+          logger.debugPrint(tmpTagData);
         }
 
         for (final decodedData in tags) {
@@ -106,7 +108,7 @@ class POSService {
           }
         }
       } on Exception {
-        logger.e('Exception on service level payment');
+        logger.debugPrint('Exception on service level payment');
       }
     });
     return c.future;
@@ -132,7 +134,7 @@ class POSService {
             tmpData = tmpData.sublist(tmpTagLength + 2);
           }
 
-          logger.log(Level.debug, tmpTagData);
+          logger.debugPrint(tmpTagData);
         }
 
         for (final decodedData in tags) {
@@ -152,7 +154,7 @@ class POSService {
           }
         }
       } on Exception {
-        logger.e('Exception on service level payment');
+        logger.debugPrint('Exception on service level payment');
       }
     });
     return c.future;
@@ -180,7 +182,7 @@ class POSService {
             tmpData = tmpData.sublist(tmpTagLength + 2);
           }
 
-          logger.log(Level.debug, tmpTagData);
+          logger.debugPrint(tmpTagData);
         }
 
         for (final decodedData in tags) {
@@ -200,7 +202,7 @@ class POSService {
           }
         }
       } on Exception {
-        logger.e('Exception on service level payment');
+        logger.debugPrint('Exception on service level payment');
       }
     });
     return c.future;

@@ -43,7 +43,7 @@ class BerTlvEncoderEncoder {
       }
       return Uint8List.fromList(result);
     } catch (e) {
-      logger.i(e.toString());
+      logger.debugPrint(e.toString());
       return null;
     }
   }

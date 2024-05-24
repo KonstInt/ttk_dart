@@ -56,7 +56,7 @@ class BerTlvEncoderDecoder {
         return (messageTags, returnLength);
       }
     } catch (e) {
-      logger.i(e.toString());
+      logger.debugPrint(e.toString());
       return (messageTags, returnLength);
     }
     return (messageTags, returnLength);
@@ -84,7 +84,7 @@ class BerTlvEncoderDecoder {
       POSServiceTagsEnum.values.firstWhere(
         (element) => element.name == str,
         orElse: () {
-          logger.e(str);
+          logger.debugPrint(str);
           return POSServiceTagsEnum.TUnknown;
         },
       ),
