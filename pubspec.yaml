@@ -1,6 +1,6 @@
 name: pos_payment_terminal
 description: POS Terminal Communication Module A comprehensive library for interfacing with POS terminals, enabling seamless communication for payment processing and other business operations.
-version: 1.0.2
+version: 1.0.21
 repository: https://github.com/KonstInt/ttk_dart
 
 environment:
