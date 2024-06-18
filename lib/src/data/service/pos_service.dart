@@ -8,6 +8,7 @@ import 'package:pos_payment_terminal/src/data/mapper/pos_api/pos_api_mapper.dart
 import 'package:pos_payment_terminal/src/data/models/operations/from_pos/api_result_payment_model.dart';
 import 'package:pos_payment_terminal/src/data/models/operations/from_pos/api_result_refund_model.dart';
 import 'package:pos_payment_terminal/src/data/models/operations/from_pos/api_result_service_model.dart';
+import 'package:pos_payment_terminal/src/data/models/operations/to_pos/api_abort_model.dart';
 import 'package:pos_payment_terminal/src/data/models/operations/to_pos/api_payment_model.dart';
 import 'package:pos_payment_terminal/src/data/models/operations/to_pos/api_refund_model.dart';
 import 'package:pos_payment_terminal/src/data/models/operations/to_pos/api_service_model.dart';
@@ -59,6 +60,19 @@ class POSService {
       }
     } else {
       return true;
+    }
+  }
+
+  bool createAbort(ApiAbortModel abort) {
+    try {
+      _checkIfConnected();
+      posSocket.add(BerTlvEncoderEncoder.encoderClient(
+            POSApiResultMapper.abortModelToAPI(abort),
+          ) ??
+          []);
+      return true;
+    } catch (e) {
+      return false;
     }
   }
 

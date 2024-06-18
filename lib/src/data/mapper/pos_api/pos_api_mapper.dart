@@ -2,6 +2,7 @@ import 'package:pos_payment_terminal/src/data/models/operations/enums/to_pos/api
 import 'package:pos_payment_terminal/src/data/models/operations/from_pos/api_result_payment_model.dart';
 import 'package:pos_payment_terminal/src/data/models/operations/from_pos/api_result_refund_model.dart';
 import 'package:pos_payment_terminal/src/data/models/operations/from_pos/api_result_service_model.dart';
+import 'package:pos_payment_terminal/src/data/models/operations/to_pos/api_abort_model.dart';
 import 'package:pos_payment_terminal/src/data/models/operations/to_pos/api_payment_model.dart';
 import 'package:pos_payment_terminal/src/data/models/operations/to_pos/api_refund_model.dart';
 import 'package:pos_payment_terminal/src/data/models/operations/to_pos/api_service_model.dart';
@@ -63,7 +64,7 @@ class POSApiResultMapper {
       date: tags[POSServiceTagsEnum.T8D]!.message as String,
       time: tags[POSServiceTagsEnum.T8E]!.message as String,
       amount: int.parse(tags[POSServiceTagsEnum.T84]!.message as String) / 100,
-      receipt: tags[POSServiceTagsEnum.T9C]?.message as String,
+      receipt: tags[POSServiceTagsEnum.T9C]?.message as String?,
     );
   }
 
@@ -126,6 +127,25 @@ class POSApiResultMapper {
       POSClientTagsEnum.T1A: ApiPOSClientTagModel(
         message: serviceModel.serviceType.value,
         tagName: POSClientTagsEnum.T1A,
+      ),
+    };
+  }
+
+  //Abort operation
+  static Map<POSClientTagsEnum, ApiPOSClientTagModel> abortModelToAPI(
+      ApiAbortModel abortModel) {
+    return <POSClientTagsEnum, ApiPOSClientTagModel>{
+      POSClientTagsEnum.T01: ApiPOSClientTagModel(
+        message: abortModel.operationType.name,
+        tagName: POSClientTagsEnum.T01,
+      ),
+      POSClientTagsEnum.T02: ApiPOSClientTagModel(
+        message: abortModel.clientId,
+        tagName: POSClientTagsEnum.T02,
+      ),
+      POSClientTagsEnum.T03: ApiPOSClientTagModel(
+        message: abortModel.idempotenceKeyERN,
+        tagName: POSClientTagsEnum.T03,
       ),
     };
   }

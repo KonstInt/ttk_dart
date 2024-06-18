@@ -1,5 +1,6 @@
 import 'package:pos_payment_terminal/src/data/repository/pos_repository.dart';
 import 'package:pos_payment_terminal/src/domain/models/enums/response/operation_service_type.dart';
+import 'package:pos_payment_terminal/src/domain/models/request_models/request_abort_model.dart';
 import 'package:pos_payment_terminal/src/domain/models/request_models/request_payment_model.dart';
 import 'package:pos_payment_terminal/src/domain/models/request_models/request_refund_model.dart';
 import 'package:pos_payment_terminal/src/domain/models/request_models/request_service_model.dart';
@@ -58,5 +59,12 @@ class POSPaymentModule {
         clientId: clientId,
         idempotenceKeyERN: idempotenceKeyERN);
     return repository.createServiceOperation(sendModel);
+  }
+
+  bool createAbort(
+      {required String clientId, required String idempotenceKeyERN}) {
+    final sendModel = RequestAbortModel(
+        clientId: clientId, idempotenceKeyERN: idempotenceKeyERN);
+    return repository.createAbort(sendModel);
   }
 }

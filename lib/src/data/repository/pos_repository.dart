@@ -1,4 +1,5 @@
 import 'package:pos_payment_terminal/src/data/util/pos_util.dart';
+import 'package:pos_payment_terminal/src/domain/models/request_models/request_abort_model.dart';
 import 'package:pos_payment_terminal/src/domain/models/request_models/request_payment_model.dart';
 import 'package:pos_payment_terminal/src/domain/models/request_models/request_refund_model.dart';
 import 'package:pos_payment_terminal/src/domain/models/request_models/request_service_model.dart';
@@ -40,5 +41,10 @@ class ApiPOSPaymentRepository extends POSPaymentRepository {
   @override
   Future<bool> disconnect() {
     return util.disconnectWithPOS();
+  }
+
+  @override
+  bool createAbort(RequestAbortModel sendModel) {
+    return util.createAbortOperation(sendModel);
   }
 }

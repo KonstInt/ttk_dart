@@ -12,6 +12,6 @@
 - Fix description
 
 
-## 1.0.21
+## 1.0.3
 
 - Fix connection and disconnection with POS

@@ -1,5 +1,6 @@
-import 'package:pos_payment_terminal/src/data/mapper/domain_data/pos_domai_data_mapper.dart';
+import 'package:pos_payment_terminal/src/data/mapper/domain_data/pos_domain_data_mapper.dart';
 import 'package:pos_payment_terminal/src/data/service/pos_service.dart';
+import 'package:pos_payment_terminal/src/domain/models/request_models/request_abort_model.dart';
 import 'package:pos_payment_terminal/src/domain/models/request_models/request_payment_model.dart';
 import 'package:pos_payment_terminal/src/domain/models/request_models/request_refund_model.dart';
 import 'package:pos_payment_terminal/src/domain/models/request_models/request_service_model.dart';
@@ -42,5 +43,10 @@ class POSUtil {
     final apiLevelModel = POSDomainDataMapper.serviceModelToApi(sendModel);
     final response = await service.createServiceOperation(apiLevelModel);
     return POSDomainDataMapper.serviceModelFromApi(response);
+  }
+
+  bool createAbortOperation(RequestAbortModel sendModel) {
+    final apiLevelModel = POSDomainDataMapper.abortModelToApi(sendModel);
+    return service.createAbort(apiLevelModel);
   }
 }

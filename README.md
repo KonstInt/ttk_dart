@@ -63,6 +63,15 @@ final serviceResponse = await posModule.createService(
 );
 ```
 
+#### Abort operation
+Abort operation is not async function, because it has not result data, bool flag is just result of success or unsuccess creation. The result of aborting the operation will be received in the operation that you aborted.
+```dart
+bool stopSuccess = posModule.createAbort(
+  clientId: 'client_id',
+  idempotenceKeyERN: 'idempotence_key_ern',
+);
+```
+
 ### Contribution
 
 Contributions to this project are welcome. Feel free to submit bug reports, feature requests, or pull requests.

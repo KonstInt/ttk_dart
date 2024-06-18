@@ -2,10 +2,12 @@ import 'package:pos_payment_terminal/src/data/models/operations/enums/to_pos/api
 import 'package:pos_payment_terminal/src/data/models/operations/from_pos/api_result_payment_model.dart';
 import 'package:pos_payment_terminal/src/data/models/operations/from_pos/api_result_refund_model.dart';
 import 'package:pos_payment_terminal/src/data/models/operations/from_pos/api_result_service_model.dart';
+import 'package:pos_payment_terminal/src/data/models/operations/to_pos/api_abort_model.dart';
 import 'package:pos_payment_terminal/src/data/models/operations/to_pos/api_payment_model.dart';
 import 'package:pos_payment_terminal/src/data/models/operations/to_pos/api_refund_model.dart';
 import 'package:pos_payment_terminal/src/data/models/operations/to_pos/api_service_model.dart';
 import 'package:pos_payment_terminal/src/domain/models/enums/response/operations_types.dart';
+import 'package:pos_payment_terminal/src/domain/models/request_models/request_abort_model.dart';
 import 'package:pos_payment_terminal/src/domain/models/request_models/request_payment_model.dart';
 import 'package:pos_payment_terminal/src/domain/models/request_models/request_refund_model.dart';
 import 'package:pos_payment_terminal/src/domain/models/request_models/request_service_model.dart';
@@ -36,6 +38,13 @@ class POSDomainDataMapper {
         idempotenceKeyERN: model.idempotenceKeyERN,
         serviceType: ApiPOSOperationServiceType.values
             .firstWhere((element) => element.value == model.serviceType.value));
+  }
+
+  static ApiAbortModel abortModelToApi(RequestAbortModel model) {
+    return ApiAbortModel(
+      clientId: model.clientId,
+      idempotenceKeyERN: model.idempotenceKeyERN,
+    );
   }
 
   ///FROM API
