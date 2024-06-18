@@ -15,3 +15,7 @@
 ## 1.0.3
 
 - Fix connection and disconnection with POS
+
+## 1.0.4
+
+- Add abort operation
