@@ -5,7 +5,9 @@ import 'package:pos_payment_terminal/src/domain/models/request_models/request_mo
 
 class RequestPaymentModel extends RequestModel {
   final double amount;
+
   RequestPaymentModel({
+    required super.organizationCode,
     required this.amount,
     required super.clientId,
     required super.idempotenceKeyERN,
@@ -14,10 +16,12 @@ class RequestPaymentModel extends RequestModel {
   @override
   RequestPaymentModel copyWith(
       {double? amount,
+      int? organizationCode,
       String? clientId,
       String? idempotenceKeyERN,
       OperationType? operationType}) {
     return RequestPaymentModel(
+      organizationCode: organizationCode ?? this.organizationCode,
       amount: amount ?? this.amount,
       clientId: clientId ?? this.clientId,
       idempotenceKeyERN: idempotenceKeyERN ?? this.idempotenceKeyERN,
@@ -36,6 +40,7 @@ class RequestPaymentModel extends RequestModel {
     return RequestPaymentModel(
       amount: map['amount'] as double,
       clientId: map['clientId'] as String,
+      organizationCode: map['organizationCode'] as int,
       idempotenceKeyERN: map['idempotenceKeyERN'] as String,
     );
   }

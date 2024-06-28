@@ -11,16 +11,19 @@ class ApiRefundModel extends ApiRequestModel {
     required this.retrievalReferenceNumber,
     required super.clientId,
     required super.idempotenceKeyERN,
+    required super.organizationCode,
   }) : super(operationType: ApiPOSOperationType.REF);
 
   @override
   ApiRefundModel copyWith(
-      {double? amount,
+      {int? organizationCode,
+      double? amount,
       String? retrievalReferenceNumber,
       String? clientId,
       String? idempotenceKeyERN,
       ApiPOSOperationType? operationType}) {
     return ApiRefundModel(
+      organizationCode: organizationCode ?? this.organizationCode,
       amount: amount ?? this.amount,
       clientId: clientId ?? this.clientId,
       retrievalReferenceNumber:
@@ -38,6 +41,7 @@ class ApiRefundModel extends ApiRequestModel {
 
   factory ApiRefundModel.fromMap(Map<String, dynamic> map) {
     return ApiRefundModel(
+      organizationCode: map['organizationCode'],
       amount: map['amount'] as double,
       clientId: map['clientId'] as String,
       idempotenceKeyERN: map['idempotenceKeyERN'] as String,

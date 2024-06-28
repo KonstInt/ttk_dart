@@ -11,16 +11,19 @@ class RequestRefundModel extends RequestModel {
     required this.retrievalReferenceNumber,
     required super.clientId,
     required super.idempotenceKeyERN,
+    required super.organizationCode,
   }) : super(operationType: OperationType.REF);
 
   @override
   RequestRefundModel copyWith(
-      {double? amount,
+      {int? organizationCode,
+      double? amount,
       String? retrievalReferenceNumber,
       String? clientId,
       String? idempotenceKeyERN,
       OperationType? operationType}) {
     return RequestRefundModel(
+      organizationCode: organizationCode ?? this.organizationCode,
       amount: amount ?? this.amount,
       clientId: clientId ?? this.clientId,
       retrievalReferenceNumber:
@@ -38,6 +41,7 @@ class RequestRefundModel extends RequestModel {
 
   factory RequestRefundModel.fromMap(Map<String, dynamic> map) {
     return RequestRefundModel(
+      organizationCode: map['organizationCode'] as int,
       amount: map['amount'] as double,
       clientId: map['clientId'] as String,
       idempotenceKeyERN: map['idempotenceKeyERN'] as String,

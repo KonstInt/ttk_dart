@@ -26,11 +26,14 @@ class POSPaymentModule {
     return repository.disconnect();
   }
 
-  Future<ResponseOperationPaymentModel> createPayment(
-      {required double amount,
-      required String clientId,
-      required String idempotenceKeyERN}) async {
+  Future<ResponseOperationPaymentModel> createPayment({
+    required double amount,
+    required String clientId,
+    required String idempotenceKeyERN,
+    required int? organizationCode,
+  }) async {
     final sendModel = RequestPaymentModel(
+        organizationCode: organizationCode,
         amount: amount,
         clientId: clientId,
         idempotenceKeyERN: idempotenceKeyERN);
@@ -41,30 +44,41 @@ class POSPaymentModule {
       {required double amount,
       required String retrievalReferenceNumber,
       required String clientId,
+      required int? organizationCode,
       required String idempotenceKeyERN}) async {
     final sendModel = RequestRefundModel(
-        amount: amount,
-        retrievalReferenceNumber: retrievalReferenceNumber,
-        clientId: clientId,
-        idempotenceKeyERN: idempotenceKeyERN);
+      organizationCode: organizationCode,
+      amount: amount,
+      retrievalReferenceNumber: retrievalReferenceNumber,
+      clientId: clientId,
+      idempotenceKeyERN: idempotenceKeyERN,
+    );
     return repository.createRefund(sendModel);
   }
 
   Future<ResponseOperationServiceModel> createService(
       {required String clientId,
+      required int? organizationCode,
       required OperationServiceType operationServiceType,
       required String idempotenceKeyERN}) async {
     final sendModel = RequestServiceModel(
-        serviceType: operationServiceType,
-        clientId: clientId,
-        idempotenceKeyERN: idempotenceKeyERN);
+      organizationCode: organizationCode,
+      serviceType: operationServiceType,
+      clientId: clientId,
+      idempotenceKeyERN: idempotenceKeyERN,
+    );
     return repository.createServiceOperation(sendModel);
   }
 
   bool createAbort(
-      {required String clientId, required String idempotenceKeyERN}) {
+      {required int? organizationCode,
+      required String clientId,
+      required String idempotenceKeyERN}) {
     final sendModel = RequestAbortModel(
-        clientId: clientId, idempotenceKeyERN: idempotenceKeyERN);
+      organizationCode: organizationCode,
+      clientId: clientId,
+      idempotenceKeyERN: idempotenceKeyERN,
+    );
     return repository.createAbort(sendModel);
   }
 }

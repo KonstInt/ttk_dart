@@ -6,19 +6,22 @@ class RequestModel {
   final String clientId;
   final String idempotenceKeyERN;
   final OperationType operationType;
-
+  final int? organizationCode;
   RequestModel({
+    required this.organizationCode,
     required this.clientId,
     required this.idempotenceKeyERN,
     required this.operationType,
   });
 
   RequestModel copyWith({
+    int? organizationCode,
     String? clientId,
     String? idempotenceKeyERN,
     OperationType? operationType,
   }) {
     return RequestModel(
+      organizationCode: organizationCode ?? this.organizationCode,
       clientId: clientId ?? this.clientId,
       idempotenceKeyERN: idempotenceKeyERN ?? this.idempotenceKeyERN,
       operationType: operationType ?? this.operationType,
@@ -27,6 +30,7 @@ class RequestModel {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
+      'organizationCode': organizationCode,
       'clientId': clientId,
       'idempotenceKeyERN': idempotenceKeyERN,
       'operationType': operationType.name,
@@ -35,6 +39,7 @@ class RequestModel {
 
   factory RequestModel.fromMap(Map<String, dynamic> map) {
     return RequestModel(
+      organizationCode: map['organizationCode'] as int,
       clientId: map['clientId'] as String,
       idempotenceKeyERN: map['idempotenceKeyERN'] as String,
       operationType: OperationType.values.firstWhere(
@@ -49,7 +54,7 @@ class RequestModel {
 
   @override
   String toString() {
-    return 'ApiRequestModel(clientId: $clientId, idempotenceKeyERN: $idempotenceKeyERN, operationType: $operationType)';
+    return 'ApiRequestModel(clientId: $clientId, idempotenceKeyERN: $idempotenceKeyERN, operationType: $operationType, organizationCode: $organizationCode)';
   }
 
   @override
@@ -58,12 +63,14 @@ class RequestModel {
 
     return other.clientId == clientId &&
         other.idempotenceKeyERN == idempotenceKeyERN &&
-        other.operationType == operationType;
+        other.operationType == operationType &&
+        other.organizationCode == organizationCode;
   }
 
   @override
   int get hashCode {
-    return clientId.hashCode ^
+    return organizationCode.hashCode ^
+        clientId.hashCode ^
         idempotenceKeyERN.hashCode ^
         operationType.hashCode;
   }

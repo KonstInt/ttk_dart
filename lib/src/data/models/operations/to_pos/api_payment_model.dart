@@ -5,19 +5,23 @@ import 'package:pos_payment_terminal/src/data/models/operations/to_pos/api_reque
 
 class ApiPaymentModel extends ApiRequestModel {
   final double amount;
+
   ApiPaymentModel({
     required this.amount,
+    required super.organizationCode,
     required super.clientId,
     required super.idempotenceKeyERN,
   }) : super(operationType: ApiPOSOperationType.PUR);
 
   @override
   ApiPaymentModel copyWith(
-      {double? amount,
+      {int? organizationCode,
+      double? amount,
       String? clientId,
       String? idempotenceKeyERN,
       ApiPOSOperationType? operationType}) {
     return ApiPaymentModel(
+      organizationCode: organizationCode ?? this.organizationCode,
       amount: amount ?? this.amount,
       clientId: clientId ?? this.clientId,
       idempotenceKeyERN: idempotenceKeyERN ?? this.idempotenceKeyERN,
@@ -34,6 +38,7 @@ class ApiPaymentModel extends ApiRequestModel {
 
   factory ApiPaymentModel.fromMap(Map<String, dynamic> map) {
     return ApiPaymentModel(
+      organizationCode: map['organizationCode'] as int,
       amount: map['amount'] as double,
       clientId: map['clientId'] as String,
       idempotenceKeyERN: map['idempotenceKeyERN'] as String,

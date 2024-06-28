@@ -19,6 +19,7 @@ class POSDomainDataMapper {
   //TO API
   static ApiPaymentModel paymentModelToApi(RequestPaymentModel model) {
     return ApiPaymentModel(
+        organizationCode: model.organizationCode ?? 1,
         amount: model.amount,
         clientId: model.clientId,
         idempotenceKeyERN: model.idempotenceKeyERN);
@@ -26,6 +27,7 @@ class POSDomainDataMapper {
 
   static ApiRefundModel refundModelToApi(RequestRefundModel model) {
     return ApiRefundModel(
+        organizationCode: model.organizationCode ?? 1,
         amount: model.amount,
         retrievalReferenceNumber: model.retrievalReferenceNumber,
         clientId: model.clientId,
@@ -34,6 +36,7 @@ class POSDomainDataMapper {
 
   static ApiServiceModel serviceModelToApi(RequestServiceModel model) {
     return ApiServiceModel(
+        organizationCode: model.organizationCode ?? 1,
         clientId: model.clientId,
         idempotenceKeyERN: model.idempotenceKeyERN,
         serviceType: ApiPOSOperationServiceType.values
@@ -42,6 +45,7 @@ class POSDomainDataMapper {
 
   static ApiAbortModel abortModelToApi(RequestAbortModel model) {
     return ApiAbortModel(
+      organizationCode: model.organizationCode ?? 1,
       clientId: model.clientId,
       idempotenceKeyERN: model.idempotenceKeyERN,
     );

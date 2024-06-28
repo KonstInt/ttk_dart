@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:pos_payment_terminal/src/data/helpers/converters/hex_converter.dart';
 import 'package:pos_payment_terminal/src/data/helpers/encoders_decoders/tlv_decoder.dart';
 import 'package:pos_payment_terminal/src/data/helpers/encoders_decoders/tlv_encoder.dart';
 import 'package:pos_payment_terminal/src/data/helpers/tag_analizer.dart';
@@ -80,14 +81,13 @@ class POSService {
     _checkIfConnected();
     final Completer<ApiResultPaymentModel> c =
         Completer<ApiResultPaymentModel>();
-    //TODO:
-    posSocket.add(BerTlvEncoderEncoder.encoderClient(
-            POSApiResultMapper.paymentModelToAPI(payment)
-              ..addAll({
-                POSClientTagsEnum.T0F: ApiPOSClientTagModel(
-                    message: 'h', tagName: POSClientTagsEnum.T0F)
-              })) ??
-        []);
+    //TODO: remove unnessasare variables
+
+    var sa = POSApiResultMapper.paymentModelToAPI(payment);
+    var foo = BerTlvEncoderEncoder.encoderClient(sa);
+    var bar = foo!.map((e) => HexConverter.decimalToHex(e)).toList();
+    print(bar);
+    posSocket.add(foo ?? []);
     _posApiStreamSubscription.onData((data) {
       try {
         var tmpData = data;

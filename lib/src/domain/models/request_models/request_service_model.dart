@@ -6,19 +6,22 @@ import 'package:pos_payment_terminal/src/domain/models/request_models/request_mo
 
 class RequestServiceModel extends RequestModel {
   final OperationServiceType serviceType;
-  RequestServiceModel({
-    required super.clientId,
-    required super.idempotenceKeyERN,
-    required this.serviceType,
-  }) : super(operationType: OperationType.SRV);
+  RequestServiceModel(
+      {required super.clientId,
+      required super.idempotenceKeyERN,
+      required this.serviceType,
+      required super.organizationCode})
+      : super(operationType: OperationType.SRV);
 
   @override
   RequestServiceModel copyWith(
-      {OperationServiceType? serviceType,
+      {int? organizationCode,
+      OperationServiceType? serviceType,
       String? clientId,
       String? idempotenceKeyERN,
       OperationType? operationType}) {
     return RequestServiceModel(
+      organizationCode: organizationCode ?? this.organizationCode,
       serviceType: serviceType ?? this.serviceType,
       clientId: clientId ?? this.clientId,
       idempotenceKeyERN: idempotenceKeyERN ?? this.idempotenceKeyERN,
@@ -35,6 +38,8 @@ class RequestServiceModel extends RequestModel {
 
   factory RequestServiceModel.fromMap(Map<String, dynamic> map) {
     return RequestServiceModel(
+        //TODO: organisation code is nullable, and should redo it
+        organizationCode: map[' organizationCode'] as int,
         clientId: map['clientId'] as String,
         idempotenceKeyERN: map['idempotenceKeyERN'] as String,
         serviceType: OperationServiceType.values.firstWhere(

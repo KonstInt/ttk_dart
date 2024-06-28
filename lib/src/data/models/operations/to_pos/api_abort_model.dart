@@ -5,14 +5,17 @@ class ApiAbortModel extends ApiRequestModel {
   ApiAbortModel({
     required super.clientId,
     required super.idempotenceKeyERN,
+    required super.organizationCode,
   }) : super(operationType: ApiPOSOperationType.ABR);
 
   @override
   ApiAbortModel copyWith(
-      {String? clientId,
+      {int? organizationCode,
+      String? clientId,
       String? idempotenceKeyERN,
       ApiPOSOperationType? operationType}) {
     return ApiAbortModel(
+      organizationCode: organizationCode ?? this.organizationCode,
       clientId: clientId ?? this.clientId,
       idempotenceKeyERN: idempotenceKeyERN ?? this.idempotenceKeyERN,
     );

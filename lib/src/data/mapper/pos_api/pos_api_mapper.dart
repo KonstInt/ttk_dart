@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:pos_payment_terminal/src/data/models/operations/enums/to_pos/api_pos_operations_types.dart';
 import 'package:pos_payment_terminal/src/data/models/operations/from_pos/api_result_payment_model.dart';
 import 'package:pos_payment_terminal/src/data/models/operations/from_pos/api_result_refund_model.dart';
@@ -49,6 +51,9 @@ class POSApiResultMapper {
         message: (paymentModel.amount * 100 ~/ 1).toString(),
         tagName: POSClientTagsEnum.T04,
       ),
+      POSClientTagsEnum.T5F02: ApiPOSClientTagModel(
+          message: Uint8List.fromList([paymentModel.organizationCode]),
+          tagName: POSClientTagsEnum.T5F02)
     };
   }
 
@@ -91,6 +96,9 @@ class POSApiResultMapper {
         message: refundModel.retrievalReferenceNumber,
         tagName: POSClientTagsEnum.T18,
       ),
+      POSClientTagsEnum.T5F02: ApiPOSClientTagModel(
+          message: Uint8List.fromList([refundModel.organizationCode]),
+          tagName: POSClientTagsEnum.T5F02)
     };
   }
 
@@ -128,6 +136,9 @@ class POSApiResultMapper {
         message: serviceModel.serviceType.value,
         tagName: POSClientTagsEnum.T1A,
       ),
+      POSClientTagsEnum.T5F02: ApiPOSClientTagModel(
+          message: Uint8List.fromList([serviceModel.organizationCode]),
+          tagName: POSClientTagsEnum.T5F02)
     };
   }
 
@@ -147,6 +158,9 @@ class POSApiResultMapper {
         message: abortModel.idempotenceKeyERN,
         tagName: POSClientTagsEnum.T03,
       ),
+      POSClientTagsEnum.T5F02: ApiPOSClientTagModel(
+          message: Uint8List.fromList([abortModel.organizationCode]),
+          tagName: POSClientTagsEnum.T5F02)
     };
   }
 }

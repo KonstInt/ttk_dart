@@ -10,15 +10,18 @@ class ApiServiceModel extends ApiRequestModel {
     required super.clientId,
     required super.idempotenceKeyERN,
     required this.serviceType,
+    required super.organizationCode,
   }) : super(operationType: ApiPOSOperationType.SRV);
 
   @override
   ApiServiceModel copyWith(
-      {ApiPOSOperationServiceType? serviceType,
+      {int? organizationCode,
+      ApiPOSOperationServiceType? serviceType,
       String? clientId,
       String? idempotenceKeyERN,
       ApiPOSOperationType? operationType}) {
     return ApiServiceModel(
+      organizationCode: organizationCode ?? this.organizationCode,
       serviceType: serviceType ?? this.serviceType,
       clientId: clientId ?? this.clientId,
       idempotenceKeyERN: idempotenceKeyERN ?? this.idempotenceKeyERN,
@@ -35,6 +38,7 @@ class ApiServiceModel extends ApiRequestModel {
 
   factory ApiServiceModel.fromMap(Map<String, dynamic> map) {
     return ApiServiceModel(
+        organizationCode: map['organizationCode'] as int,
         clientId: map['clientId'] as String,
         idempotenceKeyERN: map['idempotenceKeyERN'] as String,
         serviceType: ApiPOSOperationServiceType.values.firstWhere(
