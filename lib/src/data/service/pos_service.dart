@@ -13,9 +13,7 @@ import 'package:pos_payment_terminal/src/data/models/operations/to_pos/api_abort
 import 'package:pos_payment_terminal/src/data/models/operations/to_pos/api_payment_model.dart';
 import 'package:pos_payment_terminal/src/data/models/operations/to_pos/api_refund_model.dart';
 import 'package:pos_payment_terminal/src/data/models/operations/to_pos/api_service_model.dart';
-import 'package:pos_payment_terminal/src/data/models/pos/base_models/api_pos_client_tag_model.dart';
 import 'package:pos_payment_terminal/src/data/models/pos/base_models/api_pos_service_tag_model.dart';
-import 'package:pos_payment_terminal/src/data/models/pos/enums/tags/pos_client_tags/pos_client_tags_enum.dart';
 import 'package:pos_payment_terminal/src/data/models/pos/enums/tags/pos_service_tags/pos_service_tags_enum.dart';
 import 'package:pos_payment_terminal/src/logger/logger.dart';
 

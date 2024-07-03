@@ -19,3 +19,7 @@
 ## 1.0.4
 
 - Add abort operation
+
+## 1.0.5
+
+- Add organization code, to switch between organizations in one pos terminal

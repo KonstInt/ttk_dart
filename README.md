@@ -36,6 +36,7 @@ await posModule.connect();
 
 ```dart
 final paymentResponse = await posModule.createPayment(
+  organizationCode: null,
   amount: 100.0,
   clientId: 'client_id',
   idempotenceKeyERN: 'idempotence_key_ern',
@@ -46,6 +47,7 @@ final paymentResponse = await posModule.createPayment(
 
 ```dart
 final refundResponse = await posModule.createRefund(
+  organizationCode: null,
   amount: 50.0,
   retrievalReferenceNumber: 'reference_number',
   clientId: 'client_id',
@@ -57,6 +59,7 @@ final refundResponse = await posModule.createRefund(
 
 ```dart
 final serviceResponse = await posModule.createService(
+  organizationCode: null,
   clientId: 'client_id',
   operationServiceType: OperationServiceType.SOME_TYPE,
   idempotenceKeyERN: 'idempotence_key_ern',
@@ -67,6 +70,7 @@ final serviceResponse = await posModule.createService(
 Abort operation is not async function, because it has not result data, bool flag is just result of success or unsuccess creation. The result of aborting the operation will be received in the operation that you aborted.
 ```dart
 bool stopSuccess = posModule.createAbort(
+  organizationCode: null,
   clientId: 'client_id',
   idempotenceKeyERN: 'idempotence_key_ern',
 );
